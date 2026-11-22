@@ -24,7 +24,7 @@ const components = {
   KetchupRating: P.KetchupRating,
 };
 ---
-<BaseLayout title={post.data.title} description={post.data.excerpt}>
+<BaseLayout title={post.data.title} description={post.data.excerpt} ogCard={post.id} published={post.data.isoDate}>
   <P.BlogPost {...postProps(post, { isNew: post.id === latestId })}>
     <Content components={components} />
   </P.BlogPost>

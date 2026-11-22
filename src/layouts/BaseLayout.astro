@@ -19,9 +19,19 @@ interface Props {
   description?: string;
   /** which nav item to highlight */
   nav?: 'fooldal' | 'rolam' | 'archivum';
+  /** share card: a post's id gives /og/<id>.jpg; default /og/fooldal.jpg */
+  ogCard?: string;
+  /** ISO date for article:published_time (posts only) */
+  published?: string;
 }
-const { title, description = 'Zsírosdeszka Ödön ínyenc gasztroblogja. Egy szatirikus művészeti projekt.', nav } = Astro.props;
+const { title, description = 'Zsírosdeszka Ödön ínyenc gasztroblogja. Egy szatirikus művészeti projekt.', nav, ogCard, published } = Astro.props;
 const pageTitle = title ? `${title} – Proligasztró` : 'Proligasztró – Egy ínyenc naplója';
+
+// Open Graph / Twitter: absolute URLs, a 1200×630 card from src/pages/og/[card].jpg.js
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(withBase(`/og/${ogCard ?? 'fooldal'}.jpg`), Astro.site).href;
+const ogTitle = title ?? 'Proligasztró – Egy ínyenc naplója';
+const ogAlt = ogCard ? `${title}: a recept fotója és Ketchup-indexe a Proligasztró blogon` : 'A Proligasztró blog fejléce egy ketchupos tészta fotójával';
 
 const [latest] = await getPosts();
 const marquee = latest
@@ -50,6 +60,25 @@ const badges = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:site_name" content="Proligasztró" />
+    <meta property="og:locale" content="hu_HU" />
+    <meta property="og:type" content={published ? 'article' : 'website'} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
+    {published && <meta property="article:published_time" content={published} />}
+    {published && <meta property="article:author" content="Zsírosdeszka Ödön" />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogAlt} />
     <meta name="generator" content="Kézzel írva, Jegyzettömbben (állítólag)" />
     <link rel="icon" href={withBase('/ketchup-drop.svg')} type="image/svg+xml" />
     <link rel="alternate" type="application/rss+xml" title="Proligasztró RSS" href={withBase('/rss.xml')} />

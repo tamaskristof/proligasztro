@@ -9,3 +9,4 @@ Satirical Hungarian food blog (art project), Astro static site on GitHub Pages.
 - Photos: `npm run photo -- <slug>` (scripts/photo.mjs, fal.ai, needs FAL_KEY in .env). Rules in design-system/README.md → Imagery. A post's photo is `public/kepek/<slug>.jpg` by convention: listings show it as a thumbnail (`photoFor`), full posts open it in the Lightbox (max 640×480).
 - Ads are invented house ads (src/lib/ads.js, components AdBanner/TextAds/Skyscraper); rules in design-system/README.md → Ads. Only one blinking banner per page.
 - Sidebar polls live in `src/lib/polls.js`; `RandomPoll` (hydrated) shows one at random per page view. Add new ones there.
+- Share images: `src/pages/og/[card].jpg.js` draws a 1200×630 card per post (and `fooldal`) at build time with sharp (`src/lib/og.js`); BaseLayout sets the OG/Twitter tags.
