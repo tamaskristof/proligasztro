@@ -32,3 +32,6 @@ astro-island, astro-slot, astro-static-slot { display: contents; }
 @media (max-width: 480px) {
   .pg-photo--right, .pg-photo--left { float: none; margin-left: auto; margin-right: auto; }
 }
+
+/* Multi-word tags ("túrós csusza") stay on one line in the cloud. */
+.pg-tags a { white-space: nowrap; }
