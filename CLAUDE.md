@@ -7,3 +7,4 @@ Satirical Hungarian food blog (art project), Astro static site on GitHub Pages.
 - Build needs Node 24 (`.nvmrc`). Site is served at https://proligasztro.hu/ (base `/`); still build internal links with `withBase()` from `src/lib/url.js` so a base path change stays a one-liner.
 - Posts: `src/content/posts/*.mdx`, schema in `src/content.config.ts`, how-to in README.md.
 - Photos: `npm run photo -- <slug>` (scripts/photo.mjs, fal.ai, needs FAL_KEY in .env). Rules in design-system/README.md → Imagery.
+- Ads are invented house ads (src/lib/ads.js, components AdBanner/TextAds/Skyscraper); rules in design-system/README.md → Ads. Only one blinking banner per page.

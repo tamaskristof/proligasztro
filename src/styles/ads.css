@@ -1,0 +1,41 @@
+/* Ads: invented advertisers in 2008 formats, always labelled „Hirdetés”. Tokens only. */
+.pg-ad { display: block; margin: 0 auto var(--space-15); text-align: center; }
+.pg-ad__label { display: block; margin-bottom: var(--space-2); font-family: var(--font-verdana); font-size: 10px; line-height: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted); }
+
+/* 468×60 */
+.pg-banner468 { display: flex; align-items: center; gap: var(--space-10); width: 468px; max-width: 100%; height: 60px; box-sizing: border-box; margin: 0 auto; padding: 0 var(--space-10); border: 1px solid var(--chrome-dark); font-family: var(--font-verdana); text-align: left; text-decoration: none; overflow: hidden; }
+.pg-banner468__text { flex: 1; min-width: 0; }
+.pg-banner468__head { display: block; font-size: 14px; line-height: 18px; font-weight: 700; }
+.pg-banner468__sub { display: block; font-size: 10px; line-height: 13px; }
+.pg-banner468__cta { flex: none; padding: 3px 8px; background: var(--chrome); box-shadow: var(--bevel-out); color: var(--ink); font-family: var(--font-tahoma); font-size: 11px; line-height: 14px; font-weight: 700; }
+.pg-banner468:hover .pg-banner468__head { text-decoration: underline; }
+.pg-banner468--prize { background: var(--marquee-bg); color: var(--marquee-ink); }
+.pg-banner468--prize .pg-banner468__sub { color: var(--ink); }
+.pg-banner468--red { background: linear-gradient(to right, var(--banner-start), var(--box-head)); color: var(--on-box-head); }
+.pg-banner468--red .pg-banner468__head { color: var(--banner-title); text-shadow: 1px 1px 0 var(--led-bg); }
+.pg-banner468--blue { background: var(--link); color: var(--chrome-light); }
+.pg-banner468--green { background: var(--note-bg); color: var(--note-ink); }
+.pg-blink { animation: pg-blink 1s steps(1) infinite; }
+@media (max-width: 480px) { .pg-banner468 { height: auto; min-height: 60px; padding: var(--space-5) var(--space-10); } }
+
+/* Szponzorált linkek */
+.pg-textads { padding: var(--space-5) var(--space-10) var(--space-10); border: 1px solid var(--box-border); background: var(--page); font-family: var(--font-verdana); font-size: 11px; line-height: 15px; text-align: left; }
+.pg-textads__title { display: block; margin-bottom: var(--space-5); font-size: 10px; line-height: 14px; color: var(--ink-muted); }
+.pg-textads ul { margin: 0; padding: 0; list-style: none; }
+.pg-textads li + li { margin-top: var(--space-10); }
+.pg-textads__head { font-size: 13px; line-height: 17px; font-weight: 700; color: var(--link); text-decoration: underline; }
+.pg-textads__head:visited { color: var(--link-visited); }
+.pg-textads__head:hover { color: var(--link-hover); text-decoration: none; }
+.pg-textads__text { display: block; color: var(--ink); }
+.pg-textads__url { display: block; color: var(--note-ink); }
+
+/* 120×600 */
+.pg-sky { display: flex; flex-direction: column; align-items: center; justify-content: space-between; width: 120px; height: 600px; box-sizing: border-box; margin: 0 auto; padding: var(--space-15) var(--space-5); border: 1px solid var(--chrome-dark); background: linear-gradient(to bottom, var(--banner-start), var(--box-head)); color: var(--on-box-head); font-family: var(--font-verdana); text-align: center; text-decoration: none; }
+.pg-sky__head { font-family: var(--font-georgia); font-size: 20px; line-height: 24px; font-weight: 700; font-style: italic; color: var(--banner-title); text-shadow: 2px 2px 0 var(--led-bg); overflow-wrap: anywhere; }
+.pg-sky__body { font-size: 11px; line-height: 16px; }
+.pg-sky__big { display: block; padding: var(--space-5); background: var(--led-bg); color: var(--led-ink); font-family: var(--font-courier); font-size: 12px; line-height: 17px; font-weight: 700; white-space: pre-line; }
+.pg-sky__cta { padding: 3px 8px; background: var(--chrome); box-shadow: var(--bevel-out); color: var(--ink); font-family: var(--font-tahoma); font-size: 11px; line-height: 14px; font-weight: 700; }
+.pg-sky:hover .pg-sky__cta { box-shadow: var(--bevel-in); }
+.pg-sky__small { font-size: 10px; line-height: 13px; }
+
+@media (prefers-reduced-motion: reduce) { .pg-blink { animation: none; } }

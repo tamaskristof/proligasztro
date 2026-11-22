@@ -75,6 +75,20 @@ export declare function WebBadge(props: WebBadgeProps): React.ReactElement;
 export interface PixelDropProps { on?: boolean }
 export declare function PixelDrop(props: PixelDropProps): React.ReactElement;
 
+/** Ads: invented advertisers in 2008 formats, always labelled „Hirdetés” above the ad. */
+export interface AdBannerProps { head: string; sub?: string; cta?: string; tone?: 'prize' | 'red' | 'blue' | 'green'; /** blink the headline; at most ONE blinking banner per page */ blink?: boolean; href?: string }
+/** 468×60 full banner. */
+export declare function AdBanner(props: AdBannerProps): React.ReactElement;
+
+export interface TextAd { title: string; text: string; /** displayed URL, green; an invented domain checked not to exist */ url: string; href?: string }
+export interface TextAdsProps { ads: TextAd[]; /** default "Szponzorált linkek" */ title?: string }
+/** "Szponzorált linkek": blue underlined title, one line of copy, green URL. */
+export declare function TextAds(props: TextAdsProps): React.ReactElement;
+
+export interface SkyscraperProps { head: string; body?: string; /** LED panel text; \n breaks lines */ big?: string; cta?: string; small?: string; href?: string }
+/** 120×600 skyscraper for the bottom of the sidebar. */
+export declare function Skyscraper(props: SkyscraperProps): React.ReactElement;
+
 declare global {
   interface Window {
     Proligasztro: {
@@ -83,6 +97,7 @@ declare global {
       StepList: typeof StepList; NutritionTable: typeof NutritionTable; KetchupRating: typeof KetchupRating; SidebarBox: typeof SidebarBox;
       VisitorCounter: typeof VisitorCounter; TagCloud: typeof TagCloud; Poll: typeof Poll; CommentList: typeof CommentList;
       Button: typeof Button; NewBadge: typeof NewBadge; WebBadge: typeof WebBadge; PixelDrop: typeof PixelDrop;
+      AdBanner: typeof AdBanner; TextAds: typeof TextAds; Skyscraper: typeof Skyscraper;
     };
   }
 }

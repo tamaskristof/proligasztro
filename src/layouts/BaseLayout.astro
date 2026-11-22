@@ -6,8 +6,10 @@
  */
 import '../styles/tokens.css';
 import '../styles/blog.css';
+import '../styles/ads.css';
 import '../styles/site.css';
-import { BlogHeader, BlogFooter } from '../components/proligasztro.js';
+import { BlogHeader, BlogFooter, AdBanner } from '../components/proligasztro.js';
+import { prizeBanner } from '../lib/ads.js';
 import Sidebar from '../components/Sidebar.astro';
 import { withBase } from '../lib/url.js';
 import { getPosts, postHref } from '../lib/posts.js';
@@ -59,6 +61,7 @@ const badges = [
         <BlogHeader nav={navItems} marquee={marquee} />
         <div class="pg-columns">
           <main class="pg-main">
+            <AdBanner {...prizeBanner} />
             <slot />
           </main>
           <aside class="pg-sidebar">

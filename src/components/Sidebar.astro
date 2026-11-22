@@ -1,5 +1,6 @@
 ---
-import { SidebarBox, VisitorCounter, TagCloud, Poll } from './proligasztro.js';
+import { SidebarBox, VisitorCounter, TagCloud, Poll, Skyscraper } from './proligasztro.js';
+import { skyscraper } from '../lib/ads.js';
 import { getPosts, archiveMonths, monthHref, allTags, tagHref } from '../lib/posts.js';
 import { withBase } from '../lib/url.js';
 
@@ -54,3 +55,4 @@ const blogroll = [
 <SidebarBox title="Most hallgatom">
   <p>Mikrohullámú sütő, 800 W, 4 perc.</p>
 </SidebarBox>
+<Skyscraper {...skyscraper} />

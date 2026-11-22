@@ -312,3 +312,46 @@ export function CommentForm() {
     h('div', null, h(Button, { type: 'submit' }, 'Elküld'), ' ', h(Button, { type: 'reset', onClick: function () { setMsg(null); } }, 'Törlés'))
   );
 }
+
+/* ---------- Ads ----------
+ * Invented advertisers only, always labelled „Hirdetés”. At most one blinking AdBanner per page. */
+function AdFrame(props) {
+  return h('aside', { className: cx('pg-ad', props.className), 'aria-label': 'Hirdetés' },
+    h('span', { className: 'pg-ad__label', 'aria-hidden': 'true' }, props.label || 'Hirdetés'),
+    props.children);
+}
+
+/* 468×60 full banner */
+export function AdBanner(props) {
+  return h(AdFrame, null,
+    h('a', { className: cx('pg-banner468', 'pg-banner468--' + (props.tone || 'prize')), href: props.href || '#' },
+      h('span', { className: 'pg-banner468__text' },
+        h('span', { className: cx('pg-banner468__head', props.blink && 'pg-blink') }, props.head),
+        props.sub ? h('span', { className: 'pg-banner468__sub' }, props.sub) : null),
+      props.cta ? h('span', { className: 'pg-banner468__cta' }, props.cta) : null));
+}
+
+/* "Szponzorált linkek": blue title, green URL, one line of copy */
+export function TextAds(props) {
+  var ads = props.ads || [];
+  return h(AdFrame, null,
+    h('div', { className: 'pg-textads' },
+      h('span', { className: 'pg-textads__title' }, props.title || 'Szponzorált linkek'),
+      h('ul', null, ads.map(function (ad, i) {
+        return h('li', { key: i },
+          h('a', { className: 'pg-textads__head', href: ad.href || '#' }, ad.title),
+          h('span', { className: 'pg-textads__text' }, ad.text),
+          h('span', { className: 'pg-textads__url' }, ad.url));
+      }))));
+}
+
+/* 120×600 skyscraper */
+export function Skyscraper(props) {
+  return h(AdFrame, null,
+    h('a', { className: 'pg-sky', href: props.href || '#' },
+      h('span', { className: 'pg-sky__head' }, props.head),
+      props.body ? h('span', { className: 'pg-sky__body' }, props.body) : null,
+      props.big ? h('span', { className: 'pg-sky__big' }, props.big) : null,
+      props.cta ? h('span', { className: 'pg-sky__cta' }, props.cta) : null,
+      props.small ? h('span', { className: 'pg-sky__small' }, props.small) : null));
+}

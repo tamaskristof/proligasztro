@@ -3,12 +3,13 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import * as P from '../../components/proligasztro.js';
 import { getPosts, postProps } from '../../lib/posts.js';
+import { textAdsFor } from '../../lib/ads.js';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post, latestId: posts[0].id } }));
+  return posts.map((post, i) => ({ params: { slug: post.id }, props: { post, latestId: posts[0].id, index: i } }));
 }
-const { post, latestId } = Astro.props;
+const { post, latestId, index } = Astro.props;
 const { Content } = await render(post);
 
 // Components usable in posts without importing them.
@@ -25,6 +26,7 @@ const components = {
   <P.BlogPost {...postProps(post, { isNew: post.id === latestId })}>
     <Content components={components} />
   </P.BlogPost>
+  <P.TextAds ads={textAdsFor(index)} />
   <P.CommentList id="hozzaszolasok" comments={post.data.comments}>
     <P.CommentForm client:visible />
   </P.CommentList>

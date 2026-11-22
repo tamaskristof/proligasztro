@@ -30,6 +30,7 @@ Proligasztró (proligasztro.hu) is a **satirical** Hungarian food blog, built as
 | The tablecloth background | `BlogShell`, every page |
 | "A dizájn utoljára frissítve: 2009. március 3." while posts are current | `BlogFooter` |
 | Ketchup-index (0–5 pixel drops, more is worse) | `KetchupRating`, end of every recipe post |
+| Invented 2008 ads: „Ön a 1 000 000. látogató!”, ketchup wholesale, ringtones by SMS | `AdBanner`, `TextAds`, `Skyscraper` |
 | "Hívd a tűzoltókat" difficulty, "(+ 2 nap lábadozás)" time | `RecipeBox` |
 | Joke nutrition rows (Ízlés: nyomokban, Bűntudat: 140%) | `NutritionTable` |
 | The poll where the worst option wins | `Poll` |
@@ -72,9 +73,20 @@ Proligasztró (proligasztro.hu) is a **satirical** Hungarian food blog, built as
 - **Then make it worse:** downscale to 640×480, add a warm cast and a little sensor noise, save as a low-quality JPEG (about 60). Never render the date stamp into the image.
 - The satire notice says the photos are made up too.
 
-**Motion.** Exactly two animations: the marquee and the blinking "ÚJ!". Both stop for visitors who prefer reduced motion. Nothing else moves.
+**Motion.** Exactly three animations: the marquee, the blinking "ÚJ!", and the headline of one blinking `AdBanner` (at most one per page). All stop for visitors who prefer reduced motion. Nothing else moves.
 
 **Focus.** A 1px dotted black outline, offset 2px, like browsers drew it in 2008.
+
+## Ads
+
+The blog carries ads like every 2008 blog did, but every one of them is **invented**: house ads from Ödön's world, in period formats, never served by a real ad network (no tracking, no cookie banner).
+
+- **Formats:** `AdBanner` (468×60) at the top of the post column on every page, and a static one between the 2nd and 3rd homepage excerpts; `TextAds` ("Szponzorált linkek", three ads) after each full post, before the comments; `Skyscraper` (120×600) as the last sidebar item.
+- **Always labelled** with the small uppercase „Hirdetés” above the ad.
+- **Only one thing blinks:** the headline of one `AdBanner` per page (the „Ön a 1 000 000. látogató!” prize banner). Everything else stays still.
+- **Advertisers are made up** and stay in the satire's world: ketchup wholesale, microwave cleaning 0–24, a mug-cleaning service, ringtones by SMS. No real brands or products; any displayed domain is checked not to exist; premium numbers are written as words ("06-90-KETCHUP").
+- **Every ad links to one page** („A hirdetés nem elérhető”) that admits the ad is not real. No prizes, no forms, nothing that collects data.
+- The joke is on 2008 advertising and on the food, never on the reader: no ads mocking anyone's body, income or looks.
 
 ## Iconography
 
@@ -95,6 +107,7 @@ All components live in `components/bundle.js` as `window.Proligasztro` (React 18
 - **Sidebar:** `SidebarBox`, `VisitorCounter`, `TagCloud`, `Poll`
 - **Comments:** `CommentList` (comments and the "Szólj hozzá!" form)
 - **Controls:** `Button`, `NewBadge`, `WebBadge`
+- **Ads:** `AdBanner`, `TextAds`, `Skyscraper` (see Ads)
 
 **Homepage:** `BlogShell` with `BlogHeader` → the five newest `BlogPost`s as excerpts (`more`) → "« Régebbi bejegyzések" link; sidebar: Rólam, Látogatók, Szavazás, Archívum, Címkék, Blogroll, Most hallgatom; `BlogFooter` with five badges.
 
