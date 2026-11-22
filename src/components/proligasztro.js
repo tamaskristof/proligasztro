@@ -4,7 +4,7 @@
  * Class names (pg-*) and markup stay identical to the design system; styles are in
  * src/styles/blog.css. Differences from the bundle are marked "site:".
  *
- * Everything renders to static HTML. Only Poll and CommentForm are hydrated
+ * Everything renders to static HTML. Only RandomPoll (Poll) and CommentForm are hydrated
  * (client:visible) because they react to clicks.
  */
 import React from 'react';
@@ -293,6 +293,27 @@ export function Poll(props) {
         h('a', { className: 'pg-a', href: '#', onClick: function (e) { e.preventDefault(); setShown(true); } }, 'Eredmények'))),
     shown ? h('p', { className: 'pg-poll__total' }, 'Eddig ' + (props.totalLabel || total) + ' szavazat') : null
   );
+}
+
+/* ---------- RandomPoll (hydrated, site only) ----------
+ * Shows one of `polls` at random per page view, avoiding the one shown last time (sessionStorage).
+ * The server can't know the pick, so the box stays hidden until the browser has chosen. */
+export function RandomPoll(props) {
+  var polls = props.polls || [];
+  var st = React.useState(null);
+  var idx = st[0], setIdx = st[1];
+  React.useEffect(function () {
+    var last = -1;
+    try { last = Number(sessionStorage.getItem('pg-poll')); } catch (e) {}
+    var choices = polls.map(function (_, i) { return i; }).filter(function (i) { return polls.length < 2 || i !== last; });
+    var next = choices[Math.floor(Math.random() * choices.length)];
+    try { sessionStorage.setItem('pg-poll', String(next)); } catch (e) {}
+    setIdx(next);
+  }, []);
+  var poll = polls[idx === null ? 0 : idx];
+  if (!poll) return null;
+  return h('div', { style: idx === null ? { visibility: 'hidden' } : undefined },
+    h(Poll, { key: poll.name, name: 'pg-poll-' + poll.name, question: poll.question, options: poll.options }));
 }
 
 /* ---------- CommentList ----------
