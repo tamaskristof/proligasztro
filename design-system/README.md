@@ -66,7 +66,11 @@ Proligasztró (proligasztro.hu) is a **satirical** Hungarian food blog, built as
 
 **Dividers.** 1px dashed `box-border` between posts and above the footer; dotted under comment headers.
 
-**Imagery.** `DigicamPhoto`: small (`photo-width`, 320px or less), 4:3, direct-flash, unflattering, with the orange date stamp added by the component. Real food photos only: no stock, no styling, no AI images. Crop people to hands.
+**Imagery.** `DigicamPhoto`: small (`photo-width`, 320px or less), 4:3, direct-flash, unflattering, with the orange date stamp added by the component. Crop people to hands. No stock photos and no styling.
+- **Photos may be real or AI-generated, but they must pass as a real 2008 compact-camera snapshot**: built-in flash straight on, glare on anything wet, murky background, slightly wrong white balance, the same worn waxed-cloth kitchen tablecloth. Nothing glossy, no shallow depth of field, no steam, no garnish: the usual "AI food photo" look is off-brand.
+- **Prompt the camera, not the quality.** Describe the dish and its sad situation plus the camera and kitchen; never "delicious", "beautiful", "professional", "8k" or "food photography". Keep one shared style block so every photo comes from the same kitchen.
+- **Then make it worse:** downscale to 640×480, add a warm cast and a little sensor noise, save as a low-quality JPEG (about 60). Never render the date stamp into the image.
+- The satire notice says the photos are made up too.
 
 **Motion.** Exactly two animations: the marquee and the blinking "ÚJ!". Both stop for visitors who prefer reduced motion. Nothing else moves.
 

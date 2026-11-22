@@ -17,6 +17,8 @@ const posts = defineCollection({
     /** Shown on the homepage, before "Tovább »". */
     excerpt: z.string(),
     draft: z.boolean().default(false),
+    /** Prompt for scripts/photo.mjs: the dish and its sad situation only; the camera style is added by the script. */
+    photo: z.object({ prompt: z.string() }).optional(),
     recipe: z.object({
       title: z.string().optional(),
       time: z.string().optional(),

@@ -73,7 +73,7 @@ export function BlogHeader(props) {
 }
 
 /* ---------- BlogFooter ---------- */
-var DEFAULT_NOTICE = 'A Proligasztró szatirikus oldal. Zsírosdeszka Ödön és olvasói kitalált szereplők; a receptek, díjak és tápértékek szintén. A bemutatott ételek elkészítése saját felelősségre történik, de inkább ne.';
+var DEFAULT_NOTICE = 'A Proligasztró szatirikus oldal. Zsírosdeszka Ödön és olvasói kitalált szereplők; a receptek, fotók, díjak és tápértékek szintén. A bemutatott ételek elkészítése saját felelősségre történik, de inkább ne.';
 export function BlogFooter(props) {
   var badges = props.badges || [];
   return h('footer', { className: 'pg-footer' },
