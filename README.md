@@ -63,9 +63,22 @@ npm run photo -- ketchupos-teszta --reprocess # redo only the degrading step, fr
 ```
 
 The prompt is `photo.prompt` in the post's frontmatter: describe only the dish and its sad
-situation. `scripts/photo.mjs` adds the shared camera/kitchen style block, downscales to
-640×480, adds a warm cast and noise, saves a quality-62 JPEG to `public/kepek/<slug>.jpg`
-and links it into the post. The unprocessed original is kept in `.photo-cache/` (gitignored).
+situation. Pick where and in what light it was shot with `photo.scene` (`konyha-ejjel` default,
+`konyha-nappal`, `koli`, `iroda`, `kanape`, `erkely`, `vasarnap`, `unnepi`) and optionally
+`photo.framing` (`felulrol`, `ferde`, `kozeli`, `oldalrol`, `levagott`; default picked from the slug):
+
+```yaml
+photo:
+  prompt: "A large ceramic mug straight out of the microwave, …"
+  scene: koli
+  framing: ferde
+```
+
+`scripts/photo.mjs` adds the scene, the framing and the shared 2008 camera block (all in
+`src/lib/photo-styles.js`), downscales to 640×480, applies the scene's colour cast and noise,
+saves a quality-62 JPEG to `public/kepek/<slug>.jpg` and links it into the post. The unprocessed
+original is kept in `.photo-cache/` (gitignored); a `--force` re-shoot keeps the previous one there
+as `<slug>.<timestamp>.png`. Don't put two posts in a row in the same scene.
 The rules are in `design-system/README.md` → Imagery.
 
 ## Domain

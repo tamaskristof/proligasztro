@@ -67,10 +67,25 @@ Proligasztró (proligasztro.hu) is a **satirical** Hungarian food blog, built as
 
 **Dividers.** 1px dashed `box-border` between posts and above the footer; dotted under comment headers.
 
-**Imagery.** `DigicamPhoto`: small (`photo-width`, 320px or less), 4:3, direct-flash, unflattering, with the orange date stamp added by the component. Crop people to hands. No stock photos and no styling.
-- **Photos may be real or AI-generated, but they must pass as a real 2008 compact-camera snapshot**: built-in flash straight on, glare on anything wet, murky background, slightly wrong white balance, the same worn waxed-cloth kitchen tablecloth. Nothing glossy, no shallow depth of field, no steam, no garnish: the usual "AI food photo" look is off-brand.
-- **Prompt the camera, not the quality.** Describe the dish and its sad situation plus the camera and kitchen; never "delicious", "beautiful", "professional", "8k" or "food photography". Keep one shared style block so every photo comes from the same kitchen.
-- **Then make it worse:** downscale to 640×480, add a warm cast and a little sensor noise, save as a low-quality JPEG (about 60). Never render the date stamp into the image.
+**Imagery.** `DigicamPhoto`: small (`photo-width`, 320px or less), 4:3, unflattering, with the orange date stamp added by the component. Crop people to hands. No stock photos and no styling.
+- **Photos may be real or AI-generated, but they must pass as a real 2008 compact-camera snapshot**: slightly wrong white balance, a little soft, sensor noise, everything roughly in focus. Nothing glossy, no shallow depth of field, no steam, no garnish: the usual "AI food photo" look is off-brand.
+- **Same camera, not the same kitchen** („ugyanaz a fényképezőgép, nem ugyanaz a konyha”). Every photo has a scene: where Ödön (or a reader) ate it and in what light. Night in the kitchen with the flash straight on is the default, not the only option:
+
+  | Scene | Light and cast | Props |
+  |---|---|---|
+  | `konyha-ejjel` | flash in the dark, warm | waxed-cloth tablecloth, murky background |
+  | `konyha-nappal` | grey window light + flash anyway, washed out | dish rack, net curtain, wall calendar |
+  | `koli` | yellow desk lamp, no flash, orange, a little blur | textbooks, power strip |
+  | `iroda` | fluorescent tubes, greenish | keyboard, sticky notes, stained mug |
+  | `kanape` | TV glow, blue | coffee table, remote, crisp bag |
+  | `erkely` | overcast, flat grey | plastic garden table, geraniums, laundry |
+  | `vasarnap` | afternoon daylight + flash | the good lace tablecloth, sideboard with figurines |
+  | `unnepi` | flash, Christmas | red tablecloth, candle, tinsel, fairy lights |
+
+  **No two posts in a row share a scene.** Vary the framing too: from above, tilted, far too close, from the side at table height, or carelessly cut off.
+- **Prompt the camera, not the quality.** Describe the dish and its sad situation; the scene, the framing and the shared camera block are added to it. Never "delicious", "beautiful", "professional", "8k" or "food photography".
+- **Then make it worse:** downscale to 640×480, apply the scene's colour cast and a little sensor noise, save as a low-quality JPEG (about 60). Never render the date stamp into the image.
+- **Captions and alt text follow the scene**: no „Vaku: be.” under a desk-lamp shot.
 - The satire notice says the photos are made up too.
 - **Enlarging:** in a full post every photo can be opened in `Lightbox`, at most 640×480 (the camera file), never an original. Listing pages show a 110px thumbnail (`thumb-width`) next to the excerpt, linking to the post.
 

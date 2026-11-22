@@ -8,26 +8,19 @@
  *   npm run photo -- <slug> --reprocess      redo only the "make it worse" step from the cached original (free)
  *
  * Needs FAL_KEY in the environment or in .env (never committed).
- * The prompt comes from the post's frontmatter:   photo: { prompt: "..." }
- * It should describe only the dish and its sad situation; STYLE below is added to every prompt
- * so all photos look like they came from the same kitchen and the same 2008 camera.
+ * The prompt comes from the post's frontmatter:
+ *   photo: { prompt: "...", scene: "koli", framing: "ferde" }
+ * The prompt describes only the dish and its sad situation. The script adds the scene (place and light),
+ * the framing and the shared 2008 camera from src/lib/photo-styles.js: same camera, not the same kitchen.
+ * scene defaults to konyha-ejjel; framing defaults to one picked from the slug.
  */
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, renameSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 import { fal } from '@fal-ai/client';
 import sharp from 'sharp';
 import { parse as parseYaml } from 'yaml';
 
-const STYLE = [
-  'Amateur snapshot taken around 2008 with a cheap compact digital camera, built-in flash fired straight at the food, shot slightly from above,',
-  'late at night in a small, dim Hungarian home kitchen.',
-  'Harsh flash glare and hot specular highlights on anything wet or oily, a hard flash shadow, the background falling off into murky darkness,',
-  'slightly wrong white balance, a little soft focus, small sensor noise.',
-  'The plate sits on a worn waxed-cloth kitchen tablecloth with a faded pattern; a bit of everyday clutter is visible at the edge of the frame.',
-  'Completely unstyled, unappetising, ordinary and real: nobody tried to make this look good.',
-  'No people (at most a hand at the edge of the frame), no text, no watermark, no date stamp, no garnish, no steam,',
-  'no shallow depth of field, not professional food photography.',
-].join(' ');
+import { CAMERA, SCENES, FRAMINGS, DEFAULT_SCENE, framingFor } from '../src/lib/photo-styles.js';
 
 const MODELS = {
   gpt: {
@@ -61,6 +54,14 @@ const outFile = new URL(`public${outRel}`, root);
 const cacheDir = new URL('.photo-cache/', root);
 const cacheFile = new URL(`${slug}.png`, cacheDir);
 
+const mdxSource = readFileSync(postFile, 'utf8');
+const fm = mdxSource.match(/^---\n([\s\S]*?)\n---/);
+const photoFm = (fm && parseYaml(fm[1])?.photo) || {};
+const sceneName = photoFm.scene || DEFAULT_SCENE;
+const scene = SCENES[sceneName] ?? fail(`unknown scene "${sceneName}" (use: ${Object.keys(SCENES).join(', ')})`);
+const framingName = framingFor(slug, photoFm.framing);
+const framing = FRAMINGS[framingName] ?? fail(`unknown framing "${framingName}" (use: ${Object.keys(FRAMINGS).join(', ')})`);
+
 // 1. Original image: from fal, or from the cache when only reprocessing.
 let original;
 if (opts.reprocess) {
@@ -70,13 +71,11 @@ if (opts.reprocess) {
   if (existsSync(outFile) && !opts.force) fail(`public${outRel} already exists; pass --force to replace it`);
   if (!process.env.FAL_KEY) fail('FAL_KEY is not set (put it in .env or export it)');
 
-  const mdx = readFileSync(postFile, 'utf8');
-  const fm = mdx.match(/^---\n([\s\S]*?)\n---/);
-  const prompt = fm && parseYaml(fm[1])?.photo?.prompt;
+  const prompt = photoFm.prompt;
   if (!prompt) fail(`add photo: { prompt: "…" } to the frontmatter of ${slug}.mdx`);
 
-  const fullPrompt = `${prompt.trim()} ${STYLE}`;
-  console.log(`photo: ${model.id} → ${slug}`);
+  const fullPrompt = `${prompt.trim()} ${scene.prompt} ${framing} ${CAMERA}`;
+  console.log(`photo: ${model.id} → ${slug} (${sceneName}, ${framingName})`);
   const { data } = await fal.subscribe(model.id, {
     input: model.input(fullPrompt),
     logs: false,
@@ -88,10 +87,12 @@ if (opts.reprocess) {
   if (!res.ok) fail(`download failed: HTTP ${res.status}`);
   original = Buffer.from(await res.arrayBuffer());
   mkdirSync(cacheDir, { recursive: true });
+  // keep the previous original next to it, so a rejected re-shoot can be undone with --reprocess
+  if (existsSync(cacheFile)) renameSync(cacheFile, new URL(`${slug}.${Date.now()}.png`, cacheDir));
   writeFileSync(cacheFile, original);
 }
 
-// 2. Make it worse: the 2008 compact camera's 640×480 "web" setting, a cast, noise, a bad JPEG.
+// 2. Make it worse: the 2008 compact camera's 640×480 "web" setting, the scene's colour cast, noise, a bad JPEG.
 const W = 640, H = 480;
 const noise = Buffer.alloc(W * H);
 for (let i = 0; i < noise.length; i++) noise[i] = 128 + Math.round((Math.random() + Math.random() + Math.random() - 1.5) * 18);
@@ -99,8 +100,8 @@ const noiseLayer = await sharp(noise, { raw: { width: W, height: H, channels: 1 
 
 const jpeg = await sharp(original)
   .resize(W, H, { fit: 'cover', position: 'centre' })
-  .modulate({ brightness: 1.04, saturation: 0.9 })
-  .linear([1.04, 1.0, 0.93], [4, 2, -2]) // warm, slightly yellow tungsten-meets-flash cast
+  .modulate({ brightness: scene.grade.brightness, saturation: scene.grade.saturation })
+  .linear(scene.grade.mul, scene.grade.add) // what the scene's light did to the auto white balance
   .composite([{ input: noiseLayer, blend: 'soft-light' }])
   .sharpen({ sigma: 0.6 }) // cheap in-camera sharpening
   .jpeg({ quality: 62, chromaSubsampling: '4:2:0', mozjpeg: false })

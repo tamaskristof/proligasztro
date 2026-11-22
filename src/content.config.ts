@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { SCENES, FRAMINGS } from './lib/photo-styles.js';
 
 // Dates are written in the old blog format: "2026.11.22. 23:47"
 const blogDate = z.string().regex(/^\d{4}\.\d{2}\.\d{2}\. \d{2}:\d{2}$/, 'Formátum: "2026.11.22. 23:47"');
@@ -18,7 +19,15 @@ const posts = defineCollection({
     excerpt: z.string(),
     draft: z.boolean().default(false),
     /** Prompt for scripts/photo.mjs: the dish and its sad situation only; the camera style is added by the script. */
-    photo: z.object({ prompt: z.string() }).optional(),
+    photo: z
+      .object({
+        prompt: z.string(),
+        /** where and in what light it was shot (src/lib/photo-styles.js); default konyha-ejjel */
+        scene: z.enum(Object.keys(SCENES) as [string, ...string[]]).optional(),
+        /** how carelessly it was framed; default picked from the slug */
+        framing: z.enum(Object.keys(FRAMINGS) as [string, ...string[]]).optional(),
+      })
+      .optional(),
     recipe: z.object({
       title: z.string().optional(),
       time: z.string().optional(),
