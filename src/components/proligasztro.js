@@ -313,7 +313,7 @@ export function RandomPoll(props) {
   var poll = polls[idx === null ? 0 : idx];
   if (!poll) return null;
   return h('div', { style: idx === null ? { visibility: 'hidden' } : undefined },
-    h(Poll, { key: poll.name, name: 'pg-poll-' + poll.name, question: poll.question, options: poll.options }));
+    h(Poll, { key: poll.name, name: 'pg-poll-' + poll.name, question: poll.question, options: poll.options, totalLabel: poll.totalLabel }));
 }
 
 /* ---------- CommentList ----------

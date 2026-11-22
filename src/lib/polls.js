@@ -1,5 +1,6 @@
 // Sidebar polls. One is picked at random on every page view (RandomPoll), never the same one twice in a row.
-// Votes are made up and fixed; voting only reveals the results. Joke on the food and Ödön, never on readers.
+// Votes are made up and fixed; voting only reveals the results. Rules: design-system/README.md and the Poll docs
+// (four options, the worst one wins, the joke is on the food and Ödön, never on readers, no brands).
 export const polls = [
   {
     name: 'koret',
@@ -36,8 +37,8 @@ export const polls = [
     question: 'Hány napos lehet még a töltött káposzta?',
     options: [
       { label: '3 nap', votes: 74 },
-      { label: 'Egy hét, minden nap jobb', votes: 288 },
-      { label: 'Amíg a szaga engedi', votes: 219 },
+      { label: 'Egy hét, minden nap jobb', votes: 219 },
+      { label: 'Amíg a szaga engedi', votes: 311 },
       { label: 'A töltött káposzta örök', votes: 133 },
     ],
   },
@@ -65,8 +66,8 @@ export const polls = [
     name: 'halaszle',
     question: 'Mi kerüljön a karácsonyi halászlébe?',
     options: [
-      { label: 'Ponty, ahogy illik', votes: 381 },
-      { label: 'Szardínia, konzervből', votes: 64 },
+      { label: 'Ponty, ahogy illik', votes: 288 },
+      { label: 'Szardínia, konzervből', votes: 402 },
       { label: 'Halrudacska', votes: 119 },
       { label: 'Bármi, csak ne Ödön főzze', votes: 297 },
     ],
@@ -77,8 +78,8 @@ export const polls = [
     options: [
       { label: 'A bögre', votes: 255 },
       { label: 'A vízforraló (tojást is főz!)', votes: 183 },
-      { label: 'A vasaló (melegszendvicshez)', votes: 72 },
-      { label: 'A telefon, ételrendeléshez', votes: 349 },
+      { label: 'A vasaló (melegszendvicshez)', votes: 361 },
+      { label: 'A telefon, ételrendeléshez', votes: 249 },
     ],
   },
 ];

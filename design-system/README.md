@@ -33,7 +33,7 @@ Proligasztró (proligasztro.hu) is a **satirical** Hungarian food blog, built as
 | Invented 2008 ads: „Ön a 1 000 000. látogató!”, ketchup wholesale, ringtones by SMS | `AdBanner`, `TextAds`, `Skyscraper` |
 | "Hívd a tűzoltókat" difficulty, "(+ 2 nap lábadozás)" time | `RecipeBox` |
 | Joke nutrition rows (Ízlés: nyomokban, Bűntudat: 140%) | `NutritionTable` |
-| The poll where the worst option wins | `Poll` |
+| The poll where the worst option wins, a different one on every visit | `Poll`, `RandomPoll` |
 | Captcha: "Mennyi kettő meg kettő? (számmal, ketchup nélkül)" | `CommentList` form |
 | "Most hallgatom: Mikrohullámú sütő, 800 W, 4 perc." | `SidebarBox` |
 | **Satire notice (required on every page)** | `BlogFooter` |
@@ -105,7 +105,7 @@ All components live in `components/bundle.js` as `window.Proligasztro` (React 18
 - **Layout:** `BlogShell`, `BlogHeader`, `BlogFooter`, `Marquee`
 - **Post:** `BlogPost`, `DigicamPhoto`, `Lightbox`, `EditorNote`, `KetchupRating`
 - **Recipe:** `RecipeBox`, `StepList`, `NutritionTable`
-- **Sidebar:** `SidebarBox`, `VisitorCounter`, `TagCloud`, `Poll`
+- **Sidebar:** `SidebarBox`, `VisitorCounter`, `TagCloud`, `Poll`, `RandomPoll`
 - **Comments:** `CommentList` (comments and the "Szólj hozzá!" form)
 - **Controls:** `Button`, `NewBadge`, `WebBadge`
 - **Ads:** `AdBanner`, `TextAds`, `Skyscraper` (see Ads)

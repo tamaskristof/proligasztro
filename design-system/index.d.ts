@@ -66,6 +66,11 @@ export declare function TagCloud(props: TagCloudProps): React.ReactElement;
 export interface PollProps { question: string; options: { label: string; votes: number }[]; /** unique radio group name per page */ name?: string; showResults?: boolean; totalLabel?: string }
 export declare function Poll(props: PollProps): React.ReactElement;
 
+export interface PollDef { /** unique, used for the radio group */ name: string; question: string; options: { label: string; votes: number }[]; totalLabel?: string }
+/** One poll from the pool at random per page view (never the same twice in a row); hidden until picked. */
+export interface RandomPollProps { polls: PollDef[] }
+export declare function RandomPoll(props: RandomPollProps): React.ReactElement | null;
+
 export interface Comment { name?: string; date: string; text: string; url?: string; /** Ödön's own replies */ isAuthor?: boolean }
 export interface CommentListProps { comments: Comment[]; title?: string; /** default true */ showForm?: boolean }
 export declare function CommentList(props: CommentListProps): React.ReactElement;
@@ -102,7 +107,7 @@ declare global {
       BlogShell: typeof BlogShell; BlogHeader: typeof BlogHeader; BlogFooter: typeof BlogFooter; Marquee: typeof Marquee;
       BlogPost: typeof BlogPost; DigicamPhoto: typeof DigicamPhoto; EditorNote: typeof EditorNote; RecipeBox: typeof RecipeBox;
       StepList: typeof StepList; NutritionTable: typeof NutritionTable; KetchupRating: typeof KetchupRating; SidebarBox: typeof SidebarBox;
-      VisitorCounter: typeof VisitorCounter; TagCloud: typeof TagCloud; Poll: typeof Poll; CommentList: typeof CommentList;
+      VisitorCounter: typeof VisitorCounter; TagCloud: typeof TagCloud; Poll: typeof Poll; RandomPoll: typeof RandomPoll; CommentList: typeof CommentList;
       Button: typeof Button; NewBadge: typeof NewBadge; WebBadge: typeof WebBadge; PixelDrop: typeof PixelDrop;
       AdBanner: typeof AdBanner; TextAds: typeof TextAds; Skyscraper: typeof Skyscraper; Lightbox: typeof Lightbox;
     };
