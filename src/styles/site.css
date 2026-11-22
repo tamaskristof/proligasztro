@@ -37,3 +37,6 @@ astro-island, astro-slot, astro-static-slot { display: contents; }
 
 /* Multi-word tags ("túrós csusza") stay on one line in the cloud. */
 .pg-tags a { white-space: nowrap; }
+
+/* Ödön's "profile photo" in the sidebar Rólam box */
+.pg-sidebar .pg-photo--thumb { margin: var(--space-2) var(--space-5) var(--space-2) 0; }

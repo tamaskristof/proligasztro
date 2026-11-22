@@ -79,6 +79,9 @@ photo:
 saves a quality-62 JPEG to `public/kepek/<slug>.jpg` and links it into the post. The unprocessed
 original is kept in `.photo-cache/` (gitignored); a `--force` re-shoot keeps the previous one there
 as `<slug>.<timestamp>.png`. Don't put two posts in a row in the same scene.
+
+Photos for pages that aren't posts (e.g. `rolam`, Ödön's hand with a fork, also shown in the sidebar)
+live in `src/lib/page-photos.js`: `npm run photo -- rolam`, then set `src` in the page by hand.
 The rules are in `design-system/README.md` → Imagery.
 
 ## Domain

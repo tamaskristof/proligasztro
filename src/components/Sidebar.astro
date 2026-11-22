@@ -1,5 +1,5 @@
 ---
-import { SidebarBox, VisitorCounter, TagCloud, RandomPoll, Skyscraper } from './proligasztro.js';
+import { SidebarBox, VisitorCounter, TagCloud, RandomPoll, Skyscraper, DigicamPhoto } from './proligasztro.js';
 import { polls } from '../lib/polls.js';
 import { skyscraper } from '../lib/ads.js';
 import { getPosts, archiveMonths, monthHref, allTags, tagHref } from '../lib/posts.js';
@@ -26,6 +26,7 @@ const blogroll = [
 ];
 ---
 <SidebarBox title="Rólam">
+  <DigicamPhoto thumb src="/kepek/rolam.jpg" href={withBase('/rolam/')} width={72} align="left" date={false} alt="Ödön keze, villával" />
   <p>Zsírosdeszka Ödön vagyok, ínyenc és önjelölt gasztrokritikus. 2008 óta írom ezt a blogot, mert valakinek ki kell mondania.</p>
   <p><a class="pg-a" href={withBase('/rolam/')}>Bővebben »</a></p>
 </SidebarBox>

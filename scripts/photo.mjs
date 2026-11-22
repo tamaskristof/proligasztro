@@ -21,6 +21,7 @@ import sharp from 'sharp';
 import { parse as parseYaml } from 'yaml';
 
 import { CAMERA, SCENES, FRAMINGS, DEFAULT_SCENE, framingFor } from '../src/lib/photo-styles.js';
+import { pagePhotos } from '../src/lib/page-photos.js';
 
 const MODELS = {
   gpt: {
@@ -48,15 +49,15 @@ const model = MODELS[opts.model] ?? fail(`unknown --model "${opts.model}" (use: 
 
 const root = new URL('../', import.meta.url);
 const postFile = new URL(`src/content/posts/${slug}.mdx`, root);
-if (!existsSync(postFile)) fail(`no post at src/content/posts/${slug}.mdx`);
+const isPost = existsSync(postFile);
+if (!isPost && !pagePhotos[slug]) fail(`no post at src/content/posts/${slug}.mdx and no "${slug}" in src/lib/page-photos.js`);
 const outRel = `/kepek/${slug}.jpg`;
 const outFile = new URL(`public${outRel}`, root);
 const cacheDir = new URL('.photo-cache/', root);
 const cacheFile = new URL(`${slug}.png`, cacheDir);
 
-const mdxSource = readFileSync(postFile, 'utf8');
-const fm = mdxSource.match(/^---\n([\s\S]*?)\n---/);
-const photoFm = (fm && parseYaml(fm[1])?.photo) || {};
+const fm = isPost && readFileSync(postFile, 'utf8').match(/^---\n([\s\S]*?)\n---/);
+const photoFm = (isPost ? fm && parseYaml(fm[1])?.photo : pagePhotos[slug]) || {};
 const sceneName = photoFm.scene || DEFAULT_SCENE;
 const scene = SCENES[sceneName] ?? fail(`unknown scene "${sceneName}" (use: ${Object.keys(SCENES).join(', ')})`);
 const framingName = framingFor(slug, photoFm.framing);
@@ -110,7 +111,8 @@ mkdirSync(new URL('public/kepek/', root), { recursive: true });
 writeFileSync(outFile, jpeg);
 console.log(`photo: saved public${outRel} (${Math.round(jpeg.length / 1024)} KB)`);
 
-// 3. Link it: give the post's first <DigicamPhoto> a src if it has none.
+// 3. Link it: give the post's first <DigicamPhoto> a src if it has none. Pages are linked by hand.
+if (!isPost) { console.log(`photo: page photo; use src="${outRel}" in the page`); process.exit(0); }
 const mdx = readFileSync(postFile, 'utf8');
 const tag = mdx.match(/<DigicamPhoto\b[^>]*\/>/);
 if (!tag) console.log('photo: no <DigicamPhoto /> in the post; add one with src="' + outRel + '"');
