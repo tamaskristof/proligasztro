@@ -1,0 +1,31 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import * as P from '../../components/proligasztro.js';
+import { getPosts, postProps } from '../../lib/posts.js';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, latestId: posts[0].id } }));
+}
+const { post, latestId } = Astro.props;
+const { Content } = await render(post);
+
+// Components usable in posts without importing them.
+const components = {
+  DigicamPhoto: P.DigicamPhoto,
+  EditorNote: P.EditorNote,
+  RecipeBox: P.RecipeBox,
+  StepList: P.StepList,
+  NutritionTable: P.NutritionTable,
+  KetchupRating: P.KetchupRating,
+};
+---
+<BaseLayout title={post.data.title} description={post.data.excerpt}>
+  <P.BlogPost {...postProps(post, { isNew: post.id === latestId })}>
+    <Content components={components} />
+  </P.BlogPost>
+  <P.CommentList id="hozzaszolasok" comments={post.data.comments}>
+    <P.CommentForm client:visible />
+  </P.CommentList>
+</BaseLayout>

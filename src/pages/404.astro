@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { BlogPost, EditorNote } from '../components/proligasztro.js';
+import { withBase } from '../lib/url.js';
+---
+<BaseLayout title="Az oldal nem található">
+  <BlogPost title="404 – Az oldal nem található" date="2009.03.03. 01:12" href={withBase('/')} commentsHref={withBase('/')}>
+    <p>Kedves Olvasóim!</p>
+    <p>A keresett oldal nem található. Elképzelhető, hogy sosem létezett; az is elképzelhető, hogy valaki megette.</p>
+    <p><a href={withBase('/')}>« Vissza a főoldalra</a></p>
+    <EditorNote>ha egy linket rosszul írtam be, elnézést. Késő volt.</EditorNote>
+  </BlogPost>
+</BaseLayout>

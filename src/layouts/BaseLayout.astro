@@ -1,0 +1,72 @@
+---
+/*
+ * The page frame: tablecloth, 780px wrapper, header, post column, sidebar, footer.
+ * Same markup as the design system's BlogShell, written in Astro so slotted content
+ * doesn't get wrapped in extra elements.
+ */
+import '../styles/tokens.css';
+import '../styles/blog.css';
+import '../styles/site.css';
+import { BlogHeader, BlogFooter } from '../components/proligasztro.js';
+import Sidebar from '../components/Sidebar.astro';
+import { withBase } from '../lib/url.js';
+import { getPosts, postHref } from '../lib/posts.js';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** which nav item to highlight */
+  nav?: 'fooldal' | 'rolam' | 'archivum';
+}
+const { title, description = 'Zsírosdeszka Ödön ínyenc gasztroblogja. Egy szatirikus művészeti projekt.', nav } = Astro.props;
+const pageTitle = title ? `${title} – Proligasztró` : 'Proligasztró – Egy ínyenc naplója';
+
+const [latest] = await getPosts();
+const marquee = latest
+  ? `*** Üdvözöllek a blogomon!!! *** Új bejegyzés: ${latest.data.title} *** Szavazz a jobb oldalon! ***`
+  : undefined;
+
+const navItems = [
+  { label: 'Főoldal', href: withBase('/'), active: nav === 'fooldal' },
+  { label: 'Rólam', href: withBase('/rolam/'), active: nav === 'rolam' },
+  { label: 'Archívum', href: withBase('/archivum/'), active: nav === 'archivum' },
+  { label: 'RSS', href: withBase('/rss.xml') },
+];
+
+const badges = [
+  { left: 'px', right: '1024×768 ajánlott', tone: 'black' },
+  { left: 'HTML', right: 'kézzel írva', tone: 'blue' },
+  { left: '!!!', right: 'ketchup-zóna', tone: 'yellow' },
+  { left: 'RSS', right: 'feliratkozás', tone: 'red', href: withBase('/rss.xml') },
+  { left: 'Ö.', right: 'Ödön által jóváhagyva', tone: 'green' },
+];
+---
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="generator" content="Kézzel írva, Jegyzettömbben (állítólag)" />
+    <link rel="icon" href={withBase('/ketchup-drop.svg')} type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="Proligasztró RSS" href={withBase('/rss.xml')} />
+    <style set:html={`:root { --pg-tile: url("${withBase('/tablecloth-tile.jpg')}"); }`}></style>
+  </head>
+  <body>
+    <div class="pg-tablecloth">
+      <div class="pg-wrapper">
+        <BlogHeader nav={navItems} marquee={marquee} />
+        <div class="pg-columns">
+          <main class="pg-main">
+            <slot />
+          </main>
+          <aside class="pg-sidebar">
+            <Sidebar />
+          </aside>
+        </div>
+        <BlogFooter badges={badges} />
+      </div>
+    </div>
+  </body>
+</html>

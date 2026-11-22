@@ -1,0 +1,34 @@
+/* Site-only additions on top of the design system's blog.css. Tokens only, same rules. */
+
+html, body { height: 100%; }
+body { background: var(--tablecloth-white); }
+
+/* Astro wraps slotted/hydrated content in these; keep them out of the layout. */
+astro-island, astro-slot, astro-static-slot { display: contents; }
+
+/* Sidebar spacing that survives wrapper elements */
+.pg-sidebar { display: flex; flex-direction: column; gap: var(--space-10); }
+.pg-sidebar > * + * { margin-top: 0; }
+
+/* Post body extras for MDX content */
+.pg-post__body ul, .pg-post__body ol { margin: 0 0 var(--space-10); padding-left: 25px; }
+.pg-post__body h3 { margin: var(--space-15) 0 var(--space-5); font-family: var(--font-georgia); font-size: 15px; line-height: 20px; font-weight: 700; color: var(--post-title); }
+.pg-post__body blockquote { margin: var(--space-10) var(--space-20); font-style: italic; color: var(--ink-muted); }
+.pg-post__body::after { content: ""; display: block; clear: both; }
+.pg-signoff { font-style: italic; }
+
+/* Page headings for archive/tag listings */
+.pg-pagehead { margin: 0 0 var(--space-15); padding-bottom: var(--space-5); border-bottom: 1px dashed var(--box-border); font-family: var(--font-georgia); font-size: 20px; line-height: 26px; font-weight: 700; color: var(--post-title); }
+.pg-older { font-size: 11px; line-height: 16px; display: flex; justify-content: space-between; }
+.pg-list { margin: 0 0 var(--space-15); padding-left: 0; list-style: none; font-size: 13px; line-height: 21px; }
+.pg-list .pg-meta { font-size: 11px; color: var(--ink-muted); }
+
+/* Comment form status message */
+.pg-form__msg { margin: 0 0 var(--space-5); padding: var(--space-5); border: 1px dashed currentColor; font-family: var(--font-comic); font-size: 13px; line-height: 18px; }
+.pg-form__msg.is-ok { background: var(--note-bg); color: var(--note-ink); }
+.pg-form__msg.is-err { background: var(--marquee-bg); color: var(--marquee-ink); }
+
+/* Small phones: floated photos would squeeze the text into a strip. */
+@media (max-width: 480px) {
+  .pg-photo--right, .pg-photo--left { float: none; margin-left: auto; margin-right: auto; }
+}

@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { getPosts } from '../lib/posts.js';
+import { PER_PAGE, pageHref } from '../lib/paging.js';
+
+const posts = await getPosts();
+const pages = Math.ceil(posts.length / PER_PAGE);
+---
+<BaseLayout nav="fooldal">
+  <PostList posts={posts.slice(0, PER_PAGE)} latestId={posts[0]?.id} olderHref={pages > 1 ? pageHref(2) : undefined} />
+</BaseLayout>

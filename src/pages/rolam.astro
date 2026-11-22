@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { BlogPost, DigicamPhoto, EditorNote } from '../components/proligasztro.js';
+import { withBase } from '../lib/url.js';
+---
+<BaseLayout title="Rólam" nav="rolam">
+  <BlogPost title="Rólam" date="2008.05.14. 22:10" href={withBase('/rolam/')} commentsHref={withBase('/rolam/')} comments={0}>
+    <DigicamPhoto align="right" width={160} date="'08 05 14" caption="A szerző keze, villával. Önarckép." alt="Egy kéz villát tart a vaku fényében" />
+    <p>Kedves Olvasóim!</p>
+    <p>Zsírosdeszka Ödön vagyok, ínyenc és önjelölt gasztrokritikus. Ezt a blogot 2008 tavaszán indítottam, saját kezűleg építettem, és azóta is büszke vagyok rá. A dizájnt 2009 márciusában tökéletesítettem; azóta nem nyúltam hozzá, mert a tökéletesen nincs mit javítani.</p>
+    <p>A Proligasztró küldetése egyszerű: a magyar háztartások konyháiból érkező, kétes eredetű receptek szakszerű, részletes és kíméletlen értékelése. Minden receptet a legmagasabb gasztronómiai mérce szerint bírálok el, akkor is, ha az étel ezt nem érdemli meg. Főleg akkor.</p>
+    <p>Minden recept végén megtalálják a <b>Ketchup-indexet</b>: nulla cseppel egy étel meglepően ehető, öt cseppel gasztronómiai vészhelyzet. Minél több a csepp, annál nagyobb a baj.</p>
+    <p>Receptet beküldeni nem lehet, de valahogy mégis mindig érkezik.</p>
+    <EditorNote>a „Rólam” oldalt is éjjel írtam, vacsora után. Ez talán érződik rajta.</EditorNote>
+    <p class="pg-signoff">Ínyenc üdvözlettel: Ö.</p>
+  </BlogPost>
+</BaseLayout>

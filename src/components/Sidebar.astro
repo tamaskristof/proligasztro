@@ -1,0 +1,56 @@
+---
+import { SidebarBox, VisitorCounter, TagCloud, Poll } from './proligasztro.js';
+import { getPosts, archiveMonths, monthHref, allTags, tagHref } from '../lib/posts.js';
+import { withBase } from '../lib/url.js';
+
+const posts = await getPosts();
+const months = archiveMonths(posts);
+const tags = allTags(posts);
+const counts = tags.map((t) => t.count);
+const minCount = Math.min(...counts), maxCount = Math.max(...counts);
+// 1–5; when every tag is used equally they all sit in the middle (3).
+const weight = (n) => (maxCount === minCount ? 3 : 1 + Math.round(((n - minCount) / (maxCount - minCount)) * 4));
+
+// The counter grows a little every day since the blog started. Nobody checks.
+const days = Math.floor((Date.now() - Date.UTC(2008, 4, 14)) / 86400000);
+const visitors = 41207 + days * 23;
+
+const poll = {
+  question: 'Melyik a legrosszabb köret?',
+  options: [
+    { label: 'Ketchup, önmagában', votes: 412 },
+    { label: 'Főtt tészta, másnapi', votes: 178 },
+    { label: 'Mikrós krumpli', votes: 121 },
+    { label: 'Uborkasaláta tejföl nélkül', votes: 37 },
+  ],
+};
+
+const blogroll = [
+  'Tökfőzelék Baráti Kör',
+  'Zsírszalonna Klub',
+  'Gulyás és Lélek',
+  'Margitka receptjei (archív)',
+  'A Kenyérhéj Krónikái',
+];
+---
+<SidebarBox title="Rólam">
+  <p>Zsírosdeszka Ödön vagyok, ínyenc és önjelölt gasztrokritikus. 2008 óta írom ezt a blogot, mert valakinek ki kell mondania.</p>
+  <p><a class="pg-a" href={withBase('/rolam/')}>Bővebben »</a></p>
+</SidebarBox>
+<SidebarBox title="Látogatók">
+  <VisitorCounter value={visitors} />
+</SidebarBox>
+<SidebarBox title="Szavazás">
+  <Poll client:visible name="koret" question={poll.question} options={poll.options} />
+</SidebarBox>
+<SidebarBox
+  title="Archívum"
+  links={months.map((m, i) => ({ label: m.label, href: monthHref(m.key), count: m.count, isNew: i === 0 }))}
+/>
+<SidebarBox title="Címkék">
+  <TagCloud tags={tags.map((t) => ({ label: t.tag, href: tagHref(t.tag), weight: weight(t.count) }))} />
+</SidebarBox>
+<SidebarBox title="Blogroll" links={blogroll.map((label) => ({ label, href: '#' }))} />
+<SidebarBox title="Most hallgatom">
+  <p>Mikrohullámú sütő, 800 W, 4 perc.</p>
+</SidebarBox>

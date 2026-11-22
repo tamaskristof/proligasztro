@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts, allTags } from '../../lib/posts.js';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return allTags(posts).map(({ tag, slug }) => ({
+    params: { tag: slug },
+    props: { tag, posts: posts.filter((p) => p.data.tags.includes(tag)), latestId: posts[0].id },
+  }));
+}
+const { tag, posts, latestId } = Astro.props;
+---
+<BaseLayout title={`Címke: ${tag}`}>
+  <h1 class="pg-pagehead">Bejegyzések a(z) „{tag}” címkével ({posts.length})</h1>
+  <PostList posts={posts} latestId={latestId} />
+</BaseLayout>

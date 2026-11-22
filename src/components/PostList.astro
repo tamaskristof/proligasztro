@@ -1,0 +1,18 @@
+---
+/* A page of post excerpts with "« Régebbi bejegyzések" / "Újabb bejegyzések »" links. */
+import { BlogPost } from './proligasztro.js';
+import { postProps } from '../lib/posts.js';
+
+const { posts, latestId, olderHref, newerHref } = Astro.props;
+---
+{posts.map((post) => (
+  <BlogPost {...postProps(post, { isNew: post.id === latestId })} more>
+    <p>{post.data.excerpt}</p>
+  </BlogPost>
+))}
+{(olderHref || newerHref) && (
+  <p class="pg-older">
+    <span>{olderHref && <a class="pg-a" href={olderHref}>« Régebbi bejegyzések</a>}</span>
+    <span>{newerHref && <a class="pg-a" href={newerHref}>Újabb bejegyzések »</a>}</span>
+  </p>
+)}

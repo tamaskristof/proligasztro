@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts } from '../../lib/posts.js';
+import { PER_PAGE, pageHref } from '../../lib/paging.js';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const pages = Math.ceil(posts.length / PER_PAGE);
+  return Array.from({ length: Math.max(0, pages - 1) }, (_, i) => ({ params: { page: String(i + 2) } }));
+}
+const n = Number(Astro.params.page);
+const posts = await getPosts();
+const pages = Math.ceil(posts.length / PER_PAGE);
+---
+<BaseLayout title={`${n}. oldal`}>
+  <PostList
+    posts={posts.slice((n - 1) * PER_PAGE, n * PER_PAGE)}
+    latestId={posts[0]?.id}
+    olderHref={n < pages ? pageHref(n + 1) : undefined}
+    newerHref={pageHref(n - 1)}
+  />
+</BaseLayout>

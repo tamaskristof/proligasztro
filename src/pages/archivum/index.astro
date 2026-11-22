@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPosts, archiveMonths, monthKey, postHref, monthHref } from '../../lib/posts.js';
+
+const posts = await getPosts();
+const months = archiveMonths(posts);
+---
+<BaseLayout title="Archívum" nav="archivum">
+  <h1 class="pg-pagehead">Archívum</h1>
+  {months.map((m) => (
+    <>
+      <h2 class="pg-subhead"><a class="pg-a" href={monthHref(m.key)}>{m.label}</a> ({m.count})</h2>
+      <ul class="pg-list">
+        {posts.filter((p) => monthKey(p) === m.key).map((p) => (
+          <li>» <a class="pg-a" href={postHref(p)}>{p.data.title}</a> <span class="pg-meta">({p.data.date})</span></li>
+        ))}
+      </ul>
+    </>
+  ))}
+</BaseLayout>

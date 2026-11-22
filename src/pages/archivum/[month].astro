@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts, archiveMonths, monthKey } from '../../lib/posts.js';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return archiveMonths(posts).map((m) => ({
+    params: { month: m.key },
+    props: { label: m.label, posts: posts.filter((p) => monthKey(p) === m.key), latestId: posts[0].id },
+  }));
+}
+const { label, posts, latestId } = Astro.props;
+---
+<BaseLayout title={label} nav="archivum">
+  <h1 class="pg-pagehead">{label} ({posts.length})</h1>
+  <PostList posts={posts} latestId={latestId} />
+</BaseLayout>
