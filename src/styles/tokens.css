@@ -53,5 +53,7 @@
   --photo-width: 320px;
   --thumb-width: 110px;
   --lightbox-width: 640px;
+  --share-width: 1200px;
+  --share-height: 630px;
   --tile-size: 48px;
 }

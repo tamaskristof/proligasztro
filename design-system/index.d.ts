@@ -35,6 +35,10 @@ export declare function DigicamPhoto(props: DigicamPhotoProps): React.ReactEleme
 export interface LightboxProps { open?: boolean; src?: string; alt?: string; caption?: string; /** default "1. kép / 1" */ count?: string }
 export declare function Lightbox(props: LightboxProps): React.ReactElement;
 
+/** The 1200×630 Open Graph image as a component (the site renders the same layout to JPEG at build time). */
+export interface ShareCardProps { title: string; /** "Beküldte: Ödön | 2026.11.14. 00:52" */ meta?: string; /** 0–5 ketchup drops */ rating?: number; photo?: string; /** "'26 11 14" */ stamp?: string; /** small uppercase line above the title (default card) */ kicker?: string; /** a sentence instead of meta+rating (default card) */ body?: string; domain?: string }
+export declare function ShareCard(props: ShareCardProps): React.ReactElement;
+
 export interface EditorNoteProps { children: React.ReactNode; /** default "Szerk. megj.:" */ label?: string }
 export declare function EditorNote(props: EditorNoteProps): React.ReactElement;
 
@@ -109,7 +113,7 @@ declare global {
       StepList: typeof StepList; NutritionTable: typeof NutritionTable; KetchupRating: typeof KetchupRating; SidebarBox: typeof SidebarBox;
       VisitorCounter: typeof VisitorCounter; TagCloud: typeof TagCloud; Poll: typeof Poll; RandomPoll: typeof RandomPoll; CommentList: typeof CommentList;
       Button: typeof Button; NewBadge: typeof NewBadge; WebBadge: typeof WebBadge; PixelDrop: typeof PixelDrop;
-      AdBanner: typeof AdBanner; TextAds: typeof TextAds; Skyscraper: typeof Skyscraper; Lightbox: typeof Lightbox;
+      AdBanner: typeof AdBanner; TextAds: typeof TextAds; Skyscraper: typeof Skyscraper; Lightbox: typeof Lightbox; ShareCard: typeof ShareCard;
     };
   }
 }

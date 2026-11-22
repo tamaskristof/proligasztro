@@ -89,6 +89,10 @@ The blog carries ads like every 2008 blog did, but every one of them is **invent
 - **Every ad links to one page** („A hirdetés nem elérhető”) that admits the ad is not real. No prizes, no forms, nothing that collects data.
 - The joke is on 2008 advertising and on the food, never on the reader: no ads mocking anyone's body, income or looks.
 
+## Sharing
+
+Every page carries Open Graph and Twitter tags, and the image is a `ShareCard`: a 1200×630 mini screenshot of the blog (tablecloth, banner, nav, the digicam photo with its date stamp, title, meta line, Ketchup-index). One per post, generated at build time; a default card for everything else. The share text is the post's excerpt, in Ödön's voice. The card never adds slogans or calls to action: it looks like the blog, not like an ad.
+
 ## Iconography
 
 No icon set. The era used words, `»` bullets, `|` separators and text smileys. The only graphics are:
@@ -109,6 +113,7 @@ All components live in `components/bundle.js` as `window.Proligasztro` (React 18
 - **Comments:** `CommentList` (comments and the "Szólj hozzá!" form)
 - **Controls:** `Button`, `NewBadge`, `WebBadge`
 - **Ads:** `AdBanner`, `TextAds`, `Skyscraper` (see Ads)
+- **Sharing:** `ShareCard` (see Sharing)
 
 **Homepage:** `BlogShell` with `BlogHeader` → the five newest `BlogPost`s as excerpts (`more`) → "« Régebbi bejegyzések" link; sidebar: Rólam, Látogatók, Szavazás, Archívum, Címkék, Blogroll, Most hallgatom; `BlogFooter` with five badges.
 
