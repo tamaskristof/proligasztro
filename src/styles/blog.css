@@ -68,6 +68,22 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .pg-photo__flash { width: 100%; height: 100%; background: radial-gradient(ellipse at 45% 42%, #fff6e0 0, #e8c48a 14%, #a8653a 38%, #3a2215 70%, #120a06 100%); }
 .pg-photo__date { position: absolute; right: var(--space-10); bottom: var(--space-5); font-family: var(--font-courier); font-size: 13px; line-height: 14px; font-weight: 700; color: var(--datestamp); text-shadow: 1px 1px 0 var(--led-bg); letter-spacing: 0.08em; }
 .pg-photo__caption { margin-top: var(--space-5); font-size: 10px; line-height: 14px; font-style: italic; color: var(--ink-muted); text-align: center; }
+.pg-photo__link { display: block; width: 100%; height: 100%; cursor: pointer; }
+.pg-photo__zoom { display: block; margin-top: var(--space-2); font-size: 10px; line-height: 14px; text-align: center; }
+/* Listing thumbnail: next to the excerpt, a little less margin, no caption or date */
+.pg-photo--thumb { margin: var(--space-2) var(--space-10) var(--space-5) 0; }
+
+/* Lightbox: the enlarged photo on a dark screen, Lightbox 2 style, no animation */
+.pg-lightbox { box-sizing: border-box; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: var(--space-10); border: 0; background: var(--lightbox-backdrop); color: var(--ink); cursor: pointer; }
+.pg-lightbox[open] { display: flex; align-items: center; justify-content: center; }
+.pg-lightbox::backdrop { background: transparent; }
+.pg-lightbox__box { box-sizing: border-box; min-width: 0; max-width: 100%; padding: var(--space-10); background: var(--tablecloth-white); box-shadow: var(--drop-hard); }
+.pg-lightbox__img { display: block; width: var(--lightbox-width); max-width: 100%; height: auto; aspect-ratio: 4 / 3; background: var(--led-bg); }
+.pg-lightbox__bar { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-10); margin-top: var(--space-10); font-family: var(--font-verdana); font-size: 11px; line-height: 16px; }
+.pg-lightbox__text { display: flex; flex-direction: column; }
+.pg-lightbox__caption { font-weight: 700; }
+.pg-lightbox__count { color: var(--ink-muted); }
+.pg-lightbox__close { flex: none; }
 
 /* Editor note: Comic Sans on a yellow sticky */
 .pg-note { margin: var(--space-10) 0; padding: var(--space-5) var(--space-10); background: var(--note-bg); border: 1px dashed var(--note-ink); font-family: var(--font-comic); font-size: 14px; line-height: 20px; color: var(--note-ink); }

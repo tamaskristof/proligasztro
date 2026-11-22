@@ -29,6 +29,7 @@
   --chrome-light: #ffffff;
   --chrome-shade: #808080;
   --chrome-dark: #404040;
+  --lightbox-backdrop: rgba(0, 0, 0, 0.8);
   --focus: #000000;
   --font-verdana: Verdana, Geneva, "DejaVu Sans", sans-serif;
   --font-georgia: Georgia, "Times New Roman", "DejaVu Serif", serif;
@@ -50,5 +51,7 @@
   --content-width: 545px;
   --sidebar-width: 200px;
   --photo-width: 320px;
+  --thumb-width: 110px;
+  --lightbox-width: 640px;
   --tile-size: 48px;
 }

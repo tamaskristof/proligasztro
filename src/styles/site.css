@@ -31,6 +31,8 @@ astro-island, astro-slot, astro-static-slot { display: contents; }
 /* Small phones: floated photos would squeeze the text into a strip. */
 @media (max-width: 480px) {
   .pg-photo--right, .pg-photo--left { float: none; margin-left: auto; margin-right: auto; }
+  /* …but listing thumbnails are small enough to stay floated. */
+  .pg-photo--left.pg-photo--thumb { float: left; margin: var(--space-2) var(--space-10) var(--space-5) 0; }
 }
 
 /* Multi-word tags ("túrós csusza") stay on one line in the cloud. */

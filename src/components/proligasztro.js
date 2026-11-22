@@ -148,17 +148,40 @@ export function BlogPost(props) {
 }
 
 /* ---------- DigicamPhoto ----------
- * site: a src starting with "/" gets the site base path (e.g. "/kepek/teszta.jpg"). */
+ * site: a src starting with "/" gets the site base path (e.g. "/kepek/teszta.jpg").
+ * href: the photo links there (listing thumbnails link to the post).
+ * zoom: the photo and a „Nagyítás” link open the 640×480 file in <Lightbox>
+ *       (without JavaScript they simply open the JPEG). */
 export function DigicamPhoto(props) {
   var w = props.width || 320;
   var src = props.src && props.src.charAt(0) === '/' ? withBase(props.src) : props.src;
-  return h('figure', { className: cx('pg-photo', props.align === 'right' && 'pg-photo--right', props.align === 'left' && 'pg-photo--left'), style: { width: w + 'px', maxWidth: '100%' } },
+  var zoom = !!(props.zoom && src && !props.href);
+  var zoomAttrs = { href: src, 'data-pg-zoom': '', 'data-caption': props.caption || '', 'data-alt': props.alt || '' };
+  var img = src ? h('img', { src: src, alt: props.alt || '', width: w }) : h('div', { className: 'pg-photo__flash', role: 'img', 'aria-label': props.alt || 'Fotó helye' });
+  if (src && props.href) img = h('a', { className: 'pg-photo__link', href: props.href }, img);
+  else if (zoom) img = h('a', Object.assign({ className: 'pg-photo__link', title: 'Kattints a nagyításhoz!' }, zoomAttrs), img);
+  return h('figure', { className: cx('pg-photo', props.align === 'right' && 'pg-photo--right', props.align === 'left' && 'pg-photo--left', props.thumb && 'pg-photo--thumb'), style: { width: w + 'px', maxWidth: '100%' } },
     h('div', { className: 'pg-photo__frame', style: { width: w + 'px', maxWidth: '100%', aspectRatio: '4 / 3' } },
-      src ? h('img', { src: src, alt: props.alt || '', width: w }) : h('div', { className: 'pg-photo__flash', role: 'img', 'aria-label': props.alt || 'Fotó helye' }),
+      img,
       props.date === false ? null : h('span', { className: 'pg-photo__date', 'aria-hidden': 'true' }, props.date || "'08 11 22")
     ),
-    props.caption ? h('figcaption', { className: 'pg-photo__caption' }, props.caption) : null
+    props.caption ? h('figcaption', { className: 'pg-photo__caption' }, props.caption) : null,
+    zoom ? h('a', Object.assign({ className: 'pg-a pg-photo__zoom' }, zoomAttrs), '[+] Nagyítás') : null
   );
+}
+
+/* ---------- Lightbox ----------
+ * One per page, after the content. Opened by any [data-pg-zoom] link once initLightbox() runs.
+ * No animation: it just appears, like a slow 2008 laptop showed it. */
+export function Lightbox() {
+  return h('dialog', { className: 'pg-lightbox', id: 'pg-lightbox', 'aria-label': 'Nagyított kép' },
+    h('div', { className: 'pg-lightbox__box' },
+      h('img', { className: 'pg-lightbox__img', alt: '' }),
+      h('div', { className: 'pg-lightbox__bar' },
+        h('div', { className: 'pg-lightbox__text' },
+          h('span', { className: 'pg-lightbox__caption' }),
+          h('span', { className: 'pg-lightbox__count' })),
+        h('button', { type: 'button', className: 'pg-btn pg-lightbox__close' }, 'Bezárás [X]'))));
 }
 
 /* ---------- EditorNote ---------- */

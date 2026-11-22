@@ -6,5 +6,5 @@ Satirical Hungarian food blog (art project), Astro static site on GitHub Pages.
 - The design system lives as a claude.ai artifact: https://claude.ai/artifact/GmMW4uTpCust2Rx5yQ2knD. `src/components/proligasztro.js` and `src/styles/blog.css` are ports of its bundle; keep pg-* class names and use tokens (`var(--…)`), never raw values. `src/styles/tokens.css` is generated (`npm run tokens`).
 - Build needs Node 24 (`.nvmrc`). Site is served at https://proligasztro.hu/ (base `/`); still build internal links with `withBase()` from `src/lib/url.js` so a base path change stays a one-liner.
 - Posts: `src/content/posts/*.mdx`, schema in `src/content.config.ts`, how-to in README.md.
-- Photos: `npm run photo -- <slug>` (scripts/photo.mjs, fal.ai, needs FAL_KEY in .env). Rules in design-system/README.md → Imagery.
+- Photos: `npm run photo -- <slug>` (scripts/photo.mjs, fal.ai, needs FAL_KEY in .env). Rules in design-system/README.md → Imagery. A post's photo is `public/kepek/<slug>.jpg` by convention: listings show it as a thumbnail (`photoFor`), full posts open it in the Lightbox (max 640×480).
 - Ads are invented house ads (src/lib/ads.js, components AdBanner/TextAds/Skyscraper); rules in design-system/README.md → Ads. Only one blinking banner per page.

@@ -1,14 +1,17 @@
 ---
 /* A page of post excerpts with "« Régebbi bejegyzések" / "Újabb bejegyzések »" links. */
-import { BlogPost, AdBanner } from './proligasztro.js';
+import { BlogPost, AdBanner, DigicamPhoto } from './proligasztro.js';
 import { listBanner } from '../lib/ads.js';
-import { postProps } from '../lib/posts.js';
+import { postProps, postHref, photoFor } from '../lib/posts.js';
 
 const { posts, latestId, olderHref, newerHref } = Astro.props;
 ---
 {posts.map((post, i) => (
   <>
     <BlogPost {...postProps(post, { isNew: post.id === latestId })} more>
+      {photoFor(post) && (
+        <DigicamPhoto thumb src={photoFor(post)} href={postHref(post)} width={110} align="left" date={false} alt={post.data.title} />
+      )}
       <p>{post.data.excerpt}</p>
     </BlogPost>
     {i === 1 && posts.length > 2 && <AdBanner {...listBanner} />}

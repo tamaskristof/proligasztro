@@ -72,8 +72,9 @@ Proligasztró (proligasztro.hu) is a **satirical** Hungarian food blog, built as
 - **Prompt the camera, not the quality.** Describe the dish and its sad situation plus the camera and kitchen; never "delicious", "beautiful", "professional", "8k" or "food photography". Keep one shared style block so every photo comes from the same kitchen.
 - **Then make it worse:** downscale to 640×480, add a warm cast and a little sensor noise, save as a low-quality JPEG (about 60). Never render the date stamp into the image.
 - The satire notice says the photos are made up too.
+- **Enlarging:** in a full post every photo can be opened in `Lightbox`, at most 640×480 (the camera file), never an original. Listing pages show a 110px thumbnail (`thumb-width`) next to the excerpt, linking to the post.
 
-**Motion.** Exactly three animations: the marquee, the blinking "ÚJ!", and the headline of one blinking `AdBanner` (at most one per page). All stop for visitors who prefer reduced motion. Nothing else moves.
+**Motion.** Exactly three animations: the marquee, the blinking "ÚJ!", and the headline of one blinking `AdBanner` (at most one per page). All stop for visitors who prefer reduced motion. Nothing else moves: the photo `Lightbox` appears without any fade.
 
 **Focus.** A 1px dotted black outline, offset 2px, like browsers drew it in 2008.
 
@@ -102,7 +103,7 @@ There is no logo: the title is live text in the banner.
 All components live in `components/bundle.js` as `window.Proligasztro` (React 18), styled by `components/bundle.css` (class prefix `pg-`). Props are in `components/index.d.ts` and each `components/<Name>/README.md`.
 
 - **Layout:** `BlogShell`, `BlogHeader`, `BlogFooter`, `Marquee`
-- **Post:** `BlogPost`, `DigicamPhoto`, `EditorNote`, `KetchupRating`
+- **Post:** `BlogPost`, `DigicamPhoto`, `Lightbox`, `EditorNote`, `KetchupRating`
 - **Recipe:** `RecipeBox`, `StepList`, `NutritionTable`
 - **Sidebar:** `SidebarBox`, `VisitorCounter`, `TagCloud`, `Poll`
 - **Comments:** `CommentList` (comments and the "Szólj hozzá!" form)

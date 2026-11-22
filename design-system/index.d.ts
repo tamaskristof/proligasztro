@@ -25,8 +25,15 @@ export interface BlogPostProps {
 }
 export declare function BlogPost(props: BlogPostProps): React.ReactElement;
 
-export interface DigicamPhotoProps { src?: string; alt?: string; /** px, default 320 (4:3) */ width?: number; /** "'08 11 22", or false */ date?: string | false; caption?: string; align?: 'left' | 'right' }
+export interface DigicamPhotoProps { src?: string; alt?: string; /** px, default 320 (4:3) */ width?: number; /** "'08 11 22", or false */ date?: string | false; caption?: string; align?: 'left' | 'right';
+  /** the photo links here (listing thumbnails link to the post) */ href?: string;
+  /** listing-thumbnail spacing; use with width 110 (`thumb-width`), date false, align left */ thumb?: boolean;
+  /** clickable photo + „[+] Nagyítás” link that open the file in <Lightbox> */ zoom?: boolean }
 export declare function DigicamPhoto(props: DigicamPhotoProps): React.ReactElement;
+
+/** One per page; opened by DigicamPhoto zoom links. open/src/caption/count render it statically open (previews only). */
+export interface LightboxProps { open?: boolean; src?: string; alt?: string; caption?: string; /** default "1. kép / 1" */ count?: string }
+export declare function Lightbox(props: LightboxProps): React.ReactElement;
 
 export interface EditorNoteProps { children: React.ReactNode; /** default "Szerk. megj.:" */ label?: string }
 export declare function EditorNote(props: EditorNoteProps): React.ReactElement;
@@ -97,7 +104,7 @@ declare global {
       StepList: typeof StepList; NutritionTable: typeof NutritionTable; KetchupRating: typeof KetchupRating; SidebarBox: typeof SidebarBox;
       VisitorCounter: typeof VisitorCounter; TagCloud: typeof TagCloud; Poll: typeof Poll; CommentList: typeof CommentList;
       Button: typeof Button; NewBadge: typeof NewBadge; WebBadge: typeof WebBadge; PixelDrop: typeof PixelDrop;
-      AdBanner: typeof AdBanner; TextAds: typeof TextAds; Skyscraper: typeof Skyscraper;
+      AdBanner: typeof AdBanner; TextAds: typeof TextAds; Skyscraper: typeof Skyscraper; Lightbox: typeof Lightbox;
     };
   }
 }

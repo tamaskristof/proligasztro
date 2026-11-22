@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Lightbox from '../../components/Lightbox.astro';
 import * as P from '../../components/proligasztro.js';
 import { getPosts, postProps } from '../../lib/posts.js';
 import { textAdsFor } from '../../lib/ads.js';
@@ -14,7 +15,8 @@ const { Content } = await render(post);
 
 // Components usable in posts without importing them.
 const components = {
-  DigicamPhoto: P.DigicamPhoto,
+  // Every photo in a full post can be enlarged.
+  DigicamPhoto: (props) => P.DigicamPhoto({ ...props, zoom: true }),
   EditorNote: P.EditorNote,
   RecipeBox: P.RecipeBox,
   StepList: P.StepList,
@@ -30,4 +32,5 @@ const components = {
   <P.CommentList id="hozzaszolasok" comments={post.data.comments}>
     <P.CommentForm client:visible />
   </P.CommentList>
+  <Lightbox />
 </BaseLayout>

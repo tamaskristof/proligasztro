@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { getCollection } from 'astro:content';
 import { withBase } from './url.js';
 
@@ -45,4 +47,10 @@ export function postProps(post, { isNew = false } = {}) {
     commentsHref: href + '#hozzaszolasok',
     isNew,
   };
+}
+
+// A post's photo by convention: public/kepek/<id>.jpg (what `npm run photo` writes), or null.
+export function photoFor(post) {
+  const rel = `/kepek/${post.id}.jpg`;
+  return existsSync(join(process.cwd(), 'public', rel)) ? rel : null;
 }
