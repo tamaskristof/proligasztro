@@ -92,4 +92,14 @@ export const polls = [
       { label: 'Semmi, kanállal a dobozból', votes: 289 },
     ],
   },
+  {
+    name: 'szaloncukor',
+    question: 'Melyik a legrosszabb szaloncukor?',
+    options: [
+      { label: 'Zselés, ami egy évet töltött a fán', votes: 401 },
+      { label: 'Kókuszos', votes: 233 },
+      { label: 'Marcipános, mert senki sem kéri', votes: 162 },
+      { label: 'Az üres staniol, a fáról', votes: 349 },
+    ],
+  },
 ];

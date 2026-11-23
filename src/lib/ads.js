@@ -37,6 +37,7 @@ const textAdPool = [
   { title: 'Főzz úgy, mint Ödön! – Online tanfolyam', text: '10 lecke, oklevél, saját kötény. Tűzoltó készülék nem tartozék.', url: 'www.fozz-ugy-mint-odon.hu' },
   { title: 'Használt sütőolaj felvásárlás', text: 'Rántott párizsi után maradt? Mi elvisszük, Ön elfelejti.', url: 'www.hasznaltolaj-felvasarlas-024.hu' },
   { title: 'Vasalótisztítás 0–24', text: 'Májkrém? Olvadt sajt? Talpfelújítás garanciával, ingét is megmentjük.', url: 'www.vasalotisztitas-024.hu' },
+  { title: 'Szaloncukor-utántöltés', text: 'Üres papírok a fán? Mi visszatöltjük, senki sem veszi észre.', url: 'www.szaloncukor-utantoltes.hu' },
 ];
 
 /** Three text ads, rotated by a number (e.g. the post's position) so posts differ. */
