@@ -82,4 +82,14 @@ export const polls = [
       { label: 'A telefon, ételrendeléshez', votes: 249 },
     ],
   },
+  {
+    name: 'majkrem',
+    question: 'Mi illik a legjobban a májkrémhez?',
+    options: [
+      { label: 'Lilahagyma, ahogy illik', votes: 141 },
+      { label: 'Ketchup, vastagon', votes: 377 },
+      { label: 'Baracklekvár', votes: 203 },
+      { label: 'Semmi, kanállal a dobozból', votes: 289 },
+    ],
+  },
 ];
