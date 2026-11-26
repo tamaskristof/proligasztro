@@ -122,6 +122,174 @@
 .pg-adsite--wap .pg-adsite__steps { padding-left: var(--space-20); }
 .pg-adsite--wap .pg-adsite__foot { border-top: 0; text-align: left; }
 
+/* ---------- Shared pieces for the text-ad sites ---------- */
+.pg-adsite__cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-10); margin: 0 0 var(--space-10); padding: 0; list-style: none; }
+.pg-adsite__card { position: relative; display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-10); background: var(--as-panel); border: 1px solid var(--as-line); }
+.pg-adsite__cardtitle { font-family: var(--as-title-font); font-size: 14px; line-height: 18px; color: var(--as-accent); }
+.pg-adsite__cardline { font-size: 12px; line-height: 16px; }
+.pg-adsite__price { margin-top: auto; padding-top: var(--space-5); font-size: 16px; line-height: 20px; font-weight: 700; color: var(--marquee-ink); }
+.pg-adsite__tag { position: absolute; top: calc(-1 * var(--space-5)); right: calc(-1 * var(--space-5)); padding: 0 var(--space-5); background: var(--marquee-ink); color: var(--new-ink); font-size: 11px; line-height: 16px; font-weight: 700; transform: rotate(4deg); }
+
+.pg-adsite__faq { margin: 0; }
+.pg-adsite__faq dt { margin-top: var(--space-15); font-weight: 700; }
+.pg-adsite__faq dt span { color: var(--as-accent); }
+.pg-adsite__faq dd { margin: var(--space-5) 0 0 var(--space-20); }
+.pg-adsite__faq dd span { font-weight: 700; }
+
+.pg-adsite__gb { margin: 0 0 var(--space-10); padding: 0; list-style: none; }
+.pg-adsite__gb li { margin-bottom: var(--space-10); border: 1px solid var(--as-line); background: var(--as-panel); }
+.pg-adsite .pg-adsite__gbhead { margin: 0; padding: var(--space-2) var(--space-10); background: var(--as-head-bg); color: var(--as-head-ink); font-size: 11px; line-height: 16px; }
+.pg-adsite .pg-adsite__gbtext { margin: 0; padding: var(--space-10); }
+.pg-adsite .pg-adsite__gbreply { margin: 0 var(--space-10) var(--space-10) var(--space-30); padding: var(--space-5) var(--space-10); border-left: 3px double var(--as-line); font-style: italic; }
+
+.pg-adsite__diploma { margin: 0 auto var(--space-10); max-width: 420px; padding: var(--space-20); background: var(--page); border: 6px double var(--box-border); outline: 1px solid var(--box-border); outline-offset: var(--space-5); text-align: center; font-family: var(--font-georgia); }
+.pg-adsite .pg-adsite__diplomatitle { font-size: 26px; line-height: 32px; font-weight: 700; letter-spacing: 0.3em; color: var(--post-title); }
+.pg-adsite .pg-adsite__sign { margin: var(--space-20) 0 0; padding-top: var(--space-5); border-top: 1px solid var(--ink-muted); font-family: var(--font-comic); font-size: 14px; color: var(--note-ink); }
+
+/* ---------- Catalog (ketchup wholesale): red letterhead, product cards in a grid ---------- */
+.pg-adsite--catalog {
+  --as-bg: var(--box-head); --as-page: var(--tablecloth-white); --as-ink: var(--ink); --as-muted: var(--ink-muted);
+  --as-head-bg: var(--tablecloth-red); --as-head-ink: var(--chrome-light); --as-accent: var(--box-head);
+  --as-link: var(--link); --as-line: var(--box-border); --as-panel: var(--box);
+  --as-font: var(--font-verdana); --as-title-font: var(--font-verdana);
+}
+.pg-adsite--catalog .pg-adsite__head { border-bottom: var(--space-5) solid var(--banner-title); }
+.pg-adsite--catalog .pg-adsite__name { font-size: 34px; line-height: 40px; letter-spacing: 0.05em; font-style: italic; }
+.pg-adsite--catalog .pg-adsite__card { box-shadow: var(--drop-hard); }
+.pg-adsite--catalog .pg-adsite__h { border-bottom-style: dotted; text-transform: uppercase; font-size: 15px; }
+.pg-adsite--catalog .pg-adsite__cards { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: var(--space-15); }
+
+/* ---------- Letter (ketchup diet): one long white sales letter, no frame ---------- */
+.pg-adsite--letter {
+  --as-bg: var(--tablecloth-white); --as-page: var(--tablecloth-white); --as-ink: var(--ink); --as-muted: var(--ink-muted);
+  --as-head-bg: var(--tablecloth-white); --as-head-ink: var(--marquee-ink); --as-accent: var(--marquee-ink);
+  --as-link: var(--link); --as-line: var(--chrome-shade); --as-panel: var(--marquee-bg);
+  --as-font: var(--font-georgia); --as-title-font: var(--font-georgia);
+}
+.pg-adsite--letter .pg-adsite__page { max-width: 600px; border: 0; font-size: 16px; line-height: 25px; }
+.pg-adsite--letter .pg-adsite__head { text-align: center; }
+.pg-adsite--letter .pg-adsite__name { font-size: 36px; line-height: 42px; text-shadow: none; }
+.pg-adsite--letter .pg-adsite__slogan { color: var(--ink); font-size: 15px; line-height: 20px; }
+.pg-adsite--letter .pg-adsite__h { border: 0; text-align: center; font-size: 26px; line-height: 32px; font-style: italic; }
+.pg-adsite--letter mark { background: var(--marquee-bg); color: var(--ink); font-size: 22px; font-weight: 700; }
+.pg-adsite--letter .pg-adsite__steps { font-size: 18px; line-height: 28px; font-weight: 700; }
+.pg-adsite--letter .pg-adsite__quote { border: 2px dashed var(--marquee-ink); }
+.pg-adsite--letter #ps { font-style: italic; }
+.pg-adsite--letter #ps .pg-adsite__h { text-align: left; font-size: 18px; }
+
+/* ---------- Dating: pink, profile cards with an empty photo frame ---------- */
+.pg-adsite--dating {
+  --as-bg: var(--tablecloth-pink); --as-page: var(--tablecloth-white); --as-ink: var(--ink); --as-muted: var(--ink-muted);
+  --as-head-bg: var(--box-head); --as-head-ink: var(--chrome-light); --as-accent: var(--box-head);
+  --as-link: var(--link); --as-line: var(--tablecloth-pink); --as-panel: var(--page);
+  --as-font: var(--font-verdana); --as-title-font: var(--font-georgia);
+}
+.pg-adsite--dating .pg-adsite__page { max-width: 680px; border: var(--space-5) double var(--box-head); }
+.pg-adsite--dating .pg-adsite__head { text-align: center; }
+.pg-adsite--dating .pg-adsite__name { font-style: italic; }
+.pg-adsite--dating .pg-adsite__h { border-bottom: 1px dotted var(--box-head); font-style: italic; }
+.pg-adsite--dating .pg-adsite__cards { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.pg-adsite--dating .pg-adsite__card { padding-left: 90px; min-height: 100px; }
+.pg-adsite--dating .pg-adsite__card::before { content: "Nincs kép"; position: absolute; top: var(--space-10); left: var(--space-10); display: flex; align-items: center; justify-content: center; width: 68px; height: 84px; background: var(--chrome); box-shadow: var(--bevel-in); color: var(--chrome-dark); font-size: 10px; line-height: 13px; }
+
+/* ---------- Guestbook (mug service): small site whose main event is the guestbook ---------- */
+.pg-adsite--guestbook {
+  --as-bg: var(--note-ink); --as-page: var(--note-bg); --as-ink: var(--ink); --as-muted: var(--ink-muted);
+  --as-head-bg: var(--note-ink); --as-head-ink: var(--chrome-light); --as-accent: var(--note-ink);
+  --as-link: var(--link); --as-line: var(--note-ink); --as-panel: var(--tablecloth-white);
+  --as-font: var(--font-verdana); --as-title-font: var(--font-georgia);
+}
+.pg-adsite--guestbook .pg-adsite__page { max-width: 640px; border: var(--space-5) double var(--note-ink); }
+.pg-adsite--guestbook .pg-adsite__head { text-align: center; border-bottom: 3px double var(--note-bg); }
+.pg-adsite--guestbook .pg-adsite__table td { background: var(--as-panel); }
+.pg-adsite--guestbook #vendegkonyv .pg-adsite__h { font-size: 24px; line-height: 30px; text-align: center; border-bottom-style: double; border-bottom-width: 3px; }
+
+/* ---------- Course (Ödön's own site): his tablecloth, his banner, his cornsilk ---------- */
+.pg-adsite--course {
+  --as-bg: var(--tablecloth-white); --as-page: var(--box); --as-ink: var(--ink); --as-muted: var(--ink-muted);
+  --as-head-bg: var(--banner-start); --as-head-ink: var(--banner-title); --as-accent: var(--post-title);
+  --as-link: var(--link); --as-line: var(--box-border); --as-panel: var(--page);
+  --as-font: var(--font-verdana); --as-title-font: var(--font-georgia);
+}
+.pg-adsite--course { background-image: var(--pg-tile), repeating-conic-gradient(var(--tablecloth-red) 0 25%, var(--tablecloth-white) 0 50%); background-size: var(--tile-size) var(--tile-size), var(--tile-size) var(--tile-size); }
+.pg-adsite--course .pg-adsite__page { max-width: 640px; border: 1px solid var(--chrome-dark); box-shadow: var(--drop-hard); }
+.pg-adsite--course .pg-adsite__head { background: linear-gradient(to right, var(--banner-start), var(--banner-end)); }
+.pg-adsite--course .pg-adsite__name { font-style: italic; text-shadow: 3px 3px 0 var(--led-bg); }
+.pg-adsite--course .pg-adsite__h { border-bottom: 1px dashed var(--box-border); }
+.pg-adsite--course .pg-adsite__table th { background: var(--box-head); color: var(--on-box-head); }
+.pg-adsite--course #ajanlas p:last-child { font-style: italic; }
+
+/* ---------- Plain (used oil): default HTML, as if nobody wrote any CSS ---------- */
+.pg-adsite--plain {
+  --as-bg: var(--tablecloth-white); --as-page: var(--tablecloth-white); --as-ink: var(--led-bg); --as-muted: var(--led-bg);
+  --as-head-bg: var(--tablecloth-white); --as-head-ink: var(--led-bg); --as-accent: var(--led-bg);
+  --as-link: var(--link); --as-line: var(--chrome-shade); --as-panel: var(--tablecloth-white);
+  --as-font: var(--font-georgia); --as-title-font: var(--font-georgia);
+}
+.pg-adsite--plain { font-size: 16px; line-height: 20px; }
+.pg-adsite--plain .pg-adsite__page { max-width: none; margin: 0 var(--space-10); border: 0; }
+.pg-adsite--plain .pg-adsite__head { padding: 0; }
+.pg-adsite--plain .pg-adsite__name { font-size: 32px; line-height: 38px; text-shadow: none; }
+.pg-adsite--plain .pg-adsite__slogan { font-size: 16px; line-height: 20px; }
+.pg-adsite--plain .pg-adsite__promo { font-size: 16px; line-height: 20px; font-weight: 400; }
+.pg-adsite--plain .pg-adsite__construction { margin: var(--space-15) 0 0; padding: 0; border: 0; border-image: none; background: none; text-align: left; font-size: 16px; line-height: 20px; }
+.pg-adsite--plain .pg-adsite__main { padding: 0; }
+.pg-adsite--plain .pg-adsite__section { margin: 0; padding-top: var(--space-10); border-top: 2px groove var(--as-line); }
+.pg-adsite--plain .pg-adsite__h { border: 0; font-size: 24px; line-height: 30px; }
+.pg-adsite--plain .pg-adsite__list { list-style: disc; padding-left: 40px; }
+.pg-adsite--plain .pg-adsite__steps { padding-left: 40px; }
+.pg-adsite--plain .pg-adsite__table { width: auto; border: 1px outset var(--as-line); font-size: 16px; line-height: 20px; }
+.pg-adsite--plain .pg-adsite__table th { background: none; color: var(--led-bg); }
+.pg-adsite--plain .pg-adsite__table td:last-child { font-weight: 400; }
+.pg-adsite--plain .pg-adsite__foot { padding: var(--space-10) 0; text-align: left; font-size: 13px; }
+.pg-adsite--plain .pg-adsite__notice { margin-left: 0; }
+.pg-adsite--plain .pg-adsite__blink { background: none; color: var(--marquee-ink); padding: 0; }
+
+/* ---------- FAQ (iron cleaning): hot-iron orange bar, numbered questions ---------- */
+.pg-adsite--faq {
+  --as-bg: var(--chrome-dark); --as-page: var(--chrome); --as-ink: var(--ink); --as-muted: var(--ink-muted);
+  --as-head-bg: var(--banner-end); --as-head-ink: var(--led-bg); --as-accent: var(--box-head);
+  --as-link: var(--link); --as-line: var(--chrome-dark); --as-panel: var(--chrome-light);
+  --as-font: var(--font-tahoma); --as-title-font: var(--font-tahoma);
+}
+.pg-adsite--faq .pg-adsite__page { max-width: 700px; border: 2px solid var(--chrome-dark); box-shadow: var(--bevel-out); }
+.pg-adsite--faq .pg-adsite__head { text-align: right; border-bottom: var(--space-5) solid var(--box-head); }
+.pg-adsite--faq .pg-adsite__name { text-shadow: 2px 2px 0 var(--chrome-light); text-transform: uppercase; }
+.pg-adsite--faq .pg-adsite__faq { padding: var(--space-5) var(--space-15) var(--space-15); background: var(--as-panel); box-shadow: var(--bevel-in); }
+.pg-adsite--faq .pg-adsite__h { border-bottom: 0; background: var(--box-head); color: var(--chrome-light); padding: var(--space-2) var(--space-10); font-size: 14px; line-height: 20px; }
+.pg-adsite--faq .pg-adsite__table td { background: var(--as-panel); }
+
+/* ---------- Festive (szaloncukor refills): Christmas, garland borders, centred packages ---------- */
+.pg-adsite--festive {
+  --as-bg: var(--note-ink); --as-page: var(--tablecloth-white); --as-ink: var(--ink); --as-muted: var(--ink-muted);
+  --as-head-bg: var(--tablecloth-red); --as-head-ink: var(--chrome-light); --as-accent: var(--box-head);
+  --as-link: var(--link); --as-line: var(--note-ink); --as-panel: var(--note-bg);
+  --as-font: var(--font-verdana); --as-title-font: var(--font-georgia);
+}
+.pg-adsite--festive .pg-adsite__page { max-width: 680px; border: var(--space-10) solid transparent; border-image: repeating-linear-gradient(45deg, var(--tablecloth-red) 0 12px, var(--note-ink) 12px 24px, var(--banner-title) 24px 30px) 10; text-align: center; }
+.pg-adsite--festive .pg-adsite__name { font-style: italic; font-size: 34px; line-height: 40px; }
+.pg-adsite--festive .pg-adsite__name::before, .pg-adsite--festive .pg-adsite__name::after { content: " * "; color: var(--banner-title); }
+.pg-adsite--festive .pg-adsite__h { border-bottom: 0; font-style: italic; font-size: 22px; }
+.pg-adsite--festive .pg-adsite__h::before, .pg-adsite--festive .pg-adsite__h::after { content: " ~ "; color: var(--note-ink); }
+.pg-adsite--festive .pg-adsite__steps, .pg-adsite--festive .pg-adsite__list { display: inline-block; text-align: left; }
+.pg-adsite--festive .pg-adsite__cards { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+.pg-adsite--festive .pg-adsite__card { border: 2px dashed var(--tablecloth-red); text-align: center; }
+
+/* ---------- Construction (can-opener service): the whole site is the sign ---------- */
+.pg-adsite--construction {
+  --as-bg: var(--chrome-light); --as-page: var(--tablecloth-white); --as-ink: var(--ink); --as-muted: var(--ink-muted);
+  --as-head-bg: var(--tablecloth-white); --as-head-ink: var(--ink); --as-accent: var(--ink);
+  --as-link: var(--link); --as-line: var(--chrome-shade); --as-panel: var(--tablecloth-white);
+  --as-font: var(--font-verdana); --as-title-font: var(--font-verdana);
+}
+.pg-adsite--construction .pg-adsite__page { max-width: 520px; margin-top: var(--space-30); border: 0; text-align: center; }
+.pg-adsite--construction .pg-adsite__name { font-size: 22px; line-height: 28px; text-shadow: none; }
+.pg-adsite--construction .pg-adsite__construction { margin: var(--space-15) 0 0; padding: var(--space-30) var(--space-15); border-width: 20px; font-size: 18px; line-height: 26px; }
+.pg-adsite--construction .pg-adsite__construction span { display: block; font-size: 30px; line-height: 38px; margin-bottom: var(--space-10); }
+.pg-adsite--construction .pg-adsite__h { border: 0; font-size: 15px; }
+.pg-adsite--construction .pg-adsite__contact { display: inline-grid; text-align: left; }
+.pg-adsite--construction .pg-adsite__foot { border-top: 1px dotted var(--as-line); }
+
 @keyframes pg-adsite-blink { 50% { visibility: hidden; } }
 @media (prefers-reduced-motion: reduce) { .pg-adsite__blink { animation: none; } }
 

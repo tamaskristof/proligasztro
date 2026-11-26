@@ -23,5 +23,37 @@ const { s } = Astro.props;
   {s.kind === 'contact' && (
     <dl class="pg-adsite__contact">{s.rows.map(([k, v]) => <><dt>{k}:</dt><dd>{v}</dd></>)}</dl>
   )}
-  {s.button && <p class="pg-adsite__buttonrow"><a class="pg-adsite__button" href={s.button.href}>{s.button.label}</a></p>}
+  {s.kind === 'cards' && (
+    <ul class="pg-adsite__cards">{s.items.map((c) => (
+      <li class="pg-adsite__card">
+        {c.tag && <span class="pg-adsite__tag">{c.tag}</span>}
+        <b class="pg-adsite__cardtitle">{c.title}</b>
+        {c.lines.map((l) => <span class="pg-adsite__cardline">{l}</span>)}
+        {c.price && <span class="pg-adsite__price">{c.price}</span>}
+      </li>
+    ))}</ul>
+  )}
+  {s.kind === 'faq' && (
+    <dl class="pg-adsite__faq">{s.items.map((f, i) => (
+      <><dt><span>{i + 1}. kérdés:</span> {f.q}</dt><dd><span>Válasz:</span> {f.a}</dd></>
+    ))}</dl>
+  )}
+  {s.kind === 'guestbook' && (
+    <ol class="pg-adsite__gb">{s.items.map((g, i) => (
+      <li>
+        <p class="pg-adsite__gbhead"><b>#{s.items.length - i}</b> · <b>{g.name}</b> · {g.date}</p>
+        <p class="pg-adsite__gbtext">{g.text}</p>
+        {g.reply && <p class="pg-adsite__gbreply"><b>A szerviz válasza:</b> {g.reply}</p>}
+      </li>
+    ))}</ol>
+  )}
+  {s.kind === 'guestbook' && s.note && <p class="pg-adsite__note">{s.note}</p>}
+  {s.kind === 'diploma' && (
+    <div class="pg-adsite__diploma">
+      <p class="pg-adsite__diplomatitle">OKLEVÉL</p>
+      {s.lines.map((l) => <p>{l}</p>)}
+      <p class="pg-adsite__sign">{s.sign}</p>
+    </div>
+  )}
+  {s.button &&<p class="pg-adsite__buttonrow"><a class="pg-adsite__button" href={s.button.href}>{s.button.label}</a></p>}
 </section>

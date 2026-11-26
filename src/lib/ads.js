@@ -1,9 +1,8 @@
 // The advertisers are invented; the displayed domains were checked not to exist (2026-11-26).
-// Banners link to the advertiser's own invented homepage (src/lib/adsites.js, /hirdetes/<slug>/);
-// text ads link to /hirdetes/, Ödön's list of advertisers, which admits the ads aren't real.
+// Every ad links to its advertiser's own invented homepage, /hirdetes/<slug>/ (content in
+// src/lib/adsites.js; a new ad needs a site there too). /hirdetes/ is Ödön's list of them all.
 import { withBase } from './url.js';
 
-const href = withBase('/hirdetes/');
 const site = (slug) => withBase(`/hirdetes/${slug}/`);
 
 /** The one blinking banner, top of every page. */
@@ -32,18 +31,21 @@ export const skyscraper = {
 };
 
 const textAdPool = [
-  { title: 'Ketchup nagykereskedés – 5 literes kiszerelés', text: 'Éttermeknek, menzáknak és diákoknak. Most 20% kedvezmény!', url: 'www.ketchup-nagyker-kft.hu' },
-  { title: 'Fogyjon le 12 kilót ketchuppal!', text: 'Az orvosok utálják ezt az egyszerű trükköt. Ingyenes próbacsomag.', url: 'www.ketchupdieta-titok.hu' },
-  { title: 'Társkereső ínyenceknek', text: 'Találja meg azt, aki a tésztát is al dente szereti. A regisztráció ingyenes!', url: 'www.inyenc-tarskereso.hu' },
-  { title: 'Bögremosó szakszerviz', text: 'Odaégett pörkölt? Kakaó? Garanciával visszaadjuk bögréje becsületét.', url: 'www.bogremoso-szakszerviz.hu' },
-  { title: 'Főzz úgy, mint Ödön! – Online tanfolyam', text: '10 lecke, oklevél, saját kötény. Tűzoltó készülék nem tartozék.', url: 'www.fozz-ugy-mint-odon.hu' },
-  { title: 'Használt sütőolaj felvásárlás', text: 'Rántott párizsi után maradt? Mi elvisszük, Ön elfelejti.', url: 'www.hasznaltolaj-felvasarlas-024.hu' },
-  { title: 'Vasalótisztítás 0–24', text: 'Májkrém? Olvadt sajt? Talpfelújítás garanciával, ingét is megmentjük.', url: 'www.vasalotisztitas-024.hu' },
-  { title: 'Szaloncukor-utántöltés', text: 'Üres papírok a fán? Mi visszatöltjük, senki sem veszi észre.', url: 'www.szaloncukor-utantoltes.hu' },
-  { title: 'Konzervnyitó-szerviz', text: 'Letört a fül a dobozon? Kinyitjuk, bármi van benne.', url: 'www.konzervnyito-szerviz.hu' },
+  { title: 'Ketchup nagykereskedés – 5 literes kiszerelés', text: 'Éttermeknek, menzáknak és diákoknak. Most 20% kedvezmény!', url: 'www.ketchup-nagyker-kft.hu', slug: 'ketchup-nagyker' },
+  { title: 'Fogyjon le 12 kilót ketchuppal!', text: 'Az orvosok utálják ezt az egyszerű trükköt. Ingyenes próbacsomag.', url: 'www.ketchupdieta-titok.hu', slug: 'ketchupdieta' },
+  { title: 'Társkereső ínyenceknek', text: 'Találja meg azt, aki a tésztát is al dente szereti. A regisztráció ingyenes!', url: 'www.inyenc-tarskereso.hu', slug: 'inyenc-tarskereso' },
+  { title: 'Bögremosó szakszerviz', text: 'Odaégett pörkölt? Kakaó? Garanciával visszaadjuk bögréje becsületét.', url: 'www.bogremoso-szakszerviz.hu', slug: 'bogremoso-szakszerviz' },
+  { title: 'Főzz úgy, mint Ödön! – Online tanfolyam', text: '10 lecke, oklevél, saját kötény. Tűzoltó készülék nem tartozék.', url: 'www.fozz-ugy-mint-odon.hu', slug: 'fozz-ugy-mint-odon' },
+  { title: 'Használt sütőolaj felvásárlás', text: 'Rántott párizsi után maradt? Mi elvisszük, Ön elfelejti.', url: 'www.hasznaltolaj-felvasarlas-024.hu', slug: 'hasznaltolaj' },
+  { title: 'Vasalótisztítás 0–24', text: 'Májkrém? Olvadt sajt? Talpfelújítás garanciával, ingét is megmentjük.', url: 'www.vasalotisztitas-024.hu', slug: 'vasalotisztitas' },
+  { title: 'Szaloncukor-utántöltés', text: 'Üres papírok a fán? Mi visszatöltjük, senki sem veszi észre.', url: 'www.szaloncukor-utantoltes.hu', slug: 'szaloncukor-utantoltes' },
+  { title: 'Konzervnyitó-szerviz', text: 'Letört a fül a dobozon? Kinyitjuk, bármi van benne.', url: 'www.konzervnyito-szerviz.hu', slug: 'konzervnyito-szerviz' },
 ];
 
 /** Three text ads, rotated by a number (e.g. the post's position) so posts differ. */
 export function textAdsFor(n) {
-  return [0, 1, 2].map((i) => ({ ...textAdPool[(n * 3 + i) % textAdPool.length], href }));
+  return [0, 1, 2].map((i) => {
+    const ad = textAdPool[(n * 3 + i) % textAdPool.length];
+    return { ...ad, href: site(ad.slug) };
+  });
 }
