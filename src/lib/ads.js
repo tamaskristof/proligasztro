@@ -1,4 +1,4 @@
-// The advertisers are invented; the displayed domains were checked not to exist (2026-11-23).
+// The advertisers are invented; the displayed domains were checked not to exist (2026-11-26).
 // Every ad links to /hirdetes/, which admits the ad isn't real.
 import { withBase } from './url.js';
 
@@ -38,6 +38,7 @@ const textAdPool = [
   { title: 'Használt sütőolaj felvásárlás', text: 'Rántott párizsi után maradt? Mi elvisszük, Ön elfelejti.', url: 'www.hasznaltolaj-felvasarlas-024.hu' },
   { title: 'Vasalótisztítás 0–24', text: 'Májkrém? Olvadt sajt? Talpfelújítás garanciával, ingét is megmentjük.', url: 'www.vasalotisztitas-024.hu' },
   { title: 'Szaloncukor-utántöltés', text: 'Üres papírok a fán? Mi visszatöltjük, senki sem veszi észre.', url: 'www.szaloncukor-utantoltes.hu' },
+  { title: 'Konzervnyitó-szerviz', text: 'Letört a fül a dobozon? Kinyitjuk, bármi van benne.', url: 'www.konzervnyito-szerviz.hu' },
 ];
 
 /** Three text ads, rotated by a number (e.g. the post's position) so posts differ. */

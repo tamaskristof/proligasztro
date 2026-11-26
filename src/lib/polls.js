@@ -102,4 +102,14 @@ export const polls = [
       { label: 'Az üres staniol, a fáról', votes: 349 },
     ],
   },
+  {
+    name: 'loncshus',
+    question: 'Mi a löncshús legnemesebb felhasználása?',
+    options: [
+      { label: 'Rántva, panírban', votes: 247 },
+      { label: 'Hidegen, egyenesen a dobozból', votes: 402 },
+      { label: 'Szusiként, Ödön szerint soha', votes: 98 },
+      { label: 'Zsíros kenyérre, vastagon', votes: 183 },
+    ],
+  },
 ];
