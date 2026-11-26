@@ -1,12 +1,14 @@
 // The advertisers are invented; the displayed domains were checked not to exist (2026-11-26).
-// Every ad links to /hirdetes/, which admits the ad isn't real.
+// Banners link to the advertiser's own invented homepage (src/lib/adsites.js, /hirdetes/<slug>/);
+// text ads link to /hirdetes/, Ödön's list of advertisers, which admits the ads aren't real.
 import { withBase } from './url.js';
 
 const href = withBase('/hirdetes/');
+const site = (slug) => withBase(`/hirdetes/${slug}/`);
 
 /** The one blinking banner, top of every page. */
 export const prizeBanner = {
-  tone: 'prize', blink: true, href,
+  tone: 'prize', blink: true, href: site('nyeremeny'),
   head: 'GRATULÁLUNK! Ön a 1 000 000. látogató!',
   sub: 'Ön nyert egy vadonatúj mikrohullámú sütőt! Vegye át még ma.',
   cta: 'Kattints ide!',
@@ -14,14 +16,14 @@ export const prizeBanner = {
 
 /** Static banner between homepage posts. */
 export const listBanner = {
-  tone: 'blue', href,
+  tone: 'blue', href: site('mikro-tisztitas'),
   head: 'Mikrohullámú sütő tisztítás 0–24',
   sub: 'Bögrés pörkölt után is! Kiszállás 1 órán belül. www.mikro-tisztitas-024.hu',
   cta: 'Hívjon most!',
 };
 
 export const skyscraper = {
-  href,
+  href: site('csengohang'),
   head: 'Csengő-hangok!',
   body: 'Töltsd le a nyár legnagyobb slágereit a mobilodra! Küldd SMS-ben:',
   big: 'TÉSZTA\n↓\n06-90-KETCHUP',

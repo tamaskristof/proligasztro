@@ -101,7 +101,8 @@ The blog carries ads like every 2008 blog did, but every one of them is **invent
 - **Always labelled** with the small uppercase „Hirdetés” above the ad.
 - **Only one thing blinks:** the headline of one `AdBanner` per page (the „Ön a 1 000 000. látogató!” prize banner). Everything else stays still.
 - **Advertisers are made up** and stay in the satire's world: ketchup wholesale, microwave cleaning 0–24, a mug-cleaning service, ringtones by SMS. No real brands or products; any displayed domain is checked not to exist; premium numbers are written as words ("06-90-KETCHUP").
-- **Every ad links to one page** („A hirdetés nem elérhető”) that admits the ad is not real. No prizes, no forms, nothing that collects data.
+- **Banners link to the advertiser's own homepage** at `/hirdetes/<slug>/` (content in `src/lib/adsites.js`): a standalone, deliberately different 2006–2008 small-business site, not Ödön's blog. CSS and text only, skins built from existing tokens, one blinking element, a „Feltöltés alatt” sign, a visitor counter, `noindex`, and the satire notice with a link back to the blog. Ödön may turn up (testimonials in his note hand), but needn't. **No inputs, no forms, nothing that collects data**; a prize page ends by admitting there is no prize.
+- **Text ads link to „Hirdetőink”** (`/hirdetes/`), Ödön's list of advertisers, which says the ads are invented and links to the sites above.
 - The joke is on 2008 advertising and on the food, never on the reader: no ads mocking anyone's body, income or looks.
 
 ## Sharing

@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap");
+
+/* The invented advertisers' own homepages (/hirdetes/<slug>/). Someone else's 2006–2008 site,
+   not Ödön's blog, so each skin is ugly in its own way. Tokens only: a skin just maps the
+   --as-* slots below to existing tokens. Only .pg-adsite__blink moves. */
+
+.pg-adsite--prize {
+  --as-bg: var(--marquee-ink); --as-page: var(--marquee-bg); --as-ink: var(--ink); --as-muted: var(--ink-muted);
+  --as-head-bg: var(--box-head); --as-head-ink: var(--banner-title); --as-accent: var(--marquee-ink);
+  --as-link: var(--link); --as-line: var(--marquee-ink); --as-panel: var(--page);
+  --as-font: var(--font-verdana); --as-title-font: var(--font-georgia);
+}
+.pg-adsite--corporate {
+  --as-bg: var(--chrome-shade); --as-page: var(--chrome-light); --as-ink: var(--ink); --as-muted: var(--ink-muted);
+  --as-head-bg: var(--link); --as-head-ink: var(--chrome-light); --as-accent: var(--link);
+  --as-link: var(--link); --as-line: var(--chrome-shade); --as-panel: var(--chrome);
+  --as-font: var(--font-tahoma); --as-title-font: var(--font-tahoma);
+}
+.pg-adsite--wap {
+  --as-bg: var(--led-bg); --as-page: var(--led-bg); --as-ink: var(--led-ink); --as-muted: var(--led-ink);
+  --as-head-bg: var(--led-bg); --as-head-ink: var(--new-ink); --as-accent: var(--datestamp);
+  --as-link: var(--new-ink); --as-line: var(--led-ink); --as-panel: var(--led-bg);
+  --as-font: var(--font-courier); --as-title-font: var(--font-courier);
+}
+
+.pg-adsite { margin: 0; padding: var(--space-15) 0; background: var(--as-bg); color: var(--as-ink); font-family: var(--as-font); font-size: 13px; line-height: 19px; }
+.pg-adsite a { color: var(--as-link); text-decoration: underline; }
+.pg-adsite a:hover { color: var(--as-accent); text-decoration: none; }
+.pg-adsite a:focus-visible { outline: 1px dotted currentColor; outline-offset: 2px; }
+.pg-adsite p { margin: 0 0 var(--space-10); }
+
+.pg-adsite__page { width: var(--page-width); margin: 0 auto; background: var(--as-page); border: 3px ridge var(--as-line); }
+
+/* Header: centred, loud, three lines */
+.pg-adsite__head { padding: var(--space-15) var(--space-10); background: var(--as-head-bg); color: var(--as-head-ink); text-align: center; }
+.pg-adsite__name { margin: 0 0 var(--space-5); font-family: var(--as-title-font); font-size: 30px; line-height: 36px; font-weight: 700; text-shadow: 2px 2px 0 var(--led-bg); }
+.pg-adsite__slogan { margin: 0 0 var(--space-5); font-size: 12px; line-height: 16px; font-style: italic; }
+.pg-adsite__promo { margin: 0; font-size: 12px; line-height: 16px; font-weight: 700; }
+.pg-adsite__blink { display: inline-block; padding: 0 var(--space-5); background: var(--marquee-ink); color: var(--new-ink); animation: pg-adsite-blink 1s steps(1) infinite; }
+
+/* Two columns: menu + content, like a 2006 table layout */
+.pg-adsite__cols { display: flex; align-items: flex-start; }
+.pg-adsite__nav { width: 170px; flex: none; box-sizing: border-box; align-self: stretch; padding: var(--space-10); background: var(--as-panel); border-right: 2px groove var(--as-line); font-size: 11px; line-height: 15px; }
+.pg-adsite__navtitle { font-weight: 700; text-transform: uppercase; }
+.pg-adsite__nav ul { margin: 0 0 var(--space-15); padding: 0; list-style: none; }
+.pg-adsite__nav li + li { margin-top: var(--space-5); }
+.pg-adsite__badge { padding: var(--space-5); border: 1px dashed var(--as-line); text-align: center; font-size: 10px; line-height: 13px; font-weight: 700; }
+.pg-adsite__main { flex: 1; min-width: 0; padding: var(--space-15); }
+
+/* „Feltöltés alatt”: yellow-black hazard stripes, drawn in CSS */
+.pg-adsite__construction { padding: var(--space-10); border: var(--space-5) solid transparent; border-image: repeating-linear-gradient(45deg, var(--new-ink) 0 10px, var(--led-bg) 10px 20px) 10; background: var(--new-ink); color: var(--led-bg); text-align: center; font-size: 12px; line-height: 16px; }
+.pg-adsite__construction span { font-weight: 700; text-transform: uppercase; }
+
+.pg-adsite__section { margin-bottom: var(--space-20); }
+.pg-adsite__h { margin: 0 0 var(--space-10); padding-bottom: var(--space-2); border-bottom: 2px solid var(--as-accent); color: var(--as-accent); font-family: var(--as-title-font); font-size: 18px; line-height: 24px; font-weight: 700; }
+.pg-adsite__section.is-small { font-size: 10px; line-height: 14px; color: var(--as-muted); }
+.pg-adsite__section.is-small .pg-adsite__h { font-size: 12px; line-height: 16px; }
+.pg-adsite__list, .pg-adsite__steps { margin: 0 0 var(--space-10); padding-left: var(--space-20); }
+.pg-adsite__list li, .pg-adsite__steps li { margin-bottom: var(--space-5); }
+.pg-adsite__list { list-style: square; }
+
+.pg-adsite__table { width: 100%; margin-bottom: var(--space-10); border: 2px outset var(--as-line); border-collapse: separate; border-spacing: var(--space-2); font-size: 12px; line-height: 16px; }
+.pg-adsite__table th, .pg-adsite__table td { padding: var(--space-2) var(--space-5); border: 1px inset var(--as-line); text-align: left; vertical-align: top; }
+.pg-adsite__table th { background: var(--as-head-bg); color: var(--as-head-ink); }
+.pg-adsite__table td:last-child { font-weight: 700; white-space: nowrap; }
+.pg-adsite__note { font-size: 11px; line-height: 15px; font-style: italic; }
+
+.pg-adsite__quote { margin: 0 0 var(--space-10); padding: var(--space-10); background: var(--as-panel); border: 1px dotted var(--as-line); font-style: italic; }
+.pg-adsite__quote p { margin-bottom: var(--space-5); }
+.pg-adsite__quote footer { font-size: 11px; line-height: 15px; font-style: normal; font-weight: 700; }
+/* Ödön writes in his personal-note hand even on other people's sites */
+.pg-adsite__quote.is-odon { background: var(--note-bg); color: var(--note-ink); font-family: var(--font-comic); font-style: normal; }
+
+.pg-adsite__contact { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-5) var(--space-10); margin: 0; }
+.pg-adsite__contact dt { font-weight: 700; }
+.pg-adsite__contact dd { margin: 0; }
+
+/* A link dressed as a big Windows-98 button. Not a form: it only jumps down the page. */
+.pg-adsite a.pg-adsite__button { display: inline-block; padding: var(--space-10) var(--space-20); background: var(--chrome); box-shadow: var(--bevel-out); color: var(--marquee-ink); font-family: var(--font-tahoma); font-size: 20px; line-height: 24px; font-weight: 700; text-decoration: none; }
+.pg-adsite a.pg-adsite__button:active { box-shadow: var(--bevel-in); }
+
+.pg-adsite__foot { padding: var(--space-10) var(--space-15); border-top: 2px groove var(--as-line); text-align: center; font-size: 11px; line-height: 15px; }
+.pg-adsite__led { padding: 0 var(--space-5); background: var(--led-bg); color: var(--led-ink); font-family: var(--font-courier); font-weight: 700; letter-spacing: 0.1em; }
+.pg-adsite .pg-adsite__notice { margin: var(--space-10) auto 0; max-width: 520px; padding: var(--space-5) var(--space-10); background: var(--note-bg); color: var(--note-ink); border: 1px dashed var(--note-ink); }
+.pg-adsite--wap .pg-adsite__name { text-shadow: none; letter-spacing: 0.15em; }
+
+@keyframes pg-adsite-blink { 50% { visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .pg-adsite__blink { animation: none; } }
+
+@media (max-width: 800px) {
+  .pg-adsite { padding: var(--space-5) 0; }
+  .pg-adsite__page { width: auto; margin: 0 var(--space-5); }
+  .pg-adsite__cols { flex-direction: column; }
+  .pg-adsite__nav { width: auto; align-self: stretch; border-right: 0; border-bottom: 2px groove var(--as-line); }
+  .pg-adsite__name { font-size: 22px; line-height: 28px; }
+}

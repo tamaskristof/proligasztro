@@ -1,0 +1,66 @@
+---
+/*
+ * Frame for the invented advertisers' own homepages (/hirdetes/<slug>/).
+ * Deliberately not the blog's shell: these are "someone else's" 2006–2008 sites.
+ * Satire notice and the way back to the blog are required on every one.
+ */
+import '../styles/tokens.css';
+import '../styles/adsites.css';
+import { withBase } from '../lib/url.js';
+
+interface Props {
+  site: {
+    skin: string; title: string; name: string; slogan: string;
+    blink: string; blinkNote?: string; badges?: string[];
+    sections: { id: string; title: string }[];
+    counter: string; updated: string; best: string;
+  };
+}
+const { site } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const notice = 'Ez a hirdető nem létezik. Ez az oldal a Proligasztró szatirikus blog kitalált hirdetése, mint minden más ott: a cég, a termék, az árak és a vélemények kitaláltak. Nyeremény nincs, adatot nem gyűjtünk, SMS-t nem kell küldeni.';
+---
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{site.title}</title>
+    <meta name="description" content={`${site.name}: a Proligasztró szatirikus blog kitalált hirdetője.`} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonical} />
+    <meta name="generator" content="Weblapszerkesztő 2.0 (próbaverzió)" />
+    <link rel="icon" href={withBase('/ketchup-drop.svg')} type="image/svg+xml" />
+  </head>
+  <body class={`pg-adsite pg-adsite--${site.skin}`}>
+    <div class="pg-adsite__page">
+      <header class="pg-adsite__head">
+        <p class="pg-adsite__name">{site.name}</p>
+        <p class="pg-adsite__slogan">{site.slogan}</p>
+        <p class="pg-adsite__promo">
+          <span class="pg-adsite__blink">{site.blink}</span>
+          {site.blinkNote && <span> {site.blinkNote}</span>}
+        </p>
+      </header>
+      <div class="pg-adsite__cols">
+        <nav class="pg-adsite__nav" aria-label="Menü">
+          <p class="pg-adsite__navtitle">Menü</p>
+          <ul>
+            {site.sections.map((s) => <li><a href={`#${s.id}`}>» {s.title}</a></li>)}
+          </ul>
+          {site.badges?.map((b) => <p class="pg-adsite__badge">{b}</p>)}
+        </nav>
+        <main class="pg-adsite__main">
+          <p class="pg-adsite__construction"><span>Az oldal feltöltés alatt!</span> Hamarosan újabb tartalmak!</p>
+          <slot />
+        </main>
+      </div>
+      <footer class="pg-adsite__foot">
+        <p class="pg-adsite__counter">Ön a <span class="pg-adsite__led">{site.counter}</span>. látogató</p>
+        <p>Utoljára frissítve: {site.updated} · {site.best}</p>
+        <p><a href={withBase('/hirdetes/')}>« Vissza a Proligasztróra</a></p>
+        <p class="pg-adsite__notice">{notice}</p>
+      </footer>
+    </div>
+  </body>
+</html>

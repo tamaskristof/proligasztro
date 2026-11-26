@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { BlogPost, EditorNote } from '../../components/proligasztro.js';
+import { withBase } from '../../lib/url.js';
+import { adSites } from '../../lib/adsites.js';
+---
+<BaseLayout title="Hirdetőink">
+  <BlogPost title="Hirdetőink" date="2009.03.03. 00:47" href={withBase('/hirdetes/')} commentsHref={withBase('/hirdetes/')}>
+    <p>Kedves Olvasóim!</p>
+    <p>A Proligasztró fenntartását hirdetőim teszik lehetővé. Az alábbiak honlapját bátran ajánlom, bár egyiküket sem ismerem személyesen:</p>
+    <ul>
+      {adSites.map((s) => <li><a href={withBase(`/hirdetes/${s.slug}/`)}>{s.name}</a></li>)}
+    </ul>
+    <p>Ha egy szponzorált linkre kattintva jutott ide: azoknak a hirdetőknek még nincs honlapjuk, vagy időközben eltűntek. Az is lehet, hogy sosem léteztek: a Proligasztró hirdetései ugyanúgy kitaláltak, mint minden más ezen az oldalon.</p>
+    <p>Nyeremény nincs. Csengőhang sincs. A ketchup sajnos van.</p>
+    <p><a href={withBase('/')}>« Vissza a főoldalra</a></p>
+    <EditorNote>a hirdetésekből befolyt összeget a bögrém tisztítására fordítom. Eddig 0 Ft folyt be.</EditorNote>
+  </BlogPost>
+</BaseLayout>
