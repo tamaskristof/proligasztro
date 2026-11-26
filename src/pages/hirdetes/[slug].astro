@@ -1,36 +1,21 @@
 ---
 import AdSiteLayout from '../../layouts/AdSiteLayout.astro';
+import AdSiteSection from '../../components/AdSiteSection.astro';
 import { adSites } from '../../lib/adsites.js';
 
 export function getStaticPaths() {
   return adSites.map((site) => ({ params: { slug: site.slug }, props: { site } }));
 }
 const { site } = Astro.props;
+const main = site.sections.filter((s) => !s.aside);
+const aside = site.sections.filter((s) => s.aside);
 ---
 <AdSiteLayout site={site}>
-  {site.sections.map((s) => (
-    <section id={s.id} class:list={['pg-adsite__section', s.small && 'is-small']}>
-      <h2 class="pg-adsite__h">{s.title}</h2>
-      {s.kind === 'text' && s.paras.map((p) => <p set:html={p} />)}
-      {s.kind === 'list' && <ul class="pg-adsite__list">{s.items.map((i) => <li>{i}</li>)}</ul>}
-      {s.kind === 'steps' && <ol class="pg-adsite__steps">{s.items.map((i) => <li>{i}</li>)}</ol>}
-      {s.kind === 'table' && (
-        <table class="pg-adsite__table">
-          {s.head && <thead><tr>{s.head.map((h) => <th scope="col">{h}</th>)}</tr></thead>}
-          <tbody>{s.rows.map((r) => <tr>{r.map((c) => <td>{c}</td>)}</tr>)}</tbody>
-        </table>
-      )}
-      {s.kind === 'table' && s.note && <p class="pg-adsite__note">{s.note}</p>}
-      {s.kind === 'quotes' && s.items.map((q) => (
-        <blockquote class:list={['pg-adsite__quote', q.odon && 'is-odon']}>
-          <p>„{q.text}”</p>
-          <footer>– {q.who}</footer>
-        </blockquote>
-      ))}
-      {s.kind === 'contact' && (
-        <dl class="pg-adsite__contact">{s.rows.map(([k, v]) => <><dt>{k}:</dt><dd>{v}</dd></>)}</dl>
-      )}
-      {s.button && <p><a class="pg-adsite__button" href={s.button.href}>{s.button.label}</a></p>}
-    </section>
-  ))}
+  {main.map((s) => <AdSiteSection s={s} />)}
+  {(aside.length > 0 || site.badges) && (
+    <Fragment slot="aside">
+      {aside.map((s) => <AdSiteSection s={s} />)}
+      {site.badges?.map((b) => <p class="pg-adsite__badge">{b}</p>)}
+    </Fragment>
+  )}
 </AdSiteLayout>

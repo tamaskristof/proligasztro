@@ -11,8 +11,7 @@ import { withBase } from '../lib/url.js';
 interface Props {
   site: {
     skin: string; title: string; name: string; slogan: string;
-    blink: string; blinkNote?: string; badges?: string[];
-    sections: { id: string; title: string }[];
+    blink: string; blinkNote?: string;
     counter: string; updated: string; best: string;
   };
 }
@@ -42,18 +41,10 @@ const notice = 'Ez a hirdető nem létezik. Ez az oldal a Proligasztró szatirik
           {site.blinkNote && <span> {site.blinkNote}</span>}
         </p>
       </header>
-      <div class="pg-adsite__cols">
-        <nav class="pg-adsite__nav" aria-label="Menü">
-          <p class="pg-adsite__navtitle">Menü</p>
-          <ul>
-            {site.sections.map((s) => <li><a href={`#${s.id}`}>» {s.title}</a></li>)}
-          </ul>
-          {site.badges?.map((b) => <p class="pg-adsite__badge">{b}</p>)}
-        </nav>
-        <main class="pg-adsite__main">
-          <p class="pg-adsite__construction"><span>Az oldal feltöltés alatt!</span> Hamarosan újabb tartalmak!</p>
-          <slot />
-        </main>
+      <p class="pg-adsite__construction"><span>Az oldal feltöltés alatt!</span> Hamarosan újabb tartalmak!</p>
+      <div class="pg-adsite__body">
+        <main class="pg-adsite__main"><slot /></main>
+        {Astro.slots.has('aside') && <aside class="pg-adsite__aside"><slot name="aside" /></aside>}
       </div>
       <footer class="pg-adsite__foot">
         <p class="pg-adsite__counter">Ön a <span class="pg-adsite__led">{site.counter}</span>. látogató</p>

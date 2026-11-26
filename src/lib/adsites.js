@@ -7,6 +7,9 @@
 // Section kinds: text (paras), list (items), steps (items), table (head?, rows, note?),
 // quotes (items: { text, who, odon? }), contact (rows: [label, value]). Any section may
 // carry a fake `button` ({ label, href }) that only jumps within the page.
+// `aside: true` puts a section in the side column (only the corporate skin has one).
+// Skins differ in structure, not just colour: prize = one narrow centred coupon,
+// corporate = company site with a right-hand column, wap = a tiny phone-width page.
 
 export const adSites = [
   {
@@ -80,7 +83,7 @@ export const adSites = [
         ],
       },
       {
-        id: 'szolgaltatasok', title: 'Szolgáltatásaink', kind: 'list',
+        id: 'szolgaltatasok', title: 'Szolgáltatásaink', kind: 'list', aside: true,
         items: [
           'Belső tér zsírtalanítása',
           'Forgótányér áztatása (egy éjszakán át)',
@@ -111,7 +114,7 @@ export const adSites = [
         ],
       },
       {
-        id: 'kapcsolat', title: 'Kapcsolat', kind: 'contact',
+        id: 'kapcsolat', title: 'Kapcsolat', kind: 'contact', aside: true,
         rows: [
           ['Telefon (0–24)', '06-1-MIKRO-NULLA-HUSZONNÉGY'],
           ['E-mail', 'info (kukac) mikro-tisztitas-024 (pont) hu'],

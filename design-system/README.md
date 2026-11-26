@@ -89,7 +89,7 @@ Proligasztró (proligasztro.hu) is a **satirical** Hungarian food blog, built as
 - The satire notice says the photos are made up too.
 - **Enlarging:** in a full post every photo can be opened in `Lightbox`, at most 640×480 (the camera file), never an original. Listing pages show a 110px thumbnail (`thumb-width`) next to the excerpt, linking to the post.
 
-**Motion.** Exactly three animations: the marquee, the blinking "ÚJ!", and the headline of one blinking `AdBanner` (at most one per page). All stop for visitors who prefer reduced motion. Nothing else moves: the photo `Lightbox` appears without any fade.
+**Motion.** Exactly three animations: the marquee, the blinking "ÚJ!", and the headline of one blinking `AdBanner` (at most one per page). An advertiser's own site (see Ads) may blink one badge of its own („AKCIÓ!”, „ÚJ!”). All stop for visitors who prefer reduced motion. Nothing else moves: the photo `Lightbox` appears without any fade.
 
 **Focus.** A 1px dotted black outline, offset 2px, like browsers drew it in 2008.
 
