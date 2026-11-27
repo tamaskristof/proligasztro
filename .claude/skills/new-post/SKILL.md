@@ -60,7 +60,10 @@ Then ask with AskUserQuestion: „Jóváhagyod?” with the options *Mehet* (go 
 **Slug:** a short, lowercase, accent-free, hyphenated Hungarian name (`turos-csusza-edes-sos`). It must not exist yet. File: `src/content/posts/<slug>.mdx`. The URL becomes `/recept/<slug>/`.
 
 **Frontmatter** (follow the schema and the existing posts):
-- `date`: `"YYYY.MM.DD. HH:MM"`, a night between 22:00 and 01:30, after the newest post and not in the future. Usually tonight, or last night if it's still before 22:00. A time after midnight carries the next day's date.
+- `date`: `"YYYY.MM.DD. HH:MM"` (Budapest time), a night between 22:00 and 01:30. A time after midnight carries the next day's date. The goal is one post a night, more only when the user asks:
+  - If tonight has no post yet: tonight. If it's already night, use the current time; otherwise a plausible minute between 22:00 and 23:59.
+  - If tonight already has a post (an extra post on demand): tonight as well, at least 30 minutes after the latest one and still before 01:30.
+  - A date later than now is fine: the build leaves out posts and comments dated in the future (`getPosts` in `src/lib/posts.js`), and the deploy workflow rebuilds once in the early morning (03:00 Budapest time, 04:00 in summer), so the post goes live then, or with the next push if one comes after its time. In the outline, say when it will appear („holnap hajnalban jelenik meg”). If the user wants it out right away, use the current time instead, even if it's daytime.
 - `tags`: 2–4 lowercase Hungarian tags. Reuse existing tags where they fit, so the tag cloud grows denser instead of longer.
 - `rating`: the planned Ketchup-index.
 - `excerpt`: starts with „Kedves Olvasóim!”, 2–4 sentences, identical to the post's opening paragraph. It's also the share text.

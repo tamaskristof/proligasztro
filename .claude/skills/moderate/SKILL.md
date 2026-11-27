@@ -55,7 +55,7 @@ Then add **one** reply from Ödön after them that answers each new commenter by
     text: "…"
 ```
 
-Ödön only writes at night (22:00–01:30, Budapest time). If it's night now, use the current time; otherwise use tonight at a plausible minute between 22:00 and 23:59 (for example 22:41), never the same minute as an existing reply. The date may be a few hours in the future, which is fine.
+Ödön only writes at night (22:00–01:30, Budapest time). If it's night now, use the current time; otherwise use tonight at a plausible minute between 22:00 and 23:59 (for example 22:41), never the same minute as an existing reply. It must be later than the comments it answers. A date later than now is fine: the build leaves out comments dated in the future and the early-morning rebuild (`.github/workflows/deploy.yml`, 03:00 Budapest time) publishes the reply, so the reader's comment shows up now and Ödön's answer by the next morning (or with the next push after its time). Tell the user when the reply will appear.
 
 Voice: formal, pompous about food, slightly wounded, never mean to the reader. Answer what they actually wrote. No emoji, no smileys from Ödön, Hungarian with proper accents and „…” quotes. Show the user the reply text before writing it if they want to review it; otherwise write it and show it in the summary.
 

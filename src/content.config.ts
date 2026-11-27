@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { SCENES, FRAMINGS } from './lib/photo-styles.js';
+import { parseBlogDate } from './lib/dates.js';
 
 // Dates are written in the old blog format: "2026.11.22. 23:47"
 const blogDate = z.string().regex(/^\d{4}\.\d{2}\.\d{2}\. \d{2}:\d{2}$/, 'Formátum: "2026.11.22. 23:47"');
@@ -47,6 +48,7 @@ const posts = defineCollection({
     })).default([]),
   }).transform((d) => {
     const [, y, m, day, hh, mm] = d.date.match(/^(\d{4})\.(\d{2})\.(\d{2})\. (\d{2}):(\d{2})$/);
+    const { ms, iso } = parseBlogDate(d.date);
     return {
       ...d,
       year: Number(y),
@@ -54,7 +56,9 @@ const posts = defineCollection({
       sortKey: `${y}${m}${day}${hh}${mm}`,
       /** "'26 11 22" for the digicam date stamp */
       stamp: `'${y.slice(2)} ${m} ${day}`,
-      isoDate: `${y}-${m}-${day}T${hh}:${mm}:00+01:00`,
+      isoDate: iso,
+      /** epoch ms; posts and comments dated later than the build don't go out (src/lib/posts.js) */
+      publishedAt: ms,
     };
   }),
 });

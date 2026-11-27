@@ -2,14 +2,25 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { getCollection } from 'astro:content';
 import { withBase } from './url.js';
+import { parseBlogDate } from './dates.js';
 
 export const HONAPOK = ['január', 'február', 'március', 'április', 'május', 'június', 'július',
   'augusztus', 'szeptember', 'október', 'november', 'december'];
 
-/** All published posts, newest first. */
+// One cutoff for the whole build, so every page agrees on what's out.
+const BUILD_TIME = Date.now();
+
+/**
+ * All published posts, newest first. A post or comment dated after the build time stays out
+ * until a later build (the deploy workflow rebuilds every early morning).
+ * The dev server shows everything, drafts included.
+ */
 export async function getPosts() {
-  const posts = await getCollection('posts', ({ data }) => import.meta.env.DEV || !data.draft);
-  return posts.sort((a, b) => b.data.sortKey.localeCompare(a.data.sortKey));
+  const due = (date) => import.meta.env.DEV || parseBlogDate(date).ms <= BUILD_TIME;
+  const posts = await getCollection('posts', ({ data }) => import.meta.env.DEV || (!data.draft && data.publishedAt <= BUILD_TIME));
+  return posts
+    .map((p) => ({ ...p, data: { ...p.data, comments: p.data.comments.filter((c) => due(c.date)) } }))
+    .sort((a, b) => b.data.sortKey.localeCompare(a.data.sortKey));
 }
 
 export const postHref = (post) => withBase(`/recept/${post.id}/`);

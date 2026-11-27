@@ -3,6 +3,11 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Posts and comments dated later than the build stay out of it (src/lib/posts.js).
+  # Rebuild once in the early morning (03:00 CET / 04:00 CEST), after Ödön's night
+  # (22:00-01:30 Budapest), so last night's post and his replies go live.
+  schedule:
+    - cron: '0 2 * * *'
   workflow_dispatch:
 
 permissions:
