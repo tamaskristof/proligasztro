@@ -112,4 +112,14 @@ export const polls = [
       { label: 'Zsíros kenyérre, vastagon', votes: 183 },
     ],
   },
+  {
+    name: 'hortobagyi',
+    question: 'Mi kerüljön a hortobágyi palacsintába?',
+    options: [
+      { label: 'Borjúpörkölt, ahogy illik', votes: 156 },
+      { label: 'Virsli, ételízesítővel', votes: 388 },
+      { label: 'Tegnapi gulyás, leszűrve', votes: 241 },
+      { label: 'Kakaó, ha már édes a palacsinta', votes: 173 },
+    ],
+  },
 ];
