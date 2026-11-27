@@ -397,6 +397,8 @@ export function CommentForm(props) {
   var busy = bz[0], setBusy = bz[1];
   var startedAt = React.useRef(0);
   var widgetBox = React.useRef(null);
+  var ch = React.useState(false);
+  var challenged = ch[0], setChallenged = ch[1];
   var widgetId = React.useRef(null);
   var token = React.useRef('');
   React.useEffect(function () {
@@ -408,6 +410,9 @@ export function CommentForm(props) {
       widgetId.current = ts.render(widgetBox.current, {
         sitekey: props.turnstileKey,
         appearance: 'interaction-only',
+        theme: 'light',
+        // The widget only shows itself when Cloudflare wants a click; the frame and label follow it.
+        'before-interactive-callback': function () { setChallenged(true); },
         language: 'hu',
         callback: function (t) { token.current = t; },
         'expired-callback': function () { token.current = ''; },
@@ -422,6 +427,7 @@ export function CommentForm(props) {
   }, [api, props.turnstileKey]);
   function resetTurnstile() {
     token.current = '';
+    setChallenged(false);
     if (widgetId.current !== null && window.turnstile) window.turnstile.reset(widgetId.current);
   }
   function onSubmit(e) {
@@ -460,7 +466,9 @@ export function CommentForm(props) {
       h('input', { type: 'text', name: 'honlap2', tabIndex: -1, autoComplete: 'off' })) : null,
     h('label', null, 'Hozzászólás:', h('textarea', { name: 'szoveg', rows: 4, cols: 40, maxLength: 2000 })),
     h('label', null, 'Mennyi kettő meg kettő? (számmal, ketchup nélkül): ', h('input', { type: 'text', name: 'captcha', size: 3 })),
-    api && props.turnstileKey ? h('div', { ref: widgetBox, className: 'pg-form__turnstile' }) : null,
+    api && props.turnstileKey ? h('div', { className: cx('pg-form__turnstile', challenged && 'is-shown') },
+      h('span', { className: 'pg-form__turnstile-label' }, 'Robotszűrő:'),
+      h('div', { ref: widgetBox, className: 'pg-form__turnstile-box' })) : null,
     msg ? h('p', { className: cx('pg-form__msg', msg.ok ? 'is-ok' : 'is-err'), role: 'status' }, msg.text) : null,
     h('div', null, h(Button, { type: 'submit', disabled: busy }, 'Elküld'), ' ', h(Button, { type: 'reset', onClick: function () { setMsg(null); } }, 'Törlés')),
     api ? h('p', { className: 'pg-form__note' }, 'A hozzászólás csak Ödön jóváhagyása után jelenik meg. Az e-mail-címet senkinek nem adjuk ki, és moderálás után töröljük. Az IP-címből csak egy visszafejthetetlen kivonatot tárolunk, a spamszűrés és a szavazás miatt.') : null

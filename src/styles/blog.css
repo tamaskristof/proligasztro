@@ -160,7 +160,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .pg-form label { display: block; margin-bottom: var(--space-5); }
 .pg-form input, .pg-form textarea { display: inline-block; font: inherit; font-family: var(--font-verdana); padding: 2px 3px; border: 0; background: var(--chrome-light); box-shadow: var(--bevel-in); color: var(--ink); }
 .pg-form textarea { display: block; width: 95%; margin-top: var(--space-2); }
-.pg-form__turnstile { margin-bottom: var(--space-5); }
+/* site: Turnstile draws itself in an iframe; only its surroundings can be styled. Hidden until it asks for a click. */
+.pg-form__turnstile-label { display: none; margin-bottom: var(--space-2); }
+.pg-form__turnstile.is-shown { margin-bottom: var(--space-5); }
+.pg-form__turnstile.is-shown .pg-form__turnstile-label { display: block; }
+.pg-form__turnstile.is-shown .pg-form__turnstile-box { display: inline-block; padding: var(--space-5); background: var(--chrome); box-shadow: var(--bevel-in); line-height: 0; }
 .pg-form__note { margin: var(--space-5) 0 0; color: var(--ink-muted); font-size: 10px; line-height: 14px; }
 /* site: honeypot, off-screen for people, still filled in by bots */
 .pg-form__hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
