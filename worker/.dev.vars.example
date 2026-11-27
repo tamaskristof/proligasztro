@@ -1,0 +1,3 @@
+# Copy to .dev.vars for `npm run dev`. These are Cloudflare's Turnstile test keys (always pass).
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA
+IP_SALT=local-dev-salt

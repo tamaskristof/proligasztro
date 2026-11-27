@@ -5,6 +5,7 @@ import Lightbox from '../../components/Lightbox.astro';
 import * as P from '../../components/proligasztro.js';
 import { getPosts, postProps } from '../../lib/posts.js';
 import { textAdsFor } from '../../lib/ads.js';
+import { backend } from '../../lib/backend.js';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -30,7 +31,7 @@ const components = {
   </P.BlogPost>
   <P.TextAds ads={textAdsFor(index)} />
   <P.CommentList id="hozzaszolasok" comments={post.data.comments}>
-    <P.CommentForm client:visible />
+    <P.CommentForm client:visible slug={post.id} {...backend} />
   </P.CommentList>
   <Lightbox />
 </BaseLayout>

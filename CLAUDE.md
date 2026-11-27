@@ -10,3 +10,4 @@ Satirical Hungarian food blog (art project), Astro static site on GitHub Pages.
 - Ads are invented house ads (src/lib/ads.js, components AdBanner/TextAds/Skyscraper); rules in design-system/README.md → Ads. Only one blinking banner per page.
 - Sidebar polls live in `src/lib/polls.js`; `RandomPoll` (hydrated) shows one at random per page view. Add new ones there.
 - Share images: `src/pages/og/[card].jpg.js` draws a 1200×630 card per post (and `fooldal`) at build time with sharp (`src/lib/og.js`); BaseLayout sets the OG/Twitter tags.
+- Backend: `worker/` is a Cloudflare Worker + D1 for real poll votes and the comment queue (README.md → Backend). Comments are only published by `/moderate`, which writes them (and Ödön's reply) into the post's frontmatter. Adding a poll to `src/lib/polls.js` needs a Worker redeploy.

@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "tokens": "node scripts/build-tokens.mjs",
-    "photo": "node --env-file-if-exists=.env scripts/photo.mjs"
+    "photo": "node --env-file-if-exists=.env scripts/photo.mjs",
+    "comments": "node scripts/comments.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.1.6",

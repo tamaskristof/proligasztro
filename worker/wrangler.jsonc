@@ -1,0 +1,21 @@
+// Proligasztró API: real poll votes and the comment moderation queue. Setup: README.md → "Backend".
+{
+  "name": "proligasztro-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-01",
+  "vars": {
+    // Pages allowed to call the API (CORS).
+    "ALLOWED_ORIGINS": "https://proligasztro.hu,http://localhost:4321"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "proligasztro",
+      // from `npx wrangler d1 create proligasztro`
+      "database_id": "9e17ec8a-06cc-436f-9161-3744ff5d2a84"
+    }
+  ]
+  // Secrets (`npx wrangler secret put <NAME>`, locally in worker/.dev.vars):
+  //   TURNSTILE_SECRET  Turnstile secret key
+  //   IP_SALT           any long random string; keeps the IP hashes from being reversed
+}

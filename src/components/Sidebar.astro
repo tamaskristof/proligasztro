@@ -4,6 +4,7 @@ import { polls } from '../lib/polls.js';
 import { skyscraper } from '../lib/ads.js';
 import { getPosts, archiveMonths, monthHref, allTags, tagHref } from '../lib/posts.js';
 import { withBase } from '../lib/url.js';
+import { backend } from '../lib/backend.js';
 
 const posts = await getPosts();
 const months = archiveMonths(posts);
@@ -34,7 +35,7 @@ const blogroll = [
   <VisitorCounter value={visitors} />
 </SidebarBox>
 <SidebarBox title="Szavazás">
-  <RandomPoll client:load polls={polls} />
+  <RandomPoll client:load polls={polls} api={backend.api} />
 </SidebarBox>
 <SidebarBox
   title="Archívum"

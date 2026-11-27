@@ -160,6 +160,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .pg-form label { display: block; margin-bottom: var(--space-5); }
 .pg-form input, .pg-form textarea { display: inline-block; font: inherit; font-family: var(--font-verdana); padding: 2px 3px; border: 0; background: var(--chrome-light); box-shadow: var(--bevel-in); color: var(--ink); }
 .pg-form textarea { display: block; width: 95%; margin-top: var(--space-2); }
+.pg-form__turnstile { margin-bottom: var(--space-5); }
+.pg-form__note { margin: var(--space-5) 0 0; color: var(--ink-muted); font-size: 10px; line-height: 14px; }
+/* site: honeypot, off-screen for people, still filled in by bots */
+.pg-form__hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 
 /* Win98 button */
 .pg-btn { font-family: var(--font-tahoma); font-size: 11px; line-height: 14px; color: var(--ink); background: var(--chrome); border: 0; padding: 4px 12px; box-shadow: var(--bevel-out); cursor: pointer; border-radius: 0; }

@@ -9,7 +9,7 @@ Live: https://proligasztro.hu/
 ## Stack
 
 - [Astro](https://astro.build) static site, deployed to GitHub Pages by `.github/workflows/deploy.yml` on every push to `main`.
-- Components ported from the Proligasztró design system (`src/components/proligasztro.js`, React, rendered to static HTML at build time). Only the poll and the comment form ship JavaScript.
+- Components ported from the Proligasztró design system (`src/components/proligasztro.js`, React, rendered to static HTML at build time). Only the poll and the comment form ship JavaScript; they talk to the Worker in `worker/` (see "Backend").
 - Design tokens: `design-system/tokens.json` → `npm run tokens` → `src/styles/tokens.css`.
 - Design rules, persona and voice: `design-system/README.md`. **Read it before writing a post.**
 
@@ -83,6 +83,52 @@ as `<slug>.<timestamp>.png`. Don't put two posts in a row in the same scene.
 Photos for pages that aren't posts (e.g. `rolam`, Ödön's hand with a fork, also shown in the sidebar)
 live in `src/lib/page-photos.js`: `npm run photo -- rolam`, then set `src` in the page by hand.
 The rules are in `design-system/README.md` → Imagery.
+
+## Backend: poll votes and comments
+
+The site is static; a small Cloudflare Worker (`worker/`) with a D1 database stores the real poll
+votes and queues readers' comments. Free tier, no server to run.
+
+- **Polls:** `GET /results?poll=<name>`, `POST /vote`. The site shows the made-up votes from
+  `src/lib/polls.js` plus the real ones. One vote per poll per browser and per IP (stored as a salted hash).
+  New polls need a Worker redeploy (`npm run deploy` in `worker/`), since it validates poll names against that file.
+- **Comments:** `POST /comment` only queues them. Spam filtering: Turnstile (invisible captcha), a honeypot
+  field, a minimum fill time, 3 comments per hour per IP, and above all manual approval. Run `/moderate`
+  in Claude Code (`.claude/skills/moderate/`) to approve them into the posts' frontmatter with Ödön's reply,
+  or use `npm run comments -- pending | approve <id…> | reject <id…>` directly.
+
+While `src/lib/backend.js` has no API URL, the poll and the form only pretend, as before.
+
+### One-time setup
+
+```sh
+cd worker && npm install
+npx wrangler login
+npx wrangler d1 create proligasztro         # paste the database_id into worker/wrangler.jsonc
+npm run db:init                             # creates the tables
+npx wrangler secret put IP_SALT             # any long random string, e.g. from: openssl rand -hex 32
+```
+
+In the Cloudflare dashboard: **Turnstile → Add widget**, hostname `proligasztro.hu`, mode *Managed*.
+Then:
+
+```sh
+npx wrangler secret put TURNSTILE_SECRET    # the widget's secret key
+npm run deploy                              # prints https://proligasztro-api.<account>.workers.dev
+```
+
+Put that URL and the Turnstile **site** key into `src/lib/backend.js`, commit, push.
+
+### Local development
+
+```sh
+cd worker && cp .dev.vars.example .dev.vars && npm run db:init:local && npm run dev   # :8787
+# in the repo root, .env:
+#   PUBLIC_API_URL=http://localhost:8787
+#   PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA
+npm run dev
+npm run comments -- pending --local
+```
 
 ## Domain
 

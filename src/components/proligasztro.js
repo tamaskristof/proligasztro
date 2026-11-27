@@ -5,7 +5,8 @@
  * src/styles/blog.css. Differences from the bundle are marked "site:".
  *
  * Everything renders to static HTML. Only RandomPoll (Poll) and CommentForm are hydrated
- * (client:visible) because they react to clicks.
+ * (client:visible) because they react to clicks. With an API URL (src/lib/backend.js) they talk to
+ * the Worker in worker/; without one they pretend, as in the design system.
  */
 import React from 'react';
 import { withBase } from '../lib/url.js';
@@ -73,7 +74,8 @@ export function BlogHeader(props) {
 }
 
 /* ---------- BlogFooter ---------- */
-var DEFAULT_NOTICE = 'A Proligasztró szatirikus oldal. Zsírosdeszka Ödön és olvasói kitalált szereplők; a receptek, fotók, díjak és tápértékek szintén. A bemutatott ételek elkészítése saját felelősségre történik, de inkább ne.';
+// site: real readers can comment now (moderated), so only Ödön is called fictional.
+var DEFAULT_NOTICE = 'A Proligasztró szatirikus oldal. Zsírosdeszka Ödön kitalált szereplő; a receptek, fotók, díjak és tápértékek szintén. A hozzászólások egy részét valódi olvasók írják, és csak moderálás után jelennek meg. A bemutatott ételek elkészítése saját felelősségre történik, de inkább ne.';
 export function BlogFooter(props) {
   var badges = props.badges || [];
   return h('footer', { className: 'pg-footer' },
@@ -269,27 +271,56 @@ export function TagCloud(props) {
   }));
 }
 
-/* ---------- Poll (hydrated) ---------- */
+/* ---------- Poll (hydrated) ----------
+ * site: with `api` (the Worker URL) votes are real: the counts shown are the made-up starting votes
+ * plus the real ones, one vote per poll per browser (localStorage) and per IP (server). */
+function storageGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function storageSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 export function Poll(props) {
   var opts = props.options || [];
+  var api = props.api;
+  var name = props.name || 'pg-poll';
+  var votedKey = 'pg-voted-' + name;
   var st = React.useState(!!props.showResults);
   var shown = st[0], setShown = st[1];
   var pick = React.useState(null);
-  var name = props.name || 'pg-poll';
-  var total = opts.reduce(function (s, o) { return s + (o.votes || 0); }, 0) || 1;
+  var rc = React.useState(null);
+  var real = rc[0], setReal = rc[1];
+  var bz = React.useState(false);
+  var busy = bz[0], setBusy = bz[1];
+  React.useEffect(function () {
+    if (!api) return;
+    if (storageGet(votedKey) !== null) setShown(true);
+    fetch(api + '/results?poll=' + encodeURIComponent(props.pollId || ''))
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { if (d && d.counts) setReal(d.counts); })
+      .catch(function () {});
+  }, [api, votedKey]);
+  function onSubmit(e) {
+    e.preventDefault();
+    if (!api || pick[0] === null || busy) { setShown(true); return; }
+    setBusy(true);
+    fetch(api + '/vote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ poll: props.pollId, option: pick[0] }) })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { if (d && d.counts) { setReal(d.counts); storageSet(votedKey, String(pick[0])); } })
+      .catch(function () {})
+      .then(function () { setBusy(false); setShown(true); });
+  }
+  var votes = opts.map(function (o, i) { return (o.votes || 0) + ((real && real[i]) || 0); });
+  var total = votes.reduce(function (s, v) { return s + v; }, 0) || 1;
   return h('div', { className: 'pg-poll' },
     h('p', { className: 'pg-poll__q' }, props.question),
     shown ? h('ul', { className: 'pg-poll__results' }, opts.map(function (o, i) {
-      var pct = Math.round((o.votes || 0) / total * 100);
+      var pct = Math.round(votes[i] / total * 100);
       return h('li', { key: i },
         h('span', { className: 'pg-poll__label' }, o.label + ' – ' + pct + '%'),
         h('span', { className: 'pg-poll__track' }, h('span', { className: 'pg-poll__bar', style: { width: pct + '%' } })));
-    })) : h('form', { onSubmit: function (e) { e.preventDefault(); setShown(true); } },
+    })) : h('form', { onSubmit: onSubmit },
       opts.map(function (o, i) {
         return h('label', { key: i, className: 'pg-poll__opt' },
           h('input', { type: 'radio', name: name, checked: pick[0] === i, onChange: function () { pick[1](i); } }), ' ', o.label);
       }),
-      h('div', { className: 'pg-poll__actions' }, h(Button, { type: 'submit' }, 'Szavazok!'), ' ',
+      h('div', { className: 'pg-poll__actions' }, h(Button, { type: 'submit', disabled: busy }, 'Szavazok!'), ' ',
         h('a', { className: 'pg-a', href: '#', onClick: function (e) { e.preventDefault(); setShown(true); } }, 'Eredmények'))),
     shown ? h('p', { className: 'pg-poll__total' }, 'Eddig ' + (props.totalLabel || total) + ' szavazat') : null
   );
@@ -313,7 +344,7 @@ export function RandomPoll(props) {
   var poll = polls[idx === null ? 0 : idx];
   if (!poll) return null;
   return h('div', { style: idx === null ? { visibility: 'hidden' } : undefined },
-    h(Poll, { key: poll.name, name: 'pg-poll-' + poll.name, question: poll.question, options: poll.options, totalLabel: poll.totalLabel }));
+    h(Poll, { key: poll.name, name: 'pg-poll-' + poll.name, pollId: poll.name, api: idx === null ? null : props.api, question: poll.question, options: poll.options, totalLabel: poll.totalLabel }));
 }
 
 /* ---------- CommentList ----------
@@ -334,26 +365,105 @@ export function CommentList(props) {
 }
 
 /* ---------- CommentForm (hydrated) ----------
- * site: a static host can't store comments, so the form only pretends, in character. */
-export function CommentForm() {
+ * site: without `api` the form only pretends, in character. With `api` (the Worker URL) and `slug` the
+ * comment goes to the moderation queue; Turnstile (`turnstileKey`), a honeypot field and a minimum fill
+ * time keep the bots out. Approved comments are added to the post by hand (/moderate). */
+var COMMENT_ERRORS = {
+  too_short: 'Ennél azért többet is írhatsz. Ödön is többet ír.',
+  too_long: 'Ez már nem hozzászólás, hanem szakácskönyv. Legfeljebb 2000 karakter!',
+  bad_url: 'A weboldal címe nem tűnik weboldalcímnek. Ha nincs, hagyd üresen.',
+  captcha: 'A robotszűrő szerint robot vagy. Ha mégsem, próbáld újra!',
+  rate_limited: 'Lassabban! Óránként legfeljebb három hozzászólás fér bele.',
+};
+var TURNSTILE_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+function loadTurnstile() {
+  if (window.turnstile) return Promise.resolve(window.turnstile);
+  if (!loadTurnstile.p) {
+    loadTurnstile.p = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = TURNSTILE_SRC; s.async = true;
+      s.onload = function () { resolve(window.turnstile); };
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+  return loadTurnstile.p;
+}
+export function CommentForm(props) {
+  var api = props.api;
   var st = React.useState(null);
   var msg = st[0], setMsg = st[1];
+  var bz = React.useState(false);
+  var busy = bz[0], setBusy = bz[1];
+  var startedAt = React.useRef(0);
+  var widgetBox = React.useRef(null);
+  var widgetId = React.useRef(null);
+  var token = React.useRef('');
+  React.useEffect(function () {
+    startedAt.current = Date.now();
+    if (!api || !props.turnstileKey) return;
+    var cancelled = false;
+    loadTurnstile().then(function (ts) {
+      if (cancelled || !widgetBox.current) return;
+      widgetId.current = ts.render(widgetBox.current, {
+        sitekey: props.turnstileKey,
+        appearance: 'interaction-only',
+        language: 'hu',
+        callback: function (t) { token.current = t; },
+        'expired-callback': function () { token.current = ''; },
+        'error-callback': function () { token.current = ''; },
+      });
+    }).catch(function () {});
+    return function () {
+      cancelled = true;
+      if (widgetId.current !== null && window.turnstile) window.turnstile.remove(widgetId.current);
+      widgetId.current = null;
+    };
+  }, [api, props.turnstileKey]);
+  function resetTurnstile() {
+    token.current = '';
+    if (widgetId.current !== null && window.turnstile) window.turnstile.reset(widgetId.current);
+  }
   function onSubmit(e) {
     e.preventDefault();
-    var answer = String(new FormData(e.currentTarget).get('captcha') || '').trim();
+    var form = e.currentTarget;
+    var data = new FormData(form);
+    var answer = String(data.get('captcha') || '').trim();
     if (answer !== '4') { setMsg({ ok: false, text: 'Hibás ellenőrző kód. Számmal, és ketchup nélkül!' }); return; }
-    e.currentTarget.reset();
-    setMsg({ ok: true, text: 'Köszönjük! A hozzászólásod moderálásra vár. Ödön általában éjjel moderál, vacsora után.' });
+    var done = { ok: true, text: 'Köszönjük! A hozzászólásod moderálásra vár. Ödön általában éjjel moderál, vacsora után.' };
+    if (!api) { form.reset(); setMsg(done); return; }
+    if (busy) return;
+    if (props.turnstileKey && !token.current) { setMsg({ ok: false, text: 'A robotszűrő még gondolkodik. Várj egy pillanatot, és küldd el újra!' }); return; }
+    setBusy(true);
+    fetch(api + '/comment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        slug: props.slug, nev: data.get('nev'), email: data.get('email'), web: data.get('web'), szoveg: data.get('szoveg'),
+        hp: data.get('honlap2'), elapsed: Date.now() - startedAt.current, token: token.current,
+      }),
+    })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (res.ok) { form.reset(); setMsg(done); }
+        else setMsg({ ok: false, text: COMMENT_ERRORS[res.d.error] || 'Valami elromlott. Ödön szerint a szerver hibája.' });
+      })
+      .catch(function () { setMsg({ ok: false, text: 'A szerver éppen ebédel. Próbáld újra később!' }); })
+      .then(function () { setBusy(false); resetTurnstile(); });
   }
-  return h('form', { className: 'pg-form', onSubmit: onSubmit, action: '#' },
+  return h('form', { className: 'pg-form', onSubmit: onSubmit, action: '#', noValidate: true },
     h('p', { className: 'pg-form__title' }, h('b', null, 'Szólj hozzá!')),
-    h('label', null, 'Név: ', h('input', { type: 'text', name: 'nev', size: 25 })),
-    h('label', null, 'E-mail (nem jelenik meg): ', h('input', { type: 'email', name: 'email', size: 25 })),
-    h('label', null, 'Weboldal: ', h('input', { type: 'url', name: 'web', size: 25, defaultValue: 'http://' })),
-    h('label', null, 'Hozzászólás:', h('textarea', { name: 'szoveg', rows: 4, cols: 40 })),
+    h('label', null, 'Név: ', h('input', { type: 'text', name: 'nev', size: 25, maxLength: 40 })),
+    h('label', null, 'E-mail (nem jelenik meg): ', h('input', { type: 'email', name: 'email', size: 25, maxLength: 100 })),
+    h('label', null, 'Weboldal: ', h('input', { type: 'url', name: 'web', size: 25, maxLength: 200, defaultValue: 'http://' })),
+    api ? h('label', { className: 'pg-form__hp', 'aria-hidden': 'true' }, 'Ezt hagyd üresen: ',
+      h('input', { type: 'text', name: 'honlap2', tabIndex: -1, autoComplete: 'off' })) : null,
+    h('label', null, 'Hozzászólás:', h('textarea', { name: 'szoveg', rows: 4, cols: 40, maxLength: 2000 })),
     h('label', null, 'Mennyi kettő meg kettő? (számmal, ketchup nélkül): ', h('input', { type: 'text', name: 'captcha', size: 3 })),
+    api && props.turnstileKey ? h('div', { ref: widgetBox, className: 'pg-form__turnstile' }) : null,
     msg ? h('p', { className: cx('pg-form__msg', msg.ok ? 'is-ok' : 'is-err'), role: 'status' }, msg.text) : null,
-    h('div', null, h(Button, { type: 'submit' }, 'Elküld'), ' ', h(Button, { type: 'reset', onClick: function () { setMsg(null); } }, 'Törlés'))
+    h('div', null, h(Button, { type: 'submit', disabled: busy }, 'Elküld'), ' ', h(Button, { type: 'reset', onClick: function () { setMsg(null); } }, 'Törlés')),
+    api ? h('p', { className: 'pg-form__note' }, 'A hozzászólás csak Ödön jóváhagyása után jelenik meg. Az e-mail-címet senkinek nem adjuk ki, és moderálás után töröljük. Az IP-címből csak egy visszafejthetetlen kivonatot tárolunk, a spamszűrés és a szavazás miatt.') : null
   );
 }
 
