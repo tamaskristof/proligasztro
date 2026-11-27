@@ -155,6 +155,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .pg-comment__head { margin: 0; padding: var(--space-2) var(--space-5); background: var(--box); border-bottom: 1px dotted var(--box-border); color: var(--ink-muted); }
 .pg-comment--author .pg-comment__head { background: var(--box-head); color: var(--on-box-head); }
 .pg-comment__text { margin: 0; padding: var(--space-5); color: var(--ink); }
+/* site: the sender's own comment while it waits, seen only by them; dashed = not published yet */
+.pg-comment--own { border-style: dashed; }
+.pg-comment--rejected .pg-comment__text { color: var(--ink-muted); }
+.pg-comment__badge { display: inline-block; margin-left: var(--space-5); padding: 0 3px; vertical-align: middle; background: var(--chrome); color: var(--ink); box-shadow: var(--bevel-out); font-family: var(--font-verdana); font-size: 9px; line-height: 12px; font-weight: 700; letter-spacing: 0.04em; }
+.pg-comment__badge--approved { background: var(--note-bg); color: var(--note-ink); }
+.pg-comment__badge--rejected { background: var(--box-head); color: var(--on-box-head); }
+.pg-comment__note { margin: 0; padding: 0 var(--space-5) var(--space-5); color: var(--ink-muted); font-size: 10px; line-height: 14px; }
 .pg-form { margin-top: var(--space-10); padding: var(--space-10); border: 1px solid var(--box-border); background: var(--box); font-family: var(--font-tahoma); font-size: 11px; line-height: 16px; }
 .pg-form__title { margin: 0 0 var(--space-5); }
 .pg-form label { display: block; margin-bottom: var(--space-5); }

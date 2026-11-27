@@ -96,6 +96,10 @@ votes and queues readers' comments. Free tier, no server to run.
   field, a minimum fill time, 3 comments per hour per IP, and above all manual approval. Run `/moderate`
   in Claude Code (`.claude/skills/moderate/`) to approve them into the posts' frontmatter with Ödön's reply,
   or use `npm run comments -- pending | approve <id…> | reject <id…>` directly.
+- **The sender sees their own comment:** `POST /comment` returns a random receipt; the browser keeps the
+  comment with it in localStorage (30 days) and shows it above the form, only to that sender, with a badge
+  from `GET /status?r=<receipt>,…`: „moderálásra vár”, „jóváhagyva, hamarosan megjelenik”, or once
+  „nem jelent meg” after a rejection. Once the approved comment is on the page, the local copy goes.
 
 While `src/lib/backend.js` has no API URL, the poll and the form only pretend, as before.
 
@@ -105,7 +109,8 @@ While `src/lib/backend.js` has no API URL, the poll and the form only pretend, a
 cd worker && npm install
 npx wrangler login
 npx wrangler d1 create proligasztro         # paste the database_id into worker/wrangler.jsonc
-npm run db:init                             # creates the tables
+npm run db:init                             # creates the tables (a database from before 2026-11-27 instead
+                                            # needs migrations-001-receipt.sql, once)
 npx wrangler secret put IP_SALT             # any long random string, e.g. from: openssl rand -hex 32
 ```
 

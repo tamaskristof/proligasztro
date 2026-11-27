@@ -17,8 +17,10 @@ CREATE TABLE IF NOT EXISTS comments (
   url        TEXT,
   text       TEXT    NOT NULL,
   ip_hash    TEXT,
+  token      TEXT,                         -- receipt: random code only the sender's browser knows
   status     TEXT    NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
   created_at TEXT    NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
 );
 CREATE INDEX IF NOT EXISTS comments_status ON comments (status);
 CREATE INDEX IF NOT EXISTS comments_rate ON comments (ip_hash, created_at);
+CREATE UNIQUE INDEX IF NOT EXISTS comments_token ON comments (token);

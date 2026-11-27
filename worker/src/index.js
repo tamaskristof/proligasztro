@@ -3,10 +3,13 @@
  *
  *   GET  /results?poll=<name>  real vote counts for one poll: { counts: [n, n, n, n] }
  *   POST /vote                 { poll, option } -> { counts, duplicate }
- *   POST /comment              { slug, nev, email, web, szoveg, token, hp, elapsed } -> { ok }
+ *   POST /comment              { slug, nev, email, web, szoveg, token, hp, elapsed } -> { ok, receipt }
+ *   GET  /status?r=<receipt>,… moderation status of the sender's own comments:
+ *                              { statuses: { <receipt>: 'pending' | 'approved' | 'rejected' | 'unknown' } }
  *
  * The site adds the made-up starting votes from src/lib/polls.js on top of the real counts.
- * Comments are only queued here; /moderate approves them into the post's MDX.
+ * Comments are only queued here; /moderate approves them into the post's MDX. The receipt is a random
+ * code only the sender's browser knows; it shows their own comment with a „moderálásra vár” badge.
  */
 import { polls } from '../../src/lib/polls.js';
 
@@ -27,6 +30,7 @@ export default {
       if (request.method === 'GET' && url.pathname === '/results') res = await results(url, env);
       else if (request.method === 'POST' && url.pathname === '/vote') res = await vote(request, env);
       else if (request.method === 'POST' && url.pathname === '/comment') res = await comment(request, env);
+      else if (request.method === 'GET' && url.pathname === '/status') res = await status(url, env);
       else res = json({ error: 'not_found' }, 404);
       for (const [k, v] of Object.entries(cors)) res.headers.set(k, v);
       return res;
@@ -74,8 +78,8 @@ async function comment(request, env) {
   if (!b) return json({ error: 'bad_request' }, 400);
 
   // Bots: the honeypot is filled, or the form came back faster than anyone can type.
-  // Answer "ok" so they don't learn anything, and store nothing.
-  if (b.hp || !(Number(b.elapsed) >= MIN_FILL_MS)) return json({ ok: true });
+  // Answer "ok" with a receipt so they don't learn anything, and store nothing.
+  if (b.hp || !(Number(b.elapsed) >= MIN_FILL_MS)) return json({ ok: true, receipt: crypto.randomUUID() });
 
   const slug = str(b.slug);
   const name = str(b.nev).slice(0, LIMITS.name);
@@ -97,9 +101,24 @@ async function comment(request, env) {
   ).bind(ip).first();
   if (recent.c >= COMMENTS_PER_HOUR) return json({ error: 'rate_limited' }, 429);
 
-  await env.DB.prepare('INSERT INTO comments (slug, name, email, url, text, ip_hash) VALUES (?, ?, ?, ?, ?, ?)')
-    .bind(slug, name || null, email || null, web || null, text, ip).run();
-  return json({ ok: true });
+  const receipt = crypto.randomUUID();
+  await env.DB.prepare('INSERT INTO comments (slug, name, email, url, text, ip_hash, token) VALUES (?, ?, ?, ?, ?, ?, ?)')
+    .bind(slug, name || null, email || null, web || null, text, ip, receipt).run();
+  return json({ ok: true, receipt });
+}
+
+const RECEIPT = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+const MAX_RECEIPTS = 20;
+
+async function status(url, env) {
+  const receipts = [...new Set((url.searchParams.get('r') || '').split(','))].filter((r) => RECEIPT.test(r));
+  if (!receipts.length || receipts.length > MAX_RECEIPTS) return json({ error: 'bad_receipts' }, 400);
+  const { results: rows } = await env.DB.prepare(
+    `SELECT token, status FROM comments WHERE token IN (${receipts.map(() => '?').join(',')})`,
+  ).bind(...receipts).all();
+  const statuses = Object.fromEntries(receipts.map((r) => [r, 'unknown']));
+  for (const row of rows) statuses[row.token] = row.status;
+  return json({ statuses }, 200, { 'Cache-Control': 'no-store' });
 }
 
 async function turnstileOk(token, request, env) {

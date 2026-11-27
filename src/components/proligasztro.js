@@ -367,7 +367,48 @@ export function CommentList(props) {
 /* ---------- CommentForm (hydrated) ----------
  * site: without `api` the form only pretends, in character. With `api` (the Worker URL) and `slug` the
  * comment goes to the moderation queue; Turnstile (`turnstileKey`), a honeypot field and a minimum fill
- * time keep the bots out. Approved comments are added to the post by hand (/moderate). */
+ * time keep the bots out. Approved comments are added to the post by hand (/moderate).
+ * The sender's own comments are kept in their browser (localStorage, 30 days) and shown above the form,
+ * only to them, with a badge from GET /status: „moderálásra vár”, „jóváhagyva, hamarosan megjelenik”, or
+ * once „nem jelent meg”. Once approved and on the page, the local copy goes. */
+var SENT_KEY = 'pg-sent';
+var SENT_MS = 30 * 24 * 3600 * 1000;
+var MAX_RECEIPTS = 20;
+function loadSent() {
+  try { var a = JSON.parse(storageGet(SENT_KEY) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; }
+}
+function saveSent(list) { storageSet(SENT_KEY, JSON.stringify(list)); }
+function squash(t) { return String(t || '').replace(/\s+/g, ' ').trim(); }
+// Is this text already among the published comments on the page?
+function publishedOnPage(text) {
+  var els = document.querySelectorAll('.pg-comment:not(.pg-comment--own) .pg-comment__text');
+  for (var i = 0; i < els.length; i++) { if (squash(els[i].textContent) === squash(text)) return true; }
+  return false;
+}
+// "2026.11.27. 22:41", Budapest time, like every date on the blog
+function blogDateNow() {
+  try {
+    var p = {};
+    new Intl.DateTimeFormat('hu-HU', { timeZone: 'Europe/Budapest', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+      .formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value; });
+    return p.year + '.' + p.month + '.' + p.day + '. ' + p.hour + ':' + p.minute;
+  } catch (e) { return ''; }
+}
+var OWN_BADGE = { pending: 'moderálásra vár', approved: 'jóváhagyva, hamarosan megjelenik', rejected: 'nem jelent meg' };
+var OWN_NOTE = {
+  pending: 'Ezt csak te látod, ebben a böngészőben, amíg Ödön jóvá nem hagyja.',
+  approved: 'Ödön jóváhagyta; a következő frissítéskor mindenki látni fogja.',
+  rejected: 'Ezt a hozzászólást Ödön nem engedte át. Ez az üzenet csak egyszer jelenik meg.',
+};
+function OwnComment(props) {
+  var c = props.comment;
+  return h('div', { className: cx('pg-comment', 'pg-comment--own', c.status === 'rejected' && 'pg-comment--rejected') },
+    h('p', { className: 'pg-comment__head' },
+      h('b', null, c.name || 'Névtelen'), ' írta, ', c.date, ':',
+      h('span', { className: cx('pg-comment__badge', 'pg-comment__badge--' + c.status) }, OWN_BADGE[c.status])),
+    h('p', { className: 'pg-comment__text' }, c.text),
+    h('p', { className: 'pg-comment__note' }, OWN_NOTE[c.status]));
+}
 var COMMENT_ERRORS = {
   too_short: 'Ennél azért többet is írhatsz. Ödön is többet ír.',
   too_long: 'Ez már nem hozzászólás, hanem szakácskönyv. Legfeljebb 2000 karakter!',
@@ -401,6 +442,34 @@ export function CommentForm(props) {
   var challenged = ch[0], setChallenged = ch[1];
   var widgetId = React.useRef(null);
   var token = React.useRef('');
+  var sc = React.useState([]);
+  var sent = sc[0], setSent = sc[1];
+  React.useEffect(function () {
+    if (!api || !props.slug) return;
+    var now = Date.now();
+    var all = loadSent().filter(function (c) { return c && c.receipt && c.at && now - c.at < SENT_MS; });
+    saveSent(all);
+    var mine = all.filter(function (c) { return c.slug === props.slug; }).slice(-MAX_RECEIPTS);
+    if (!mine.length) return;
+    setSent(mine.map(function (c) { return Object.assign({}, c, { status: 'pending' }); }));
+    fetch(api + '/status?r=' + mine.map(function (c) { return c.receipt; }).join(','))
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d || !d.statuses) return;
+        var forget = {};
+        var shown = [];
+        mine.forEach(function (c) {
+          var s = d.statuses[c.receipt] || 'pending';
+          if (s === 'unknown') s = 'rejected';
+          if (s === 'approved' && publishedOnPage(c.text)) { forget[c.receipt] = true; return; }
+          if (s === 'rejected') forget[c.receipt] = true; // shown this once, then forgotten
+          shown.push(Object.assign({}, c, { status: s }));
+        });
+        saveSent(loadSent().filter(function (c) { return !forget[c.receipt]; }));
+        setSent(shown);
+      })
+      .catch(function () {});
+  }, [api, props.slug]);
   React.useEffect(function () {
     startedAt.current = Date.now();
     if (!api || !props.turnstileKey) return;
@@ -451,13 +520,23 @@ export function CommentForm(props) {
     })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, d: d }; }); })
       .then(function (res) {
-        if (res.ok) { form.reset(); setMsg(done); }
+        if (res.ok) {
+          if (res.d.receipt) {
+            var own = { slug: props.slug, receipt: res.d.receipt, name: String(data.get('nev') || '').trim(), text: String(data.get('szoveg') || '').trim(), date: blogDateNow(), at: Date.now() };
+            saveSent(loadSent().concat([own]));
+            setSent(function (prev) { return prev.concat([Object.assign({}, own, { status: 'pending' })]); });
+            done = { ok: true, text: 'Köszönjük! A hozzászólásod moderálásra vár; addig csak te látod, fent. Ödön általában éjjel moderál, vacsora után.' };
+          }
+          form.reset(); setMsg(done);
+        }
         else setMsg({ ok: false, text: COMMENT_ERRORS[res.d.error] || 'Valami elromlott. Ödön szerint a szerver hibája.' });
       })
       .catch(function () { setMsg({ ok: false, text: 'A szerver éppen ebédel. Próbáld újra később!' }); })
       .then(function () { setBusy(false); resetTurnstile(); });
   }
-  return h('form', { className: 'pg-form', onSubmit: onSubmit, action: '#', noValidate: true },
+  return h(React.Fragment, null,
+    sent.map(function (c) { return h(OwnComment, { key: c.receipt, comment: c }); }),
+    h('form', { className: 'pg-form', onSubmit: onSubmit, action: '#', noValidate: true },
     h('p', { className: 'pg-form__title' }, h('b', null, 'Szólj hozzá!')),
     h('label', null, 'Név: ', h('input', { type: 'text', name: 'nev', size: 25, maxLength: 40 })),
     h('label', null, 'E-mail (nem jelenik meg): ', h('input', { type: 'email', name: 'email', size: 25, maxLength: 100 })),
@@ -471,8 +550,8 @@ export function CommentForm(props) {
       h('div', { ref: widgetBox, className: 'pg-form__turnstile-box' })) : null,
     msg ? h('p', { className: cx('pg-form__msg', msg.ok ? 'is-ok' : 'is-err'), role: 'status' }, msg.text) : null,
     h('div', null, h(Button, { type: 'submit', disabled: busy }, 'Elküld'), ' ', h(Button, { type: 'reset', onClick: function () { setMsg(null); } }, 'Törlés')),
-    api ? h('p', { className: 'pg-form__note' }, 'A hozzászólás csak Ödön jóváhagyása után jelenik meg. Az e-mail-címet senkinek nem adjuk ki, és moderálás után töröljük. Az IP-címből csak egy visszafejthetetlen kivonatot tárolunk, a spamszűrés és a szavazás miatt.') : null
-  );
+    api ? h('p', { className: 'pg-form__note' }, 'A hozzászólás csak Ödön jóváhagyása után jelenik meg. Az e-mail-címet senkinek nem adjuk ki, és moderálás után töröljük. Az IP-címből csak egy visszafejthetetlen kivonatot tárolunk, a spamszűrés és a szavazás miatt. Az elküldött hozzászólásod másolatát 30 napig a saját böngésződ őrzi, hogy lásd, hol tart.') : null
+  ));
 }
 
 /* ---------- Ads ----------
