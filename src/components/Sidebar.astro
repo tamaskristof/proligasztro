@@ -5,6 +5,7 @@ import { skyscraper } from '../lib/ads.js';
 import { getPosts, archiveMonths, monthHref, allTags, tagHref } from '../lib/posts.js';
 import { withBase } from '../lib/url.js';
 import { backend } from '../lib/backend.js';
+import { blogs, blogHref } from '../lib/blogroll.js';
 
 const posts = await getPosts();
 const months = archiveMonths(posts);
@@ -18,13 +19,6 @@ const weight = (n) => (maxCount === minCount ? 3 : 1 + Math.round(((n - minCount
 const days = Math.floor((Date.now() - Date.UTC(2008, 4, 14)) / 86400000);
 const visitors = 41207 + days * 23;
 
-const blogroll = [
-  'Tökfőzelék Baráti Kör',
-  'Zsírszalonna Klub',
-  'Gulyás és Lélek',
-  'Margitka receptjei (archív)',
-  'A Kenyérhéj Krónikái',
-];
 ---
 <SidebarBox title="Rólam">
   <DigicamPhoto thumb src="/kepek/rolam.jpg" href={withBase('/rolam/')} width={72} align="left" date={false} alt="Ödön keze, villával" />
@@ -44,7 +38,7 @@ const blogroll = [
 <SidebarBox title="Címkék">
   <TagCloud tags={tags.map((t) => ({ label: t.tag, href: tagHref(t.tag), weight: weight(t.count) }))} />
 </SidebarBox>
-<SidebarBox title="Blogroll" links={blogroll.map((label) => ({ label, href: '#' }))} />
+<SidebarBox title="Blogroll" links={blogs.map((b) => ({ label: b.label ?? b.name, href: withBase(blogHref(b.slug)) }))} />
 <SidebarBox title="Most hallgatom">
   <p>Mikrohullámú sütő, 800 W, 4 perc.</p>
 </SidebarBox>

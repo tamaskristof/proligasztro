@@ -1,0 +1,76 @@
+---
+/* One section of an invented blogroll blog (see src/lib/blogroll.js for the kinds). */
+import { withBase } from '../lib/url.js';
+import { blogHref } from '../lib/blogroll.js';
+
+const { s, blog } = Astro.props;
+const commentsLabel = blog.commentsLabel ?? 'Hozzászólások';
+// Ödön signs his comments with a link home, like every blog commenter did in 2008.
+const home = withBase('/');
+---
+{s.kind === 'post' && (
+  <article id={s.id} class="pg-br__post">
+    <header class="pg-br__posthead">
+      <h2 class="pg-br__title">{s.title}</h2>
+      <p class="pg-br__meta">{s.date} · {s.author}</p>
+    </header>
+    <div class:list={['pg-br__msg', 'is-first', s.odon && 'is-odon']}>
+      <p class="pg-br__who">
+        {s.odon ? <a href={home}>{s.author}</a> : <b>{s.author}</b>}
+        {s.rank && <span class="pg-br__rank">{s.rank}</span>}
+      </p>
+      <div class="pg-br__text">{s.paras.map((p) => <p>{p}</p>)}</div>
+    </div>
+    {s.comments?.length > 0 && (
+      <section class="pg-br__comments" aria-label={`${commentsLabel}: ${s.title}`}>
+        <h3 class="pg-br__ch">{commentsLabel} ({s.comments.length})</h3>
+        <ol class="pg-br__clist">
+          {s.comments.map((c) => (
+            <li class:list={['pg-br__msg', c.odon && 'is-odon']}>
+              <p class="pg-br__who">
+                {c.odon ? <a href={home}>{c.name}</a> : <b>{c.name}</b>}
+                {c.rank && <span class="pg-br__rank">{c.rank}</span>}
+                <span class="pg-br__cdate">{c.date}</span>
+              </p>
+              <div class="pg-br__text"><p>{c.text}</p></div>
+            </li>
+          ))}
+        </ol>
+        {blog.commentsNote && <p class="pg-br__closed">{blog.commentsNote}</p>}
+      </section>
+    )}
+  </article>
+)}
+{s.kind !== 'post' && (
+  <section id={s.id} class:list={['pg-br__section', `pg-br__section--${s.kind}`]}>
+    <h2 class="pg-br__h">{s.title}</h2>
+    {s.kind === 'text' && s.paras.map((p) => <p>{p}</p>)}
+    {s.kind === 'list' && <ul class="pg-br__list">{s.items.map((i) => <li>{i}</li>)}</ul>}
+    {s.kind === 'links' && (
+      <ul class="pg-br__list pg-br__links">{s.items.map((l) => (
+        <li>{l.slug ? <a href={withBase(blogHref(l.slug))}>{l.label}</a> : l.home ? <a href={home}>{l.label}</a> : l.label}</li>
+      ))}</ul>
+    )}
+    {s.kind === 'award' && (
+      <div class="pg-br__award">
+        <p class="pg-br__awardmonth">
+          {blog.blink && <span class="pg-br__blink">{blog.blink}</span>} {s.month}
+        </p>
+        {s.lines.map((l) => <p>{l}</p>)}
+        <p class="pg-br__sign">{s.sign}</p>
+      </div>
+    )}
+    {s.kind === 'guestbook' && (
+      <ol class="pg-br__gb">{s.items.map((g) => (
+        <li class:list={[g.odon && 'is-odon']}>
+          <p class="pg-br__gbhead">
+            {g.odon ? <a href={home}>{g.name}</a> : <b>{g.name}</b>} · {g.date}
+          </p>
+          <p class="pg-br__gbtext">{g.text}</p>
+          {g.reply && <p class="pg-br__gbreply">{g.reply}</p>}
+        </li>
+      ))}</ol>
+    )}
+    {s.kind === 'guestbook' && s.note && <p class="pg-br__closed">{s.note}</p>}
+  </section>
+)}

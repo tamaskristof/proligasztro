@@ -1,0 +1,199 @@
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap");
+
+/* The invented blogs in Ödön's blogroll (/blogroll/<slug>/). Other people's long-frozen blogs,
+   not Ödön's, so each skin differs in structure, not just colour:
+   forum = phpBB board, lodge = narrow club page around a guestbook, essay = white literary column,
+   archive = pink template with a left sidebar under an „archív” banner, chronicle = typewriter chapters.
+   Tokens only: a skin maps the --br-* slots to existing tokens. Only .pg-br__blink moves. */
+
+/* ---------- Shared ---------- */
+.pg-br { margin: 0; padding: var(--space-15) var(--space-5); background: var(--br-bg); color: var(--br-ink); font-family: var(--br-font); font-size: 13px; line-height: 19px; }
+.pg-br a { color: var(--br-link); text-decoration: underline; }
+.pg-br a:hover { color: var(--br-accent); text-decoration: none; }
+.pg-br a:focus-visible { outline: 1px dotted currentColor; outline-offset: 2px; }
+.pg-br p { margin: 0 0 var(--space-10); }
+
+.pg-br__page { max-width: var(--page-width); margin: 0 auto; background: var(--br-page); border: 1px solid var(--br-line); }
+.pg-br__head { padding: var(--space-15); background: var(--br-head-bg); color: var(--br-head-ink); }
+.pg-br .pg-br__name { margin: 0 0 var(--space-5); font-family: var(--br-title-font); font-size: 28px; line-height: 34px; font-weight: 700; }
+.pg-br .pg-br__tagline { margin: 0; font-size: 12px; line-height: 16px; font-style: italic; }
+.pg-br .pg-br__banner { margin: 0; padding: var(--space-10) var(--space-15); background: var(--chrome); color: var(--chrome-dark); border-bottom: 1px solid var(--chrome-shade); text-align: center; font-family: var(--font-tahoma); font-size: 12px; line-height: 16px; font-weight: 700; }
+.pg-br .pg-br__crumb { margin: 0; padding: var(--space-5) var(--space-15); background: var(--br-panel); border-bottom: 1px solid var(--br-line); font-size: 11px; line-height: 15px; font-weight: 700; }
+.pg-br__main { padding: var(--space-15); min-width: 0; }
+
+.pg-br__post { margin-bottom: var(--space-30); }
+.pg-br .pg-br__title { margin: 0; color: var(--br-accent); font-family: var(--br-title-font); font-size: 18px; line-height: 24px; }
+.pg-br .pg-br__meta { margin: 0 0 var(--space-10); color: var(--br-muted); font-size: 11px; line-height: 15px; }
+.pg-br__msg.is-first .pg-br__who { display: none; }
+.pg-br .pg-br__who { margin: 0 0 var(--space-2); font-size: 11px; line-height: 15px; }
+.pg-br__rank { margin-left: var(--space-5); color: var(--br-muted); font-style: italic; }
+.pg-br__cdate { margin-left: var(--space-5); color: var(--br-muted); }
+.pg-br__text p:last-child { margin-bottom: 0; }
+
+.pg-br__comments { margin-top: var(--space-15); padding-top: var(--space-10); border-top: 1px dashed var(--br-line); }
+.pg-br .pg-br__ch { margin: 0 0 var(--space-10); font-size: 12px; line-height: 16px; }
+.pg-br__clist { margin: 0; padding: 0; list-style: none; }
+.pg-br__clist > li { margin-bottom: var(--space-10); }
+/* Ödön writes in his personal-note hand even on other people's blogs */
+.pg-br__msg.is-odon .pg-br__text, .pg-br__gb .is-odon .pg-br__gbtext { padding: var(--space-5) var(--space-10); background: var(--note-bg); color: var(--note-ink); border: 1px dashed var(--note-ink); font-family: var(--font-comic); font-size: 14px; line-height: 20px; font-style: normal; }
+.pg-br .pg-br__closed { margin: var(--space-10) 0 0; color: var(--br-muted); font-size: 11px; line-height: 15px; font-style: italic; }
+
+.pg-br__section { margin-bottom: var(--space-20); }
+.pg-br .pg-br__h { margin: 0 0 var(--space-10); color: var(--br-accent); font-family: var(--br-title-font); font-size: 15px; line-height: 20px; font-weight: 700; }
+.pg-br__list { margin: 0; padding-left: var(--space-20); }
+.pg-br__list li { margin-bottom: var(--space-2); }
+
+.pg-br__foot { padding: var(--space-10) var(--space-15); border-top: 1px solid var(--br-line); text-align: center; font-size: 11px; line-height: 15px; }
+.pg-br__led { padding: 0 var(--space-5); background: var(--led-bg); color: var(--led-ink); font-family: var(--font-courier); font-weight: 700; letter-spacing: 0.1em; }
+.pg-br .pg-br__notice { margin: var(--space-10) auto 0; max-width: 520px; padding: var(--space-5) var(--space-10); background: var(--note-bg); color: var(--note-ink); border: 1px dashed var(--note-ink); font-family: var(--font-verdana); }
+
+/* ---------- Forum (Tökfőzelék Baráti Kör): phpBB board, user column beside every message ---------- */
+.pg-br--forum {
+  --br-bg: var(--chrome-shade); --br-page: var(--chrome-light); --br-ink: var(--ink); --br-muted: var(--ink-muted);
+  --br-head-bg: var(--link); --br-head-ink: var(--chrome-light); --br-accent: var(--link);
+  --br-link: var(--link); --br-line: var(--chrome-dark); --br-panel: var(--chrome);
+  --br-font: var(--font-verdana); --br-title-font: var(--font-verdana);
+}
+.pg-br--forum .pg-br__page { border: 2px solid var(--chrome-dark); }
+.pg-br--forum .pg-br__head { border-bottom: var(--space-5) solid var(--chrome-dark); }
+.pg-br--forum .pg-br__name { font-size: 24px; line-height: 30px; }
+.pg-br__index { width: 100%; margin-bottom: var(--space-20); border: 1px solid var(--chrome-dark); border-collapse: collapse; font-size: 11px; line-height: 15px; }
+.pg-br__index caption { padding: var(--space-5) var(--space-10); background: var(--link); color: var(--chrome-light); text-align: left; font-weight: 700; }
+.pg-br__index th { padding: var(--space-5); background: var(--chrome); border: 1px solid var(--chrome-dark); text-align: left; }
+.pg-br__index td { padding: var(--space-5); border: 1px solid var(--chrome); }
+.pg-br__index td:first-child { font-weight: 700; }
+.pg-br__index tr:nth-child(even) td { background: var(--page); }
+.pg-br--forum .pg-br__post { border: 1px solid var(--chrome-dark); }
+.pg-br--forum .pg-br__posthead { padding: var(--space-5) var(--space-10); background: var(--link); }
+.pg-br--forum .pg-br__title { color: var(--chrome-light); font-size: 13px; line-height: 18px; }
+.pg-br--forum .pg-br__meta { margin: 0; color: var(--chrome-light); }
+.pg-br--forum .pg-br__msg { display: grid; grid-template-columns: 150px 1fr; border-top: 1px solid var(--chrome); }
+.pg-br--forum .pg-br__msg.is-first .pg-br__who { display: block; }
+.pg-br--forum .pg-br__who { margin: 0; padding: var(--space-10); background: var(--chrome); border-right: 1px solid var(--chrome-shade); overflow-wrap: anywhere; }
+.pg-br--forum .pg-br__rank, .pg-br--forum .pg-br__cdate { display: block; margin: var(--space-2) 0 0; }
+.pg-br--forum .pg-br__text { padding: var(--space-10); }
+.pg-br--forum .pg-br__msg.is-odon .pg-br__text { margin: var(--space-10); }
+.pg-br--forum .pg-br__clist > li { margin: 0; }
+.pg-br--forum .pg-br__clist > li:nth-child(odd) .pg-br__text { background-color: var(--page); }
+.pg-br--forum .pg-br__clist > li.is-odon:nth-child(odd) .pg-br__text { background-color: var(--note-bg); }
+.pg-br--forum .pg-br__comments { margin: 0; padding: 0; border-top: 0; }
+.pg-br--forum .pg-br__ch { margin: 0; padding: var(--space-2) var(--space-10); background: var(--chrome); border-top: 1px solid var(--chrome-dark); font-size: 11px; line-height: 15px; }
+.pg-br--forum .pg-br__closed { margin: 0; padding: var(--space-5) var(--space-10); border-top: 1px solid var(--chrome); }
+.pg-br--forum .pg-br__section { padding: var(--space-10); background: var(--chrome); box-shadow: var(--bevel-out); font-size: 11px; line-height: 15px; }
+.pg-br--forum .pg-br__h { margin: 0 0 var(--space-5); font-size: 12px; line-height: 16px; }
+.pg-br--forum .pg-br__foot { background: var(--chrome); }
+
+/* ---------- Lodge (Zsírszalonna Klub): narrow centred club page, diploma, big guestbook ---------- */
+.pg-br--lodge {
+  --br-bg: var(--banner-start); --br-page: var(--box); --br-ink: var(--ink); --br-muted: var(--ink-muted);
+  --br-head-bg: var(--box-head); --br-head-ink: var(--banner-title); --br-accent: var(--box-head);
+  --br-link: var(--link); --br-line: var(--box-border); --br-panel: var(--page);
+  --br-font: var(--font-verdana); --br-title-font: var(--font-georgia);
+}
+.pg-br--lodge .pg-br__page { max-width: 600px; border: var(--space-5) double var(--box-border); text-align: center; }
+.pg-br--lodge .pg-br__head { border-bottom: 3px double var(--banner-title); }
+.pg-br--lodge .pg-br__name { font-size: 32px; line-height: 38px; letter-spacing: 0.05em; text-transform: uppercase; text-shadow: 2px 2px 0 var(--led-bg); }
+.pg-br--lodge .pg-br__h { font-size: 20px; line-height: 26px; }
+.pg-br--lodge .pg-br__h::before, .pg-br--lodge .pg-br__h::after { content: " ~ "; color: var(--box-border); }
+.pg-br__award { margin: 0 auto; max-width: 400px; padding: var(--space-20); background: var(--page); border: 6px double var(--box-border); outline: 1px solid var(--box-border); outline-offset: var(--space-5); font-family: var(--font-georgia); }
+.pg-br .pg-br__awardmonth { font-size: 20px; line-height: 26px; font-weight: 700; color: var(--post-title); }
+.pg-br__blink { display: inline-block; padding: 0 var(--space-5); background: var(--marquee-ink); color: var(--new-ink); font-family: var(--font-verdana); font-size: 13px; line-height: 18px; animation: pg-br-blink 1s steps(1) infinite; }
+.pg-br .pg-br__sign { margin: var(--space-20) 0 0; padding-top: var(--space-5); border-top: 1px solid var(--ink-muted); font-style: italic; }
+.pg-br--lodge .pg-br__list { display: inline-block; max-width: 460px; padding: var(--space-10) var(--space-15) var(--space-10) var(--space-30); background: var(--page); border: 1px solid var(--box-border); text-align: left; list-style: square; }
+.pg-br--lodge .pg-br__post { padding: var(--space-10); border-top: 1px dashed var(--box-border); border-bottom: 1px dashed var(--box-border); text-align: left; }
+.pg-br--lodge .pg-br__title { text-align: center; }
+.pg-br--lodge .pg-br__meta { text-align: center; }
+.pg-br--lodge #vendegkonyv .pg-br__h { font-size: 26px; line-height: 32px; }
+.pg-br__gb { margin: 0; padding: 0; list-style: none; text-align: left; }
+.pg-br__gb > li { margin-bottom: var(--space-10); border: 1px solid var(--box-border); background: var(--page); }
+.pg-br .pg-br__gbhead { margin: 0; padding: var(--space-2) var(--space-10); background: var(--box-head); color: var(--on-box-head); font-size: 11px; line-height: 16px; }
+.pg-br .pg-br__gbhead a { color: var(--banner-title); }
+.pg-br .pg-br__gbtext { margin: var(--space-10); }
+.pg-br .pg-br__gbreply { margin: 0 var(--space-10) var(--space-10) var(--space-30); padding: var(--space-5) var(--space-10); border-left: 3px double var(--box-border); font-style: italic; }
+.pg-br--lodge .pg-br__links { display: inline-block; list-style: none; padding: 0; }
+
+/* ---------- Essay (Gulyás és Lélek): white page, one wide serif column, drop caps ---------- */
+.pg-br--essay {
+  --br-bg: var(--tablecloth-white); --br-page: var(--tablecloth-white); --br-ink: var(--ink); --br-muted: var(--ink-muted);
+  --br-head-bg: var(--tablecloth-white); --br-head-ink: var(--ink); --br-accent: var(--ink);
+  --br-link: var(--link); --br-line: var(--chrome); --br-panel: var(--tablecloth-white);
+  --br-font: var(--font-georgia); --br-title-font: var(--font-georgia);
+}
+.pg-br--essay .pg-br__page { max-width: 580px; border: 0; font-size: 17px; line-height: 28px; }
+.pg-br--essay .pg-br__head { padding: var(--space-30) var(--space-15); text-align: center; border-bottom: 1px solid var(--chrome); }
+.pg-br--essay .pg-br__name { font-size: 34px; line-height: 40px; font-weight: 400; font-style: italic; letter-spacing: 0.02em; }
+.pg-br--essay .pg-br__tagline { font-size: 14px; line-height: 20px; color: var(--ink-muted); }
+.pg-br--essay .pg-br__main { padding: var(--space-30) var(--space-15); }
+.pg-br--essay .pg-br__post { margin-bottom: 60px; }
+.pg-br--essay .pg-br__posthead { text-align: center; margin-bottom: var(--space-20); }
+.pg-br--essay .pg-br__title { font-size: 24px; line-height: 32px; font-weight: 400; font-variant: small-caps; letter-spacing: 0.05em; }
+.pg-br--essay .pg-br__meta { font-size: 12px; line-height: 16px; font-style: italic; }
+.pg-br--essay .pg-br__msg.is-first .pg-br__text p { margin-bottom: var(--space-15); text-align: justify; hyphens: auto; }
+.pg-br--essay .pg-br__msg.is-first .pg-br__text p:first-child::first-letter { float: left; margin: 6px var(--space-5) 0 0; font-size: 56px; line-height: 44px; color: var(--post-title); }
+.pg-br--essay .pg-br__msg.is-first .pg-br__text p:last-child { text-align: right; font-style: italic; }
+.pg-br--essay .pg-br__comments { margin: var(--space-30) var(--space-30) 0; border-top: 1px solid var(--chrome); font-family: var(--font-verdana); font-size: 11px; line-height: 16px; }
+.pg-br--essay .pg-br__ch { font-family: var(--font-georgia); font-size: 13px; font-weight: 400; font-style: italic; text-align: center; }
+.pg-br--essay .pg-br__closed { text-align: center; }
+.pg-br--essay .pg-br__section { margin: 0 var(--space-30); padding-top: var(--space-15); border-top: 1px solid var(--chrome); font-size: 14px; line-height: 22px; text-align: center; }
+.pg-br--essay .pg-br__h { font-weight: 400; font-style: italic; }
+.pg-br--essay .pg-br__links { list-style: none; padding: 0; }
+.pg-br--essay .pg-br__foot { border-top-color: var(--chrome); color: var(--ink-muted); }
+
+/* ---------- Archive (Margitka receptjei): pink template, left sidebar, „archív” banner ---------- */
+.pg-br--archive {
+  --br-bg: var(--tablecloth-pink); --br-page: var(--tablecloth-white); --br-ink: var(--ink); --br-muted: var(--ink-muted);
+  --br-head-bg: var(--page); --br-head-ink: var(--box-head); --br-accent: var(--box-head);
+  --br-link: var(--link); --br-line: var(--tablecloth-pink); --br-panel: var(--page);
+  --br-font: var(--font-verdana); --br-title-font: var(--font-georgia);
+}
+.pg-br--archive .pg-br__page { border: var(--space-5) solid var(--tablecloth-white); outline: 1px solid var(--box-head); }
+.pg-br--archive .pg-br__head { padding: var(--space-20); border-bottom: var(--space-5) dotted var(--tablecloth-pink); text-align: center; }
+.pg-br--archive .pg-br__name { font-style: italic; font-weight: 400; font-size: 32px; line-height: 40px; }
+.pg-br--archive .pg-br__name::before, .pg-br--archive .pg-br__name::after { content: " * "; color: var(--tablecloth-pink); }
+.pg-br--archive .pg-br__body { display: flex; flex-direction: row-reverse; }
+.pg-br--archive .pg-br__main { flex: 1; }
+.pg-br--archive .pg-br__aside { width: var(--sidebar-width); flex: none; box-sizing: border-box; padding: var(--space-15) var(--space-10); background: var(--page); border-right: 1px dotted var(--tablecloth-pink); font-size: 11px; line-height: 16px; }
+.pg-br--archive .pg-br__aside .pg-br__h { padding-bottom: var(--space-2); border-bottom: 1px dotted var(--tablecloth-pink); font-size: 13px; }
+.pg-br--archive .pg-br__aside .pg-br__list { list-style: "\2665  "; }
+.pg-br--archive .pg-br__post { padding-bottom: var(--space-15); border-bottom: 1px dotted var(--tablecloth-pink); }
+.pg-br--archive .pg-br__meta::before { content: "Bejegyezve: "; }
+.pg-br--archive .pg-br__comments { margin-left: var(--space-20); border-top: 0; padding: var(--space-10); background: var(--page); }
+.pg-br--archive .pg-br__clist > li { padding-bottom: var(--space-10); border-bottom: 1px dotted var(--tablecloth-pink); }
+
+/* ---------- Chronicle (A Kenyérhéj Krónikái): narrow typewriter page, numbered chapters ---------- */
+.pg-br--chronicle {
+  --br-bg: var(--box); --br-page: var(--page); --br-ink: var(--ink); --br-muted: var(--ink-muted);
+  --br-head-bg: var(--page); --br-head-ink: var(--post-title); --br-accent: var(--post-title);
+  --br-link: var(--link); --br-line: var(--box-border); --br-panel: var(--page);
+  --br-font: var(--font-courier); --br-title-font: var(--font-courier);
+}
+.pg-br--chronicle .pg-br__page { max-width: 500px; border: 1px solid var(--box-border); box-shadow: var(--drop-hard); font-size: 14px; line-height: 22px; }
+.pg-br--chronicle .pg-br__head { padding: var(--space-30) var(--space-20) var(--space-20); text-align: center; border-bottom: 3px double var(--box-border); }
+.pg-br--chronicle .pg-br__name { font-size: 22px; line-height: 28px; text-transform: uppercase; letter-spacing: 0.2em; }
+.pg-br--chronicle .pg-br__tagline { color: var(--ink); font-size: 12px; }
+.pg-br--chronicle .pg-br__main { padding: var(--space-20); }
+.pg-br__toc { margin-bottom: var(--space-30); padding: var(--space-10) var(--space-15); border: 1px dashed var(--box-border); font-size: 12px; line-height: 18px; }
+.pg-br__toc ol { margin: 0 0 var(--space-5); padding: 0; list-style: none; }
+.pg-br__toc p { margin: 0; color: var(--ink-muted); font-style: italic; }
+.pg-br--chronicle .pg-br__h { text-align: center; text-transform: uppercase; letter-spacing: 0.15em; font-size: 13px; }
+.pg-br--chronicle .pg-br__post { margin-bottom: var(--space-30); padding-bottom: var(--space-20); text-align: center; }
+.pg-br--chronicle .pg-br__post::after { content: "* * *"; display: block; margin-top: var(--space-20); color: var(--box-border); }
+.pg-br--chronicle .pg-br__title { font-size: 15px; line-height: 22px; text-transform: uppercase; letter-spacing: 0.1em; }
+.pg-br--chronicle .pg-br__msg.is-first .pg-br__text p { margin-bottom: var(--space-15); }
+.pg-br--chronicle .pg-br__comments { text-align: left; font-size: 12px; line-height: 18px; }
+.pg-br--chronicle .pg-br__section { text-align: center; }
+
+@keyframes pg-br-blink { 50% { visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .pg-br__blink { animation: none; } }
+
+@media (max-width: 800px) {
+  .pg-br { padding: var(--space-5); }
+  .pg-br .pg-br__name { font-size: 22px; line-height: 28px; }
+  .pg-br--archive .pg-br__body { flex-direction: column; }
+  .pg-br--archive .pg-br__aside { width: auto; border-right: 0; border-top: 1px dotted var(--tablecloth-pink); }
+  .pg-br--forum .pg-br__msg { grid-template-columns: 1fr; }
+  .pg-br--forum .pg-br__who { border-right: 0; border-bottom: 1px solid var(--chrome-shade); }
+  .pg-br--forum .pg-br__rank, .pg-br--forum .pg-br__cdate { display: inline; margin-left: var(--space-5); }
+  .pg-br__index th:nth-child(4), .pg-br__index td:nth-child(4) { display: none; }
+  .pg-br--essay .pg-br__comments, .pg-br--essay .pg-br__section { margin-left: 0; margin-right: 0; }
+}

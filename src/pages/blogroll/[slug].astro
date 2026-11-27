@@ -1,0 +1,42 @@
+---
+import BlogrollLayout from '../../layouts/BlogrollLayout.astro';
+import BlogrollSection from '../../components/BlogrollSection.astro';
+import { blogs } from '../../lib/blogroll.js';
+
+export function getStaticPaths() {
+  return blogs.map((blog) => ({ params: { slug: blog.slug }, props: { blog } }));
+}
+const { blog } = Astro.props;
+const main = blog.sections.filter((s) => !s.aside);
+const aside = blog.sections.filter((s) => s.aside);
+const posts = blog.sections.filter((s) => s.kind === 'post');
+---
+<BlogrollLayout blog={blog}>
+  {blog.index?.style === 'table' && (
+    <table class="pg-br__index">
+      <caption>{blog.index.title}</caption>
+      <thead><tr><th scope="col">Téma</th><th scope="col">Szerző</th><th scope="col">Válaszok</th><th scope="col">Utolsó hozzászólás</th></tr></thead>
+      <tbody>{posts.map((p) => (
+        <tr>
+          <td><a href={`#${p.id}`}>{p.title}</a></td>
+          <td>{p.author}</td>
+          <td>{p.comments?.length ?? 0}</td>
+          <td>{p.comments?.at(-1)?.date ?? p.date}</td>
+        </tr>
+      ))}</tbody>
+    </table>
+  )}
+  {blog.index?.style === 'list' && (
+    <nav class="pg-br__toc" aria-label={blog.index.title}>
+      <h2 class="pg-br__h">{blog.index.title}</h2>
+      <ol>{posts.map((p) => <li><a href={`#${p.id}`}>{p.title}</a></li>)}</ol>
+      {blog.index.note && <p>{blog.index.note}</p>}
+    </nav>
+  )}
+  {main.map((s) => <BlogrollSection s={s} blog={blog} />)}
+  {aside.length > 0 && (
+    <Fragment slot="aside">
+      {aside.map((s) => <BlogrollSection s={s} blog={blog} />)}
+    </Fragment>
+  )}
+</BlogrollLayout>

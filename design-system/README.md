@@ -105,6 +105,16 @@ The blog carries ads like every 2008 blog did, but every one of them is **invent
 - **„Hirdetőink”** (`/hirdetes/`) is Ödön's list of all advertisers, admitting they are invented.
 - The joke is on 2008 advertising and on the food, never on the reader: no ads mocking anyone's body, income or looks.
 
+## Blogroll
+
+The five sidebar blogroll entries are **other people's food blogs**, all invented, all long frozen (2007–2011), each at `/blogroll/<slug>/` (content in `src/lib/blogroll.js`, layout `BlogrollLayout`, styles `src/styles/blogroll.css`).
+
+- **Each blog has its own platform and structure:** a phpBB-style forum (Tökfőzelék Baráti Kör), a club page built around its guestbook (Zsírszalonna Klub), a white literary essay blog (Gulyás és Lélek), a pink blog template frozen under an „archív” banner (Margitka receptjei), a typewriter page in numbered chapters (A Kenyérhéj Krónikái). A new entry gets a skin no other blog has, built from existing tokens.
+- **Ödön comments on all of them**, formal as ever, in his note hand, his name linking home. The running gags: his membership application has been „napirendre tűzve” since 2008; the rival essayist out-pomps him; the Krónikás answers that ketchup „nem tárgya e krónikának”. The readers (kati62, GasztroGabi, Névtelen) turn up too, and the blogs comment on each other.
+- **The blogrolls link to each other, never properly back:** only the Szalonna Klub lists „Proligasztro (?)”.
+- **Margitka is the warm one:** sincere home recipes, treated kindly; Ödön cannot bring himself to criticise them. The joke is never on her.
+- Same rules as the ad sites: invented people only, no inputs or forms (comments and guestbooks are „lezárva”), at most one blinking element per page, `noindex`, visitor counter, old „Utoljára frissítve” date, satire notice and a link back to the blog on every page.
+
 ## Sharing
 
 Every page carries Open Graph and Twitter tags, and the image is a `ShareCard`: a 1200×630 mini screenshot of the blog (tablecloth, banner, nav, the digicam photo with its date stamp, title, meta line, Ketchup-index). One per post, generated at build time; a default card for everything else. The share text is the post's excerpt, in Ödön's voice. The card never adds slogans or calls to action: it looks like the blog, not like an ad.

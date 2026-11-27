@@ -1,0 +1,53 @@
+---
+/*
+ * Frame for the invented blogs in Ödön's blogroll (/blogroll/<slug>/).
+ * Deliberately not the blog's shell: these are "other people's" long-frozen 2007–2011 blogs.
+ * Satire notice and the way back to Proligasztró are required on every one.
+ */
+import '../styles/tokens.css';
+import '../styles/blogroll.css';
+import { withBase } from '../lib/url.js';
+
+interface Props {
+  blog: {
+    skin: string; name: string; tagline: string; author: string; engine: string;
+    counter: string; updated: string; banner?: string; crumb?: string; blink?: string;
+  };
+}
+const { blog } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const notice = 'Ez a blog nem létezik. A Proligasztró szatirikus blog blogrolljának kitalált blogja, mint minden más ott: a szerzők, a receptek és a hozzászólások kitaláltak. Hozzászólni nem lehet, adatot nem gyűjtünk.';
+---
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{blog.name}</title>
+    <meta name="description" content={`${blog.name}: kitalált blog a Proligasztró szatirikus blog blogrolljából.`} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonical} />
+    <meta name="generator" content={blog.engine} />
+    <link rel="icon" href={withBase('/ketchup-drop.svg')} type="image/svg+xml" />
+  </head>
+  <body class={`pg-br pg-br--${blog.skin}`}>
+    <div class="pg-br__page">
+      <header class="pg-br__head">
+        <p class="pg-br__name">{blog.name}</p>
+        <p class="pg-br__tagline">{blog.tagline}</p>
+      </header>
+      {blog.banner && <p class="pg-br__banner">{blog.banner}</p>}
+      {blog.crumb && <p class="pg-br__crumb">{blog.crumb}</p>}
+      <div class="pg-br__body">
+        <main class="pg-br__main"><slot /></main>
+        {Astro.slots.has('aside') && <aside class="pg-br__aside"><slot name="aside" /></aside>}
+      </div>
+      <footer class="pg-br__foot">
+        <p class="pg-br__counter">Ön a <span class="pg-br__led">{blog.counter}</span>. látogató</p>
+        <p>Utoljára frissítve: {blog.updated} · {blog.engine}</p>
+        <p><a href={withBase('/')}>« Vissza a Proligasztróra</a></p>
+        <p class="pg-br__notice">{notice}</p>
+      </footer>
+    </div>
+  </body>
+</html>
