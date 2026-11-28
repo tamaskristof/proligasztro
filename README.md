@@ -33,7 +33,7 @@ Frontmatter:
 | field | |
 |---|---|
 | `title` | post title |
-| `date` | old blog format, Budapest time: `"2026.11.22. 23:47"` (Ödön writes between 22:00 and 01:30). A future date is scheduled: the build leaves the post out until then, and the deploy workflow rebuilds once every early morning (03:00 Budapest time, 04:00 in summer) |
+| `date` | old blog format, Budapest time: `"2026.11.22. 23:47"` (Ödön writes between 22:00 and 01:30). A future date is scheduled: the build leaves the post out until then, and the deploy workflow rebuilds every early morning (03:23 Budapest time with a backup at 05:47; an hour later in summer) |
 | `tags` | list of tags |
 | `rating` | Ketchup-index, 0–5, more is worse |
 | `excerpt` | homepage teaser, starts with "Kedves Olvasóim!" |

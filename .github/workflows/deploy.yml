@@ -4,10 +4,13 @@ on:
   push:
     branches: [main]
   # Posts and comments dated later than the build stay out of it (src/lib/posts.js).
-  # Rebuild once in the early morning (03:00 CET / 04:00 CEST), after Ödön's night
-  # (22:00-01:30 Budapest), so last night's post and his replies go live.
+  # Rebuild in the early morning, after Ödön's night (22:00-01:30 Budapest), so last
+  # night's post and his replies go live. GitHub's cron is best-effort and often drops
+  # top-of-the-hour jobs, so run off the hour, twice (the second is a backup; a rebuild
+  # only publishes what is already due): 02:23 and 04:47 UTC = 03:23 and 05:47 CET.
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '23 2 * * *'
+    - cron: '47 4 * * *'
   workflow_dispatch:
 
 permissions:
