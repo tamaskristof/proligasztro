@@ -122,4 +122,14 @@ export const polls = [
       { label: 'Kakaó, ha már édes a palacsinta', votes: 173 },
     ],
   },
+  {
+    name: 'forraltbor',
+    question: 'Mivel forralod a bort az irodában?',
+    options: [
+      { label: 'Lábasban, ahogy illik', votes: 94 },
+      { label: 'Vízforralóban, háromszor', votes: 376 },
+      { label: 'A kávégép tejhabosítójával', votes: 212 },
+      { label: 'Sehogy, a radiátoron langyosodik', votes: 158 },
+    ],
+  },
 ];
